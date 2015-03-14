@@ -1,8 +1,12 @@
-﻿<Window x:Class="SkeletonTracing.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        xmlns:local="clr-namespace:SkeletonTracing" x:Class="SkeletonTracing.MainWindow"
+        Title="MainWindow" Height="600" Width="1000">
+  <Grid>
+
+    <local:CoordinatesTable x:Name="TableView" HorizontalAlignment="Left" Margin="692,0,0,0" VerticalAlignment="Top"/>
+    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Click="StartRecordingBtn_Click"/>
+
+  </Grid>
 </Window>

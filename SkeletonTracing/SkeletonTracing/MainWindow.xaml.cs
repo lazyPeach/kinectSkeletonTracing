@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Kinect;
+using SkeletonTracing.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,12 +16,13 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SkeletonTracing {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
   public partial class MainWindow : Window {
     public MainWindow() {
-      InitializeComponent();
+      InitializeComponent();      
+    }
+
+    private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
+      TableView.Start();
     }
   }
 }
