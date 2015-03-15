@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkeletonTracing.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,13 @@ namespace SkeletonTracing {
   /// Interaction logic for SkeletonCanvas.xaml
   /// </summary>
   public partial class SkeletonCanvas : UserControl {
+    private SkeletonManager skeletonManager;
+    public SkeletonManager SkeletonManager {
+      set {
+        skeletonManager = value;
+      }
+    }
+
     public SkeletonCanvas() {
       InitializeComponent();
       DrawSimpleLine();

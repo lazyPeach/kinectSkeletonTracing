@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -26,10 +27,29 @@ namespace SkeletonTracing {
       kinect = new KinectManager();
       skeletonManager = new SkeletonManager(kinect);
       TableView.SkeletonManager = skeletonManager;
+      skeletonCanvas.SkeletonManager = skeletonManager;
     }
 
     private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
+      skeletonManager.Start();
       kinect.Start();
+    }
+
+    private void StopRecordingBtn_Click(object sender, RoutedEventArgs e) {
+      skeletonManager.Stop();
+      kinect.Stop();
+    }
+
+    private void SaveGestureBtn_Click(object sender, RoutedEventArgs e) {
+      FolderBrowserDialog fileBrowser = new FolderBrowserDialog();
+      fileBrowser.ShowDialog();
+      skeletonManager.SaveCollections(fileBrowser.SelectedPath);
+    }
+
+    private void LoadGestureBtn_Click(object sender, RoutedEventArgs e) {
+      FolderBrowserDialog fileBrowser = new FolderBrowserDialog();
+      fileBrowser.ShowDialog();
+      skeletonManager.LoadCollections(fileBrowser.SelectedPath);
     }
   }
 }

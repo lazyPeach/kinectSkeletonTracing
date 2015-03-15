@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SkeletonTracing.Model {
-  public class KinectManagerEventArgs :EventArgs {
+  public class KinectManagerEventArgs : EventArgs {
     private Skeleton _skeleton;
     
     public KinectManagerEventArgs(Skeleton skeleton) {

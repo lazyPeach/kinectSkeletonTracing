@@ -6,8 +6,11 @@
   <Grid>
 
     <local:CoordinatesTable x:Name="TableView" HorizontalAlignment="Left" Margin="692,0,0,0" VerticalAlignment="Top"/>
-    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Click="StartRecordingBtn_Click"/>
-    <local:SkeletonCanvas HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top"/>
+    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click"/>
+    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top"/>
+    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click"/>
+    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="210,11,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click"/>
+    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="310,11,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click"/>
 
   </Grid>
 </Window>
