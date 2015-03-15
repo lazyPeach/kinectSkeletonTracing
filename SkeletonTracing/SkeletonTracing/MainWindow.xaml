@@ -7,6 +7,7 @@
 
     <local:CoordinatesTable x:Name="TableView" HorizontalAlignment="Left" Margin="692,0,0,0" VerticalAlignment="Top"/>
     <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Click="StartRecordingBtn_Click"/>
+    <local:SkeletonCanvas HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top"/>
 
   </Grid>
 </Window>

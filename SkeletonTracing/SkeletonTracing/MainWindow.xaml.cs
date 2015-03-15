@@ -17,12 +17,19 @@ using System.Windows.Shapes;
 
 namespace SkeletonTracing {
   public partial class MainWindow : Window {
+    private KinectManager kinect;
+    private SkeletonManager skeletonManager;
+
     public MainWindow() {
-      InitializeComponent();      
+      InitializeComponent();
+
+      kinect = new KinectManager();
+      skeletonManager = new SkeletonManager(kinect);
+      TableView.SkeletonManager = skeletonManager;
     }
 
     private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      TableView.Start();
+      kinect.Start();
     }
   }
 }
