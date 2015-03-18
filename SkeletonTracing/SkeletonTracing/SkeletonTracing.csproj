@@ -59,16 +59,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Body.cs" />
+    <Compile Include="Model\BodyManagerEventArgs.cs" />
+    <Compile Include="Model\Bone.cs" />
+    <Compile Include="Model\BoneSkeleton.cs" />
+    <Compile Include="Model\Joint.cs" />
+    <Compile Include="Model\JointSkeleton.cs" />
     <Compile Include="Model\KinectManager.cs" />
     <Compile Include="Model\KinectManagerEventArgs.cs" />
-    <Compile Include="Model\SkeletonManager.cs" />
+    <Compile Include="Model\BodyManager.cs" />
     <Compile Include="SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
-    <Page Include="CoordinatesTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,9 +78,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CoordinatesTable.xaml.cs">
-      <DependentUpon>CoordinatesTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -90,7 +89,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\JointInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

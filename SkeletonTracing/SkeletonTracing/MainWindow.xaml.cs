@@ -19,37 +19,36 @@ using System.Windows.Shapes;
 namespace SkeletonTracing {
   public partial class MainWindow : Window {
     private KinectManager kinect;
-    private SkeletonManager skeletonManager;
+    private BodyManager bodyManager;
 
     public MainWindow() {
       InitializeComponent();
-
+      
       kinect = new KinectManager();
-      skeletonManager = new SkeletonManager(kinect);
-      TableView.SkeletonManager = skeletonManager;
-      skeletonCanvas.SkeletonManager = skeletonManager;
+      bodyManager = new BodyManager(kinect);
+      skeletonCanvas.BodyManager = bodyManager;
     }
 
     private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      skeletonManager.Start();
+      //skeletonManager.Start();
       kinect.Start();
     }
 
     private void StopRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      skeletonManager.Stop();
+      //skeletonManager.Stop();
       kinect.Stop();
     }
 
     private void SaveGestureBtn_Click(object sender, RoutedEventArgs e) {
       FolderBrowserDialog fileBrowser = new FolderBrowserDialog();
       fileBrowser.ShowDialog();
-      skeletonManager.SaveCollections(fileBrowser.SelectedPath);
+      //skeletonManager.SaveCollections(fileBrowser.SelectedPath);
     }
 
     private void LoadGestureBtn_Click(object sender, RoutedEventArgs e) {
       FolderBrowserDialog fileBrowser = new FolderBrowserDialog();
       fileBrowser.ShowDialog();
-      skeletonManager.LoadCollections(fileBrowser.SelectedPath);
+      //skeletonManager.LoadCollections(fileBrowser.SelectedPath);
     }
   }
 }

@@ -1,12 +1,13 @@
 ﻿using Microsoft.Kinect;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace SkeletonTracing.Model {
   public delegate void KinectManagerEventHandler(object sender, KinectManagerEventArgs e);
 
   public class KinectManager {
-    public event KinectManagerEventHandler KinectManagerEvent;
+    public event KinectManagerEventHandler KinectManagerEventHandl;
 
     private KinectSensor kinectSensor;
     private Skeleton[] skeletonData;
@@ -16,6 +17,10 @@ namespace SkeletonTracing.Model {
     }
 
     public void Start() {
+      for (int i = 0; i < 5; i++) {
+        Console.WriteLine(i);
+        Thread.Sleep(1000);
+      }
       kinectSensor.Start();
     }
 
@@ -47,19 +52,12 @@ namespace SkeletonTracing.Model {
           }
         }
       }
-
-
     }
 
     protected virtual void OnEvent(KinectManagerEventArgs e) {
-      if (KinectManagerEvent != null) {
-        KinectManagerEvent(this, e);
+      if (KinectManagerEventHandl != null) {
+        KinectManagerEventHandl(this, e);
       }
-    }
-
-    public DepthImagePoint GetJointInformation(Skeleton skeleton, JointType jointType) {
-      return kinectSensor.CoordinateMapper.MapSkeletonPointToDepthPoint(
-        skeleton.Joints[jointType].Position, DepthImageFormat.Resolution640x480Fps30);
     }
   }
 }

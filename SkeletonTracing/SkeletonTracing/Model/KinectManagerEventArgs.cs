@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace SkeletonTracing.Model {
   public class KinectManagerEventArgs : EventArgs {
-    private Skeleton _skeleton;
+    private Skeleton skeleton;
     
     public KinectManagerEventArgs(Skeleton skeleton) {
-      _skeleton = skeleton;
+      this.skeleton = skeleton;
     }
 
-    public Skeleton Skeleton { get { return _skeleton; } }
-
+    public Skeleton Skeleton { get { return skeleton; } }
   }
 }
