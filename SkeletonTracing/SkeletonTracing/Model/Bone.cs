@@ -1,27 +1,23 @@
-﻿using System;
+﻿using SkeletonTracing.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SkeletonTracing.Model {
-  public enum BoneType {
-    BodyCenter      = 0,
-    LowerSpine      = 1,
-    UpperSpine      = 2,
-    Neck            = 3,
-    ClavicleLeft    = 4,
-    ArmLeft         = 5,
-    ForearmLeft     = 6,
-    ClavicleRight   = 7,
-    ArmRight        = 8,
-    ForearmRight    = 9,
-    HipLeft         = 10,
-    FemurusLeft     = 11,
-    TibiaLeft       = 12,
-    HipRight        = 13,
-    FemurusRight    = 14,
-    TibiaRight      = 15
+  public class Bone {
+    public Rotation Rotation { get; set; }
+    public BoneName Type { get; set; }
+    public Priority Priority { get; set; }
+
+    public Bone() : this(new Rotation(), BoneName.BodyCenter, Priority.Low) { }
+
+    public Bone(Rotation rotation, BoneName type, Priority priority = Priority.Low) {
+      Rotation = rotation;
+      Type = type;
+      Priority = priority;
+    }
   }
 
   public class Quaternion {
@@ -53,21 +49,6 @@ namespace SkeletonTracing.Model {
 
     public Rotation(float w, float x, float y, float z) {
       Quaternion = new Quaternion(w, x, y, z);
-    }
-
-  }
-
-  public class Bone {
-    public Rotation Rotation { get; set; }
-    public BoneType Type { get; set; }
-    public Priority Priority { get; set; }
-
-    public Bone() : this(new Rotation(), BoneType.BodyCenter, Priority.Low) { }
-
-    public Bone(Rotation rotation, BoneType type, Priority priority = Priority.Low) {
-      Rotation = rotation;
-      Type = type;
-      Priority = priority;
     }
   }
 }

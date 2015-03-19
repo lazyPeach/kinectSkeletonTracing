@@ -59,6 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\Mapper.cs" />
+    <Compile Include="Helper\NotMappedException.cs" />
     <Compile Include="Model\Body.cs" />
     <Compile Include="Model\BodyManagerEventArgs.cs" />
     <Compile Include="Model\Bone.cs" />

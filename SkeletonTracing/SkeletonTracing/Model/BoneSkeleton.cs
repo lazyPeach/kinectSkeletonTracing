@@ -1,4 +1,5 @@
 ﻿using Microsoft.Kinect;
+using SkeletonTracing.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,42 +12,42 @@ namespace SkeletonTracing.Model {
 
     private Bone[] bones = new Bone[BONES_NR];
 
-    private Dictionary<BoneType, int> indexMap = new Dictionary<BoneType, int>() {
-      {BoneType.BodyCenter, 0},
-      {BoneType.LowerSpine, 1},
-      {BoneType.UpperSpine, 2},
-      {BoneType.Neck, 3},
-      {BoneType.ClavicleLeft, 4},
-      {BoneType.ArmLeft, 5},
-      {BoneType.ForearmLeft, 6},
-      {BoneType.ClavicleRight, 7},
-      {BoneType.ArmRight, 8},
-      {BoneType.ForearmRight, 9},
-      {BoneType.HipLeft, 10},
-      {BoneType.FemurusLeft, 11},
-      {BoneType.TibiaLeft, 12},
-      {BoneType.HipRight, 13},
-      {BoneType.FemurusRight, 14},
-      {BoneType.TibiaRight, 15},
+    private Dictionary<BoneName, int> indexMap = new Dictionary<BoneName, int>() {
+      {BoneName.BodyCenter, 0},
+      {BoneName.LowerSpine, 1},
+      {BoneName.UpperSpine, 2},
+      {BoneName.Neck, 3},
+      {BoneName.ClavicleLeft, 4},
+      {BoneName.ArmLeft, 5},
+      {BoneName.ForearmLeft, 6},
+      {BoneName.ClavicleRight, 7},
+      {BoneName.ArmRight, 8},
+      {BoneName.ForearmRight, 9},
+      {BoneName.HipLeft, 10},
+      {BoneName.FemurusLeft, 11},
+      {BoneName.TibiaLeft, 12},
+      {BoneName.HipRight, 13},
+      {BoneName.FemurusRight, 14},
+      {BoneName.TibiaRight, 15},
     };
 
-    private Dictionary<Tuple<JointType, JointType>, BoneType> jointBoneMap = new Dictionary<Tuple<JointType, JointType>, BoneType>() {
-      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipCenter), BoneType.BodyCenter},
-      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.Spine), BoneType.LowerSpine},
-      {new Tuple<JointType, JointType>(JointType.Spine, JointType.ShoulderCenter), BoneType.UpperSpine},
-      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.Head), BoneType.Neck},
-      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.ShoulderLeft), BoneType.ClavicleLeft},
-      {new Tuple<JointType, JointType>(JointType.ShoulderLeft, JointType.ElbowLeft), BoneType.ArmLeft},
-      {new Tuple<JointType, JointType>(JointType.ElbowLeft, JointType.WristLeft), BoneType.ForearmLeft},
-      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.ShoulderRight), BoneType.ClavicleRight},
-      {new Tuple<JointType, JointType>(JointType.ShoulderRight, JointType.ElbowRight), BoneType.ArmRight},
-      {new Tuple<JointType, JointType>(JointType.ElbowRight, JointType.WristRight), BoneType.ForearmRight},
-      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipLeft), BoneType.HipLeft},
-      {new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft), BoneType.FemurusLeft},
-      {new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft), BoneType.TibiaLeft},
-      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipRight), BoneType.HipRight},
-      {new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight), BoneType.FemurusRight},
-      {new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight), BoneType.TibiaRight}
+    private Dictionary<Tuple<JointType, JointType>, BoneName> jointBoneMap = new Dictionary<Tuple<JointType, JointType>, BoneName>() {
+      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipCenter), BoneName.BodyCenter},
+      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.Spine), BoneName.LowerSpine},
+      {new Tuple<JointType, JointType>(JointType.Spine, JointType.ShoulderCenter), BoneName.UpperSpine},
+      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.Head), BoneName.Neck},
+      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.ShoulderLeft), BoneName.ClavicleLeft},
+      {new Tuple<JointType, JointType>(JointType.ShoulderLeft, JointType.ElbowLeft), BoneName.ArmLeft},
+      {new Tuple<JointType, JointType>(JointType.ElbowLeft, JointType.WristLeft), BoneName.ForearmLeft},
+      {new Tuple<JointType, JointType>(JointType.ShoulderCenter, JointType.ShoulderRight), BoneName.ClavicleRight},
+      {new Tuple<JointType, JointType>(JointType.ShoulderRight, JointType.ElbowRight), BoneName.ArmRight},
+      {new Tuple<JointType, JointType>(JointType.ElbowRight, JointType.WristRight), BoneName.ForearmRight},
+      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipLeft), BoneName.HipLeft},
+      {new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft), BoneName.FemurusLeft},
+      {new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft), BoneName.TibiaLeft},
+      {new Tuple<JointType, JointType>(JointType.HipCenter, JointType.HipRight), BoneName.HipRight},
+      {new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight), BoneName.FemurusRight},
+      {new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight), BoneName.TibiaRight}
     };
 
     public BoneSkeleton() {
@@ -66,14 +67,14 @@ namespace SkeletonTracing.Model {
           , boneOrientation.HierarchicalRotation.Quaternion.X
           , boneOrientation.HierarchicalRotation.Quaternion.Y
           , boneOrientation.HierarchicalRotation.Quaternion.Z);
-        BoneType boneType = jointBoneMap[key];
+        BoneName BoneName = jointBoneMap[key];
 
-        Bone bone = new Bone(rotation, boneType);
-        bones[indexMap[boneType]] = bone;
+        Bone bone = new Bone(rotation, BoneName);
+        bones[indexMap[BoneName]] = bone;
       }
     }
 
-    public Bone GetBone(BoneType type) {
+    public Bone GetBone(BoneName type) {
       if (!indexMap.ContainsKey(type))
         return new Bone();
 
