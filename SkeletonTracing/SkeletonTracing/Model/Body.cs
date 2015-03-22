@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SkeletonTracing.Model {
   public enum Priority {
@@ -19,6 +20,11 @@ namespace SkeletonTracing.Model {
     public Body(Skeleton skeleton) {
       Joints = new JointSkeleton(skeleton);
       Bones = new BoneSkeleton(skeleton);
+    }
+
+    public Body() {
+      Joints = new JointSkeleton();
+      Bones = new BoneSkeleton();
     }
   }
 }

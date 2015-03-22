@@ -11,6 +11,8 @@ namespace SkeletonTracing.Model {
 
     private Joint[] joints = new Joint[JOINTS_NR];
 
+    public Joint[] Joints { get { return joints; } set { joints = value; } }
+
     private Dictionary<JointType, int> indexMap = new Dictionary<JointType, int>() {
       {JointType.HipCenter, 0},
       {JointType.Spine, 1},

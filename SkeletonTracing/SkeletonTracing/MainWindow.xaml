@@ -5,15 +5,16 @@
         Title="MainWindow" Height="600" Width="1000">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="109*"/>
-      <ColumnDefinition Width="139*"/>
+      <ColumnDefinition Width="649*"/>
+      <ColumnDefinition Width="343*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click"/>
-    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click"/>
-    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="210,11,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click"/>
-    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="310,11,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click"/>
+    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click" Height="20"/>
+    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Height="500" Width="500"/>
+    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click" Height="20"/>
+    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="210,11,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click" Height="20"/>
+    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="310,11,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
+    <Button Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="410,11,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="PlayGestureBtn_Click"/>
 
   </Grid>
 </Window>

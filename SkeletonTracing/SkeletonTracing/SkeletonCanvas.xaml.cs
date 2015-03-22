@@ -36,12 +36,16 @@ namespace SkeletonTracing {
       DrawCoordinateAxisCenter();
     }
 
+    public void test() {
+      canvas.Children.Clear();
+
+    }
 
 
     private void BodyManagerEventHandler(object sender, BodyManagerEventArgs e) {
       Body body = e.Body;
       canvas.Children.Clear();
-      DrawCoordinateAxisCenter();
+      //DrawCoordinateAxisCenter();
       DrawJoints(body.Joints);
     }
 
@@ -83,8 +87,6 @@ namespace SkeletonTracing {
 
       }
 
-      //Console.WriteLine((int)(crtJoint.XCoord * 100) + " " + (int)(crtJoint.YCoord * 100));
-      //DrawPoint((int)(Math.Abs(crtJoint.XCoord) * 100), (int)(Math.Abs(crtJoint.YCoord) * 100));
     }
 
     private void DrawLine(double x1, double y1, double x2, double y2) {
@@ -110,6 +112,7 @@ namespace SkeletonTracing {
       Canvas.SetTop(point, y - point.Height / 2 );
     
       canvas.Children.Add(point);
+      canvas.InvalidateVisual();
     }
 
 
