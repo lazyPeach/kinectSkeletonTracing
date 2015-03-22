@@ -32,12 +32,10 @@ namespace SkeletonTracing {
     }
 
     private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      //skeletonManager.Start();
       kinect.Start();
     }
 
     private void StopRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      //skeletonManager.Stop();
       kinect.Stop();
     }
 
@@ -60,6 +58,10 @@ namespace SkeletonTracing {
     private void PlayGestureBtn_Click(object sender, RoutedEventArgs e) {
       bodyManager.PlayGesture();
       
+    }
+
+    private void ClearDataBtn_Click(object sender, RoutedEventArgs e) {
+      bodyManager.ClearBodyData();
     }
   }
 }

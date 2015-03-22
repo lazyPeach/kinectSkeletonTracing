@@ -62,15 +62,15 @@
     <Compile Include="Helper\Mapper.cs" />
     <Compile Include="Helper\NotMappedException.cs" />
     <Compile Include="Model\Body.cs" />
-    <Compile Include="Model\BodyManagerEventArgs.cs" />
+    <Compile Include="Events\BodyManagerEventArgs.cs" />
     <Compile Include="Model\Bone.cs" />
     <Compile Include="Model\BoneSkeleton.cs" />
     <Compile Include="Model\Joint.cs" />
     <Compile Include="Model\JointSkeleton.cs" />
-    <Compile Include="Model\KinectManager.cs" />
-    <Compile Include="Model\KinectManagerEventArgs.cs" />
-    <Compile Include="Model\BodyManager.cs" />
-    <Compile Include="SkeletonCanvas.xaml.cs">
+    <Compile Include="Business\KinectManager.cs" />
+    <Compile Include="Events\KinectManagerEventArgs.cs" />
+    <Compile Include="Business\BodyManager.cs" />
+    <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -85,7 +85,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SkeletonCanvas.xaml">
+    <Page Include="View\SkeletonCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

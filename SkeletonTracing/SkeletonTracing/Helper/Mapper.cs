@@ -1,9 +1,6 @@
 ﻿using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkeletonTracing.Helper {
 
@@ -47,7 +44,7 @@ namespace SkeletonTracing.Helper {
 
   public class Mapper {
     // map elements that don't have a correspondent to its closest
-    Dictionary<JointType, JointName> jointTypeJointNameMap = new Dictionary<JointType, JointName>() {
+    public static Dictionary<JointType, JointName> JointTypeJointNameMap = new Dictionary<JointType, JointName>() {
       {JointType.HipCenter      , JointName.HipCenter       },
       {JointType.Spine          , JointName.Spine           },
       {JointType.ShoulderCenter , JointName.ShoulderCenter  },
@@ -70,7 +67,7 @@ namespace SkeletonTracing.Helper {
       {JointType.FootRight      , JointName.AnkleRight      }
     };
 
-    Dictionary<JointName, JointType> jointNameJointTypeMap = new Dictionary<JointName, JointType>() {
+    public static Dictionary<JointName, JointType> JointNameJointTypeMap = new Dictionary<JointName, JointType>() {
       {JointName.HipCenter      , JointType.HipCenter       },
       {JointName.Spine          , JointType.Spine           },
       {JointName.ShoulderCenter , JointType.ShoulderCenter  },
@@ -89,8 +86,8 @@ namespace SkeletonTracing.Helper {
       {JointName.AnkleRight     , JointType.AnkleRight      }
     };
 
-    // maps a bone t its extremity joints
-    private Dictionary<BoneName, Tuple<JointName, JointName>> boneJointMap = new Dictionary<BoneName, Tuple<JointName, JointName>>() {
+    // maps a bone to its extremity joints
+    public static Dictionary<BoneName, Tuple<JointName, JointName>> BoneJointMap = new Dictionary<BoneName, Tuple<JointName, JointName>>() {
       {BoneName.BodyCenter    , new Tuple<JointName, JointName>(JointName.HipCenter, JointName.HipCenter)           },
       {BoneName.LowerSpine    , new Tuple<JointName, JointName>(JointName.HipCenter, JointName.Spine)               },
       {BoneName.UpperSpine    , new Tuple<JointName, JointName>(JointName.Spine, JointName.ShoulderCenter)          },
@@ -110,7 +107,7 @@ namespace SkeletonTracing.Helper {
     };
     
     
-    private Dictionary<Tuple<JointName, JointName>, BoneName> jointBoneMap = new Dictionary<Tuple<JointName, JointName>, BoneName>() {
+    public static Dictionary<Tuple<JointName, JointName>, BoneName> JointBoneMap = new Dictionary<Tuple<JointName, JointName>, BoneName>() {
       {new Tuple<JointName, JointName>(JointName.HipCenter, JointName.HipCenter)          , BoneName.BodyCenter     },
       {new Tuple<JointName, JointName>(JointName.HipCenter, JointName.Spine)              , BoneName.LowerSpine     },
       {new Tuple<JointName, JointName>(JointName.Spine, JointName.ShoulderCenter)         , BoneName.UpperSpine     },
@@ -129,6 +126,7 @@ namespace SkeletonTracing.Helper {
       {new Tuple<JointName, JointName>(JointName.KneeRight, JointName.AnkleRight)         , BoneName.TibiaRight     }
     };
 
+    /*
     public JointName GetJointName(JointType jointType) {
       if (!jointTypeJointNameMap.ContainsKey(jointType))
         throw new NotMappedException();
@@ -144,9 +142,10 @@ namespace SkeletonTracing.Helper {
     }
 
     public BoneName GetBoneName(Tuple<JointName, JointName> jointTuple) {
-      if (!jointBoneMap.ContainsKey(jointTuple))
+      if (!jointBoneMap.ContainsKey(jointTuple)) {
         throw new NotMappedException();
-      
+      }
+
       return jointBoneMap[jointTuple];
     }
 
@@ -160,6 +159,6 @@ namespace SkeletonTracing.Helper {
 
       return boneJointMap[boneName];
     }
-
+    */
   }
 }

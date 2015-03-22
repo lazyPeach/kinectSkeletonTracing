@@ -1,4 +1,5 @@
 ﻿using Microsoft.Kinect;
+using SkeletonTracing.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,27 @@ using System.Threading.Tasks;
 namespace SkeletonTracing.Model {
   public class JointSkeleton {
     public static int JOINTS_NR = 16;
-
     private Joint[] joints = new Joint[JOINTS_NR];
+    private Dictionary<JointName, int> indexMap = new Dictionary<JointName, int>() {
+      {JointName.HipCenter      , 0},
+      {JointName.Spine          , 1},
+      {JointName.ShoulderCenter , 2},
+      {JointName.Head           , 3},
+      {JointName.ShoulderLeft   , 4},
+      {JointName.ElbowLeft      , 5},
+      {JointName.WristLeft      , 6},
+      {JointName.ShoulderRight  , 7},
+      {JointName.ElbowRight     , 8},
+      {JointName.WristRight     , 9},
+      {JointName.HipLeft        , 10},
+      {JointName.KneeLeft       , 11},
+      {JointName.AnkleLeft      , 12},
+      {JointName.HipRight       , 13},
+      {JointName.KneeRight      , 14},
+      {JointName.AnkleRight     , 15}
+    };
 
     public Joint[] Joints { get { return joints; } set { joints = value; } }
-
-    private Dictionary<JointType, int> indexMap = new Dictionary<JointType, int>() {
-      {JointType.HipCenter, 0},
-      {JointType.Spine, 1},
-      {JointType.ShoulderCenter, 2},
-      {JointType.Head, 3},
-      {JointType.ShoulderLeft, 4},
-      {JointType.ElbowLeft, 5},
-      {JointType.WristLeft, 6},
-      {JointType.ShoulderRight, 7},
-      {JointType.ElbowRight, 8},
-      {JointType.WristRight, 9},
-      {JointType.HipLeft, 10},
-      {JointType.KneeLeft, 11},
-      {JointType.AnkleLeft, 12},
-      {JointType.HipRight, 13},
-      {JointType.KneeRight, 14},
-      {JointType.AnkleRight, 15}
-    };
 
     public JointSkeleton() {
       for (int i = 0; i < JOINTS_NR; i++) {
@@ -40,22 +39,24 @@ namespace SkeletonTracing.Model {
 
     public JointSkeleton(Skeleton skeleton) {
       foreach (JointType jointType in Enum.GetValues(typeof(JointType))) {
-        if (!indexMap.ContainsKey(jointType))
-          continue;
+        if (!Mapper.JointTypeJointNameMap.ContainsKey(jointType)) continue;
         
         SkeletonPoint pt = skeleton.Joints[jointType].Position;
-        Joint joint = new Joint(pt.X, pt.Y, pt.Z, jointType);
-        joints[indexMap[jointType]] = joint;
+        JointName jointName = Mapper.JointTypeJointNameMap[jointType];
+        Joint joint = new Joint(pt.X, pt.Y, pt.Z, jointName);
+        
+        joints[indexMap[jointName]] = joint;
       } 
     }
 
-    public Joint GetJoint(JointType type) {
-      if (!indexMap.ContainsKey(type))
-        return null;// new Joint(); // or null?
-
+    public Joint GetJoint(JointName type) {
       return joints[indexMap[type]];
     }
 
+    public Joint GetJoint(JointType type) {
+      if (!Mapper.JointTypeJointNameMap.ContainsKey(type)) return null;
 
+      return GetJoint(Mapper.JointTypeJointNameMap[type]);
+    }
   }
 }

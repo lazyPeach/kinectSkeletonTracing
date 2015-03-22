@@ -1,14 +1,6 @@
-﻿using Microsoft.Kinect;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace SkeletonTracing.Model {
@@ -16,12 +8,11 @@ namespace SkeletonTracing.Model {
 
   public class BodyManager {
     public event BodyManagerEventHandler BodyManagerEventHandl;
-    private KinectManager kinectManager;
     public KinectManager KinectManagerProp { get { return kinectManager; } set { kinectManager = value; } }
-    private Stopwatch stopwatch;
-
     public ObservableCollection<Body> BodyData { get; set; }
 
+    private KinectManager kinectManager;
+    private Stopwatch stopwatch;
 
     public BodyManager(KinectManager kinectManager) {
       this.kinectManager = kinectManager;
@@ -46,21 +37,38 @@ namespace SkeletonTracing.Model {
       textWriter.Close();
     }
 
-    public int count = 0;
-
-    public void PlayGesture() {
-      //foreach (Body body in BodyData) {
-      //  BodyManagerEventArgs ev = new BodyManagerEventArgs(body);
-      //  OnEvent(ev);
-      //  Thread.Sleep(30);
-      //}
-    }
-
     public void LoadCollection(Stream file) {
       XmlSerializer deserializer = new XmlSerializer(typeof(ObservableCollection<Body>));
       TextReader textReader = new StreamReader(file);
       BodyData = (ObservableCollection<Body>)deserializer.Deserialize(textReader);
       textReader.Close();
+    }
+
+    public void ClearBodyData() {
+      BodyData.Clear();
+    }
+
+    private int bodyIndex = 0;
+    private System.Timers.Timer t;
+
+    public void PlayGesture() {
+      bodyIndex = 0;
+      t = new System.Timers.Timer { Interval = 30 };
+      t.Elapsed += DelayTimerElapsed;
+      t.Start();
+    }
+
+    private void DelayTimerElapsed(object sender, System.Timers.ElapsedEventArgs e) {
+      if (bodyIndex == BodyData.Count) {
+        t.Enabled = false;
+        t.Stop();
+        return;
+      }
+      
+      Body body = BodyData[bodyIndex];
+      BodyManagerEventArgs ev = new BodyManagerEventArgs(body);
+      OnEvent(ev);
+      bodyIndex++;
     }
 
     private void KinectManagerEventHandler(object sender, KinectManagerEventArgs e) {
