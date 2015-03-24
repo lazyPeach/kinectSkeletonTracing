@@ -125,40 +125,5 @@ namespace SkeletonTracing.Helper {
       {new Tuple<JointName, JointName>(JointName.HipRight, JointName.KneeRight)           , BoneName.FemurusRight   },
       {new Tuple<JointName, JointName>(JointName.KneeRight, JointName.AnkleRight)         , BoneName.TibiaRight     }
     };
-
-    /*
-    public JointName GetJointName(JointType jointType) {
-      if (!jointTypeJointNameMap.ContainsKey(jointType))
-        throw new NotMappedException();
-
-      return jointTypeJointNameMap[jointType];
-    }
-
-    public JointType GetJointType(JointName jointName) {
-      if (!jointNameJointTypeMap.ContainsKey(jointName))
-        throw new NotMappedException();
-
-      return jointNameJointTypeMap[jointName];
-    }
-
-    public BoneName GetBoneName(Tuple<JointName, JointName> jointTuple) {
-      if (!jointBoneMap.ContainsKey(jointTuple)) {
-        throw new NotMappedException();
-      }
-
-      return jointBoneMap[jointTuple];
-    }
-
-    public BoneName GetBoneName(JointName startJoint, JointName endJoint) {
-      return GetBoneName(new Tuple<JointName, JointName>(startJoint, endJoint));
-    }
-
-    public Tuple<JointName, JointName> GetBoneExtremities(BoneName boneName) {
-      if (!boneJointMap.ContainsKey(boneName))
-        throw new NotMappedException();
-
-      return boneJointMap[boneName];
-    }
-    */
   }
 }

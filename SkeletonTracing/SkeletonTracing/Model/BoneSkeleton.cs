@@ -63,17 +63,5 @@ namespace SkeletonTracing.Model {
 
       return bones[indexMap[type]];
     }
-
-    /*
-    public Bone GetBone(JointName startJoint, JointName endJoint) {
-      Mapper mapper = new Mapper();
-      //return bones[indexMap[mapper.GetBoneName(startJoint, endJoint)]];
-    }
-
-    public Bone GetBone(JointType startJoint, JointType endJoint) {
-      Mapper mapper = new Mapper();
-      //return GetBone(mapper.GetJointName(startJoint), mapper.GetJointName(endJoint));
-    }
-     */
   }
 }

@@ -73,19 +73,5 @@ namespace SkeletonTracing {
       Canvas.SetTop(point, y - point.Height / 2);
       canvas.Children.Add(point);
     }
-
-    /*
-    private void DrawLine(double x1, double y1, double x2, double y2) {
-      Line line = new Line {
-        X1 = x1,
-        Y1 = y1,
-        X2 = x2,
-        Y2 = y2,
-        StrokeThickness = 2,
-        Stroke = new SolidColorBrush(Colors.GreenYellow)
-      };
-      templateCanvas.Children.Add(line);
-    }
-     */ 
   }
 }
