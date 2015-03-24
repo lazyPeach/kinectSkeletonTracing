@@ -78,6 +78,9 @@
     <Compile Include="View\DTWMain.xaml.cs">
       <DependentUpon>DTWMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DTWPlot.xaml.cs">
+      <DependentUpon>DTWPlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DTWMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DTWPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

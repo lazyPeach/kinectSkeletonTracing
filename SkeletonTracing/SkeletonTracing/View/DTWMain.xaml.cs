@@ -9,8 +9,16 @@ namespace SkeletonTracing.View {
     private KinectManager kinect;
     private BodyManager bodyManager;
 
-    public KinectManager Kinect { set { kinect = value; } }
-    public BodyManager BodyManager { set { 
+    public KinectManager Kinect {
+      get { return kinect; }
+      set { kinect = value; } 
+    }
+    public BodyManager BodyManager {
+      get {
+        return bodyManager;
+      }
+
+      set { 
         bodyManager = value;
         skeletonCanvas.BodyManager = bodyManager;
       }

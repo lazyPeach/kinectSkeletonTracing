@@ -10,22 +10,8 @@
       <MenuItem Name="GraphicsDTWMenu" Header="DTW_Graphic" Click="GraphicsDTWMenu_Click"/>
     </Menu>
     
-    <View:DTWMain x:Name="mainDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980"/>
-    <View:DTWGraphic x:Name="graphicDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Hidden"/>
-
-    <!--
-
-    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click" Height="20"/>
-    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click" Height="20"/>
-    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click" Height="20"/>
-    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="35,225,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
-    <Button Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="216,220,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="PlayGestureBtn_Click"/>
-    <Button Name="ClearDataBtn" Content="Clear data" HorizontalAlignment="Left" Margin="192,110,0,0" VerticalAlignment="Top" Width="75" Click="ClearDataBtn_Click" Height="20"/>
-    <Button Name="LoadSampleBtn" Content="Load sample" HorizontalAlignment="Left" Margin="112,178,0,0" VerticalAlignment="Top" Width="95" Click="LoadSampleBtn_Click" Height="20"/>
-    <Button Name="DTWBtn" Content="Compute DTW" HorizontalAlignment="Left" Margin="98,270,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="DTWBtn_Click"/>
-
-    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="408,34,0,0" VerticalAlignment="Top" Height="500" Width="500"/>
--->
+    <View:DTWMain x:Name="mainDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Hidden"/>
+    <View:DTWGraphic x:Name="graphicDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Visible"/>
 
   </Grid>
 </Window>

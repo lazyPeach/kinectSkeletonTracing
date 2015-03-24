@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace SkeletonTracing.DTW {
   struct DTWResult {
-    public int result;
     public int type; // 0 - normal, 1 - slow, 2 - fast;
   }
   
