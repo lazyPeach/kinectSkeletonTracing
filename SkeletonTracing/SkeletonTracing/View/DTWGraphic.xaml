@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="540" d:DesignWidth="980">
-    <Grid Background="Cyan">
-            
-    </Grid>
+  <Grid Background="Cyan">
+    <ScrollViewer HorizontalAlignment="Left" Height="540" VerticalAlignment="Top" Width="980"/>
+
+  </Grid>
 </UserControl>

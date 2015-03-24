@@ -3,21 +3,23 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using System.Linq;
+using SkeletonTracing.Events;
+using System;
 
 namespace SkeletonTracing.Model {
-  public delegate void BodyManagerEventHandler(object sender, BodyManagerEventArgs e);
+  public delegate void BodyManagerRealTimeEventHandler(object sender, BodyManagerRealTimeEventArgs e);
+  public delegate void BodyManagerPlayEventHandler(object sender, BodyManagerPlayEventArgs e);
 
   public class BodyManager {
-    public event BodyManagerEventHandler BodyManagerEventHandl;
-    public KinectManager KinectManagerProp { get { return kinectManager; } set { kinectManager = value; } }
+    private KinectManager kinectManager;
     private ObservableCollection<Body> bodyData;
     private ObservableCollection<Body> sampleData;
 
     public Body[] BodyData { get { return bodyData.ToArray<Body>(); } }
     public Body[] SampleData { get { return sampleData.ToArray<Body>(); } }
 
-    private KinectManager kinectManager;
-    private Stopwatch stopwatch;
+    public event BodyManagerRealTimeEventHandler RealTimeEventHandler;
+    public event BodyManagerPlayEventHandler PlayEventHandler;
 
     public BodyManager(KinectManager kinectManager) {
       this.kinectManager = kinectManager;
@@ -25,15 +27,6 @@ namespace SkeletonTracing.Model {
 
       bodyData = new ObservableCollection<Body>();
       sampleData = new ObservableCollection<Body>();
-      stopwatch = new Stopwatch();
-    }
-
-    public void Start() {
-      stopwatch.Start();
-    }
-
-    public void Stop() {
-      stopwatch.Stop();
     }
 
     public void SaveCollection(Stream file) {
@@ -62,39 +55,45 @@ namespace SkeletonTracing.Model {
       sampleData.Clear();
     }
 
-    private int bodyIndex = 0;
-    private System.Timers.Timer t;
+    private int bodyIndex;
+    private System.Timers.Timer timer;
 
     public void PlayGesture() {
       bodyIndex = 0;
-      t = new System.Timers.Timer { Interval = 30 };
-      t.Elapsed += DelayTimerElapsed;
-      t.Start();
+      timer = new System.Timers.Timer { Interval = 30 };
+      timer.Elapsed += DelayTimerElapsed; // call this method every time the interval elapsed
+      timer.Start();
     }
 
     private void DelayTimerElapsed(object sender, System.Timers.ElapsedEventArgs e) {
-      if (bodyIndex == bodyData.Count) {
-        t.Enabled = false;
-        t.Stop();
+      if (bodyIndex == Math.Max(bodyData.Count, sampleData.Count)) { // stop the simulation when the biggest nr of samples was reached
+        timer.Stop();
         return;
       }
-      
-      Body body = bodyData[bodyIndex];
-      BodyManagerEventArgs ev = new BodyManagerEventArgs(body);
-      OnEvent(ev);
+
+      Body template = (bodyIndex < bodyData.Count) ? bodyData[bodyIndex] : bodyData[bodyData.Count - 1];
+      Body sample = (bodyIndex < sampleData.Count) ? sampleData[bodyIndex] : sampleData[sampleData.Count - 1];
+      BodyManagerPlayEventArgs ev = new BodyManagerPlayEventArgs(template, sample);
+      OnPlayEvent(ev);
       bodyIndex++;
     }
 
     private void KinectManagerEventHandler(object sender, KinectManagerEventArgs e) {
       Body body = new Body(e.Skeleton);
-      BodyManagerEventArgs ev = new BodyManagerEventArgs(body);
-      OnEvent(ev);
+      BodyManagerRealTimeEventArgs ev = new BodyManagerRealTimeEventArgs(body);
+      OnRealTimeEvent(ev);
       bodyData.Add(body);
     }
 
-    protected virtual void OnEvent(BodyManagerEventArgs e) {
-      if (BodyManagerEventHandl != null) {
-        BodyManagerEventHandl(this, e);
+    protected virtual void OnRealTimeEvent(BodyManagerRealTimeEventArgs e) {
+      if (RealTimeEventHandler != null) {
+        RealTimeEventHandler(this, e);
+      }
+    }
+
+    protected virtual void OnPlayEvent(BodyManagerPlayEventArgs e) {
+      if (PlayEventHandler != null) {
+        PlayEventHandler(this, e);
       }
     }
   }

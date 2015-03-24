@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SkeletonTracing.Model {
-  public class BodyManagerEventArgs : EventArgs {
+  public class BodyManagerRealTimeEventArgs : EventArgs {
     private Body body;
     
-    public BodyManagerEventArgs(Body body) {
+    public BodyManagerRealTimeEventArgs(Body body) {
       this.body = body;
     }
 
