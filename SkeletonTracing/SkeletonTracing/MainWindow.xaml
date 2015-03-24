@@ -1,21 +1,31 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:SkeletonTracing" x:Class="SkeletonTracing.MainWindow"
+        xmlns:local="clr-namespace:SkeletonTracing" xmlns:View="clr-namespace:SkeletonTracing.View" x:Class="SkeletonTracing.MainWindow"
         Title="MainWindow" Height="600" Width="1000">
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="649*"/>
-      <ColumnDefinition Width="343*"/>
-    </Grid.ColumnDefinitions>
 
-    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click" Height="20"/>
-    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Height="500" Width="500"/>
-    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click" Height="20"/>
-    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="210,11,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click" Height="20"/>
-    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="310,11,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
-    <Button Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="410,11,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="PlayGestureBtn_Click"/>
-    <Button Name="ClearDataBtn" Content="Clear data" HorizontalAlignment="Left" Margin="490,11,0,0" VerticalAlignment="Top" Width="75" Click="ClearDataBtn_Click"/>
+  <Grid>
+    <Menu HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="992" Grid.ColumnSpan="2">
+      <MenuItem Name="MainDTWMenu" Header="DTW_Main" Click="MainDTWMenu_Click"/>
+      <MenuItem Name="GraphicsDTWMenu" Header="DTW_Graphic" Click="GraphicsDTWMenu_Click"/>
+    </Menu>
+    
+    <View:DTWMain x:Name="mainDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980"/>
+    <View:DTWGraphic x:Name="graphicDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Hidden"/>
+
+    <!--
+
+    <Button Name="StartRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="95" Click="StartRecordingBtn_Click" Height="20"/>
+    <Button Name="StopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="95" Click="StopRecordingBtn_Click" Height="20"/>
+    <Button Name="SaveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="95" Click="SaveGestureBtn_Click" Height="20"/>
+    <Button Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="35,225,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
+    <Button Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="216,220,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="PlayGestureBtn_Click"/>
+    <Button Name="ClearDataBtn" Content="Clear data" HorizontalAlignment="Left" Margin="192,110,0,0" VerticalAlignment="Top" Width="75" Click="ClearDataBtn_Click" Height="20"/>
+    <Button Name="LoadSampleBtn" Content="Load sample" HorizontalAlignment="Left" Margin="112,178,0,0" VerticalAlignment="Top" Width="95" Click="LoadSampleBtn_Click" Height="20"/>
+    <Button Name="DTWBtn" Content="Compute DTW" HorizontalAlignment="Left" Margin="98,270,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="DTWBtn_Click"/>
+
+    <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="408,34,0,0" VerticalAlignment="Top" Height="500" Width="500"/>
+-->
 
   </Grid>
 </Window>

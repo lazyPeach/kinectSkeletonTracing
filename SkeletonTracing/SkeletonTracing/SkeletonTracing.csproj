@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DTW\Computation.cs" />
     <Compile Include="Helper\Mapper.cs" />
     <Compile Include="Helper\NotMappedException.cs" />
     <Compile Include="Model\Body.cs" />
@@ -70,6 +71,12 @@
     <Compile Include="Business\KinectManager.cs" />
     <Compile Include="Events\KinectManagerEventArgs.cs" />
     <Compile Include="Business\BodyManager.cs" />
+    <Compile Include="View\DTWGraphic.xaml.cs">
+      <DependentUpon>DTWGraphic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DTWMain.xaml.cs">
+      <DependentUpon>DTWMain.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
@@ -85,6 +92,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\DTWGraphic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DTWMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SkeletonCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

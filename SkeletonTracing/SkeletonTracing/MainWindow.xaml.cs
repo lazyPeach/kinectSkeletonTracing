@@ -1,4 +1,5 @@
 ﻿using Microsoft.Kinect;
+using SkeletonTracing.DTW;
 using SkeletonTracing.Model;
 using System;
 using System.Collections.Generic;
@@ -28,40 +29,20 @@ namespace SkeletonTracing {
       
       kinect = new KinectManager();
       bodyManager = new BodyManager(kinect);
-      skeletonCanvas.BodyManager = bodyManager;
+
+      mainDTW.Kinect = kinect;
+      mainDTW.BodyManager = bodyManager;
     }
 
-    private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      kinect.Start();
+    private void MainDTWMenu_Click(object sender, RoutedEventArgs e) {
+      mainDTW.Visibility = System.Windows.Visibility.Visible;
+      graphicDTW.Visibility = System.Windows.Visibility.Hidden;
     }
 
-    private void StopRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      kinect.Stop();
+    private void GraphicsDTWMenu_Click(object sender, RoutedEventArgs e) {
+      mainDTW.Visibility = System.Windows.Visibility.Hidden;
+      graphicDTW.Visibility = System.Windows.Visibility.Visible;
     }
 
-    private void SaveGestureBtn_Click(object sender, RoutedEventArgs e) {
-      SaveFileDialog saveFileDialog = new SaveFileDialog();
-      saveFileDialog.Filter = "XML file|*.xml";
-      saveFileDialog.ShowDialog();
-
-      bodyManager.SaveCollection(saveFileDialog.OpenFile());
-    }
-
-    private void LoadGestureBtn_Click(object sender, RoutedEventArgs e) {
-      OpenFileDialog openFileDialog = new OpenFileDialog();
-      openFileDialog.Filter = "XML file|*.xml";
-      openFileDialog.ShowDialog();
-
-      bodyManager.LoadCollection(openFileDialog.OpenFile());
-    }
-
-    private void PlayGestureBtn_Click(object sender, RoutedEventArgs e) {
-      bodyManager.PlayGesture();
-      
-    }
-
-    private void ClearDataBtn_Click(object sender, RoutedEventArgs e) {
-      bodyManager.ClearBodyData();
-    }
   }
 }
