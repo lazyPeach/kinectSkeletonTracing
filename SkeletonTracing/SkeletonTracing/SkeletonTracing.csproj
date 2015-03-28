@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DTW\Computation.cs" />
+    <Compile Include="DTW\DTWResult.cs" />
     <Compile Include="Events\BodyManagerPlayEventArgs.cs" />
     <Compile Include="Helper\Mapper.cs" />
     <Compile Include="Helper\NotMappedException.cs" />

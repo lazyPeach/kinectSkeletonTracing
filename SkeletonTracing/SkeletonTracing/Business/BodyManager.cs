@@ -10,7 +10,7 @@ namespace SkeletonTracing.Model {
   public delegate void BodyManagerPlayEventHandler(object sender, BodyManagerPlayEventArgs e);
 
   public class BodyManager {
-    private KinectManager kinectManager;
+    //private KinectManager kinectManager;
     private ObservableCollection<Body> bodyData;
     private ObservableCollection<Body> sampleData;
 
@@ -21,8 +21,8 @@ namespace SkeletonTracing.Model {
     public event BodyManagerPlayEventHandler PlayEventHandler;
 
     public BodyManager(KinectManager kinectManager) {
-      this.kinectManager = kinectManager;
-      kinectManager.KinectManagerEventHandl += KinectManagerEventHandler;
+      //this.kinectManager = kinectManager;
+      //kinectManager.KinectManagerEventHandl += KinectManagerEventHandler;
 
       bodyData = new ObservableCollection<Body>();
       sampleData = new ObservableCollection<Body>();

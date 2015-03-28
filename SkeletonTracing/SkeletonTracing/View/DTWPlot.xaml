@@ -24,9 +24,22 @@
     <Label Content="Y" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center"/>
     <Label Content="Z" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center"/>
     <Label Content="Res" HorizontalAlignment="Center" Grid.Column="3" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
-    <Canvas Name="wCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="1" VerticalAlignment="Center" Width="380" Background="Black"/>
-    <Canvas Name="xCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="2" VerticalAlignment="Center" Width="380" Background="Black"/>
-    <Canvas Name="yCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="3" VerticalAlignment="Center" Width="380" Background="Black"/>
-    <Canvas Name="zCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="4" VerticalAlignment="Center" Width="380" Background="Black"/>
+    <Canvas Name="wCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="1" VerticalAlignment="Center" Width="380" Background="Black">
+      <Line X1="0" Y1="40" X2="380" Y2="40" Stroke="LightBlue" StrokeThickness="0.1" />
+    </Canvas>
+    <Canvas Name="xCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="2" VerticalAlignment="Center" Width="380" Background="Black">
+      <Line X1="0" Y1="40" X2="380" Y2="40" Stroke="LightBlue" StrokeThickness="0.1" />
+    </Canvas>
+    <Canvas Name="yCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="3" VerticalAlignment="Center" Width="380" Background="Black">
+      <Line X1="0" Y1="40" X2="380" Y2="40" Stroke="LightBlue" StrokeThickness="0.1" />
+    </Canvas>
+    <Canvas Name="zCanvas" Grid.Column="1" HorizontalAlignment="Center" Height="80" Grid.Row="4" VerticalAlignment="Center" Width="380" Background="Black">
+      <Line X1="0" Y1="40" X2="380" Y2="40" Stroke="LightBlue" StrokeThickness="0.1" />
+    </Canvas>
+    <Label Name="wResultLbl" Content="" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center"/>
+    <Label Name="xResultLbl" Content="" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center"/>
+    <Label Name="yResultLbl" Content="" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center"/>
+    <Label Name="zResultLbl" Content="" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center"/>
+
   </Grid>
 </UserControl>

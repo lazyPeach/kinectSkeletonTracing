@@ -1,19 +1,26 @@
-﻿using SkeletonTracing.Model;
+﻿using SkeletonTracing.DTW;
+using SkeletonTracing.Model;
 using System.Windows;
 
 namespace SkeletonTracing {
   public partial class MainWindow : Window {
-    private KinectManager kinect;
+    //private KinectManager kinect;
     private BodyManager bodyManager;
+    private Computation computation;
 
     public MainWindow() {
       InitializeComponent();
       
-      kinect = new KinectManager();
-      bodyManager = new BodyManager(kinect);
+      //kinect = new KinectManager();
+      bodyManager = new BodyManager(/*kinect*/ null);
+      computation = new Computation();
 
-      mainDTW.Kinect = kinect;
+      //mainDTW.Kinect = kinect;
       mainDTW.BodyManager = bodyManager;
+      mainDTW.Computation = computation;
+
+      graphicDTW.BodyManager = bodyManager;
+      graphicDTW.Computation = computation;
     }
 
     private void MainDTWMenu_Click(object sender, RoutedEventArgs e) {
@@ -24,6 +31,9 @@ namespace SkeletonTracing {
     private void GraphicsDTWMenu_Click(object sender, RoutedEventArgs e) {
       mainDTW.Visibility = System.Windows.Visibility.Hidden;
       graphicDTW.Visibility = System.Windows.Visibility.Visible;
+      graphicDTW.Clear();
+      graphicDTW.UpdateResults();
+      graphicDTW.Plot();
     }
 
   }
