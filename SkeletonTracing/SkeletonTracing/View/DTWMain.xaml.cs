@@ -75,11 +75,7 @@ namespace SkeletonTracing.View {
     }
 
     private void SequentialDTWBtn_Click(object sender, RoutedEventArgs e) {
-      Body[] normalizedTemplate;
-      Body[] normalizedSample;
-      computation.NormalizeArraysOfBones(bodyManager.BodyData, bodyManager.SampleData,out normalizedTemplate,out normalizedSample);
-      
-      float cost = computation.ComputeDTW(normalizedTemplate, normalizedSample); // not computation holds the result and can be called from DTWGraphic
+      float cost = computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
     }
 
     private void ParallelDTWBtn_Click(object sender, RoutedEventArgs e) {

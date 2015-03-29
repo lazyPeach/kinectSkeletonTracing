@@ -2,12 +2,13 @@
 using SkeletonTracing.Helper;
 using SkeletonTracing.Model;
 using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace SkeletonTracing.View {
   public partial class DTWGraphic : UserControl {
     private BodyManager bodyManager;
-    private Body[] template, sample;
     private Computation computation;
 
     public BodyManager BodyManager { get { return bodyManager; } set { bodyManager = value; } }
@@ -16,48 +17,58 @@ namespace SkeletonTracing.View {
     public DTWGraphic() {
       InitializeComponent();
 
-      bodyCenterPlot.BoneName = "Body Center";
-      neckPlot.BoneName = "Neck";
-      upperSpinePlot.BoneName = "Upper Spine";
-      lowerSpinePlot.BoneName = "Lower Spine";
-      clavicleLeftPlot.BoneName = "Left Clavicle";
-      clavicleRightPlot.BoneName = "Right Clavicle";
-      armLeftPlot.BoneName = "Left arm";
-      armRightPlot.BoneName = "Right arm";
-      forearmLeftPlot.BoneName = "Left forearm";
-      forearmRightPlot.BoneName = "Right forearm";
-      hipLeftPlot.BoneName = "Left hip";
-      hipRightPlot.BoneName = "Right hip";
-      femurusLeftPlot.BoneName = "Left femurus";
-      femurusRightPlot.BoneName = "Right femurus";
-      tibiaLeftPlot.BoneName = "Left tibia";
-      tibiaRightPlot.BoneName = "Right tibia";
+      boneCombo.ItemsSource = Enum.GetValues(typeof(BoneName));
+      string[] boneComponents = { "W", "X", "Y", "Z" };
+      boneComponentCombo.ItemsSource = boneComponents;
+
+      //List<string> bones = new List<string>();
+      //foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+      //  bones.Add(boneName.ToString());
+      //}
+
+      //boneCombo.ItemsSource = bones;
+      //bodyCenterPlot.BoneName = "Body Center";
+      //neckPlot.BoneName = "Neck";
+      //upperSpinePlot.BoneName = "Upper Spine";
+      //lowerSpinePlot.BoneName = "Lower Spine";
+      //clavicleLeftPlot.BoneName = "Left Clavicle";
+      //clavicleRightPlot.BoneName = "Right Clavicle";
+      //armLeftPlot.BoneName = "Left arm";
+      //armRightPlot.BoneName = "Right arm";
+      //forearmLeftPlot.BoneName = "Left forearm";
+      //forearmRightPlot.BoneName = "Right forearm";
+      //hipLeftPlot.BoneName = "Left hip";
+      //hipRightPlot.BoneName = "Right hip";
+      //femurusLeftPlot.BoneName = "Left femurus";
+      //femurusRightPlot.BoneName = "Right femurus";
+      //tibiaLeftPlot.BoneName = "Left tibia";
+      //tibiaRightPlot.BoneName = "Right tibia";
     }
 
     public void UpdateResults() {
-      bodyCenterPlot.UpdateResult(computation.Result.Cost[0]);
-      lowerSpinePlot.UpdateResult(computation.Result.Cost[1]);
-      upperSpinePlot.UpdateResult(computation.Result.Cost[2]);
-      neckPlot.UpdateResult(computation.Result.Cost[3]);
+      //bodyCenterPlot.UpdateResult(computation.Result.Cost[0]);
+      //lowerSpinePlot.UpdateResult(computation.Result.Cost[1]);
+      //upperSpinePlot.UpdateResult(computation.Result.Cost[2]);
+      //neckPlot.UpdateResult(computation.Result.Cost[3]);
 
-      clavicleLeftPlot.UpdateResult(computation.Result.Cost[4]);
-      armLeftPlot.UpdateResult(computation.Result.Cost[5]);
-      forearmLeftPlot.UpdateResult(computation.Result.Cost[6]);
+      //clavicleLeftPlot.UpdateResult(computation.Result.Cost[4]);
+      //armLeftPlot.UpdateResult(computation.Result.Cost[5]);
+      //forearmLeftPlot.UpdateResult(computation.Result.Cost[6]);
 
-      clavicleRightPlot.UpdateResult(computation.Result.Cost[7]);
-      armRightPlot.UpdateResult(computation.Result.Cost[8]);
-      forearmRightPlot.UpdateResult(computation.Result.Cost[9]);
+      //clavicleRightPlot.UpdateResult(computation.Result.Cost[7]);
+      //armRightPlot.UpdateResult(computation.Result.Cost[8]);
+      //forearmRightPlot.UpdateResult(computation.Result.Cost[9]);
 
-      hipLeftPlot.UpdateResult(computation.Result.Cost[10]);
-      femurusLeftPlot.UpdateResult(computation.Result.Cost[11]);
-      tibiaLeftPlot.UpdateResult(computation.Result.Cost[12]);
+      //hipLeftPlot.UpdateResult(computation.Result.Cost[10]);
+      //femurusLeftPlot.UpdateResult(computation.Result.Cost[11]);
+      //tibiaLeftPlot.UpdateResult(computation.Result.Cost[12]);
 
-      hipRightPlot.UpdateResult(computation.Result.Cost[13]);
-      femurusRightPlot.UpdateResult(computation.Result.Cost[14]);
-      tibiaRightPlot.UpdateResult(computation.Result.Cost[15]);
+      //hipRightPlot.UpdateResult(computation.Result.Cost[13]);
+      //femurusRightPlot.UpdateResult(computation.Result.Cost[14]);
+      //tibiaRightPlot.UpdateResult(computation.Result.Cost[15]);
 
     }
-
+    /*
     public void Clear() {
       bodyCenterPlot.Clear();
       lowerSpinePlot.Clear();
@@ -185,6 +196,37 @@ namespace SkeletonTracing.View {
           break;
       }
 
+    }
+    */
+
+    private void BoneCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      
+    }
+
+    private void componentName_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      BoneName boneName = (BoneName)boneCombo.SelectedItem;
+      int selectedIndex = boneComponentCombo.SelectedIndex;
+
+      if (computation.Result != null) {
+
+        float[] templateSignal = computation.Result.Data[Mapper.indexMap[boneName]].TemplateSignal[selectedIndex];
+        float[] sampleSignal = computation.Result.Data[Mapper.indexMap[boneName]].SampleSignal[selectedIndex];
+        float[][] matrix = computation.Result.Data[Mapper.indexMap[boneName]].Matrix[selectedIndex];
+
+        signalPlot.Update(templateSignal, sampleSignal);
+        matrixPlot.Update(matrix, templateSignal, sampleSignal);
+      }
+    }
+
+    private void showSignalsBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+      signalPlot.Visibility = System.Windows.Visibility.Visible;
+      matrixPlot.Visibility = System.Windows.Visibility.Collapsed;
+      
+    }
+
+    private void showMatrixBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+      matrixPlot.Visibility = System.Windows.Visibility.Visible;
+      signalPlot.Visibility = System.Windows.Visibility.Collapsed;
     }
   }
 }

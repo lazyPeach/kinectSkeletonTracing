@@ -8,9 +8,127 @@ using System.Threading.Tasks;
 
 namespace SkeletonTracing.DTW {
   public class Computation {
-    private DTWResult result = new DTWResult();
+    private DTWResult result;
+
+    public float ComputeDTW(Body[] template, Body[] sample, bool parallel = false) {
+      return parallel ?
+        ComputeParallelDTW(template, sample) :
+        ComputeSequentialDTW(template, sample);
+    }
 
     public DTWResult Result { get { return result; } set { result = value; } }
+
+
+    private float ComputeSequentialDTW(Body[] template, Body[] sample) {
+      result = new DTWResult(template.Length, sample.Length);
+      
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        // set the bone name for the data in result
+        result.Data[indexMap[boneName]].BoneName = boneName;
+
+        ComputeDTWMatrix(template, sample, boneName);
+        ComputeDTWCost(boneName, template.Length, sample.Length);
+        //float[,] wMatrix = GetCostMatrix(); 
+
+        //result.Data[indexMap[boneName]].Cost[0] = GetDTWCost(WMatrix, template.Length, sample.Length);
+        //result.Cost[indexMap[boneName]] = new float[4];
+        /*
+        result.Cost[indexMap[boneName]][0] = GetDTWCost(WMatrix, template.Length, sample.Length);
+        result.Cost[indexMap[boneName]][1] = GetDTWCost(XMatrix, template.Length, sample.Length);
+        result.Cost[indexMap[boneName]][2] = GetDTWCost(YMatrix, template.Length, sample.Length);
+        result.Cost[indexMap[boneName]][3] = GetDTWCost(ZMatrix, template.Length, sample.Length);
+        */
+      }
+
+      return 0;
+    }
+
+    // put infinity on row 0 and column 0 for easier computation of dtw path
+    private void InitMatrix(ref float[,] Wmatrix, ref float[,] Xmatrix, ref float[,] Ymatrix, ref float[,] Zmatrix, int iLimit, int jLimit) {
+      for (int i = 0; i < iLimit + 1; i++) {
+        Wmatrix[i, 0] = 1F / 0F;
+        Xmatrix[i, 0] = 1F / 0F;
+        Ymatrix[i, 0] = 1F / 0F;
+        Zmatrix[i, 0] = 1F / 0F;
+      }
+
+      for (int j = 0; j < jLimit + 1; j++) {
+        Wmatrix[0, j] = 1F / 0F;
+        Xmatrix[0, j] = 1F / 0F;
+        Ymatrix[0, j] = 1F / 0F;
+        Zmatrix[0, j] = 1F / 0F;
+      }
+    }
+
+    private void ComputeDTWMatrix(Body[] template, Body[] sample, BoneName boneName) {
+      for (int i = 0; i < template.Length; i++) {
+        for (int j = 0; j < sample.Length; j++) {
+          
+          result.Data[indexMap[boneName]].TemplateSignal[0][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          result.Data[indexMap[boneName]].TemplateSignal[1][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          result.Data[indexMap[boneName]].TemplateSignal[2][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          result.Data[indexMap[boneName]].TemplateSignal[3][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          result.Data[indexMap[boneName]].SampleSignal[0][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          result.Data[indexMap[boneName]].SampleSignal[1][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          result.Data[indexMap[boneName]].SampleSignal[2][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          result.Data[indexMap[boneName]].SampleSignal[3][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          //// actually compute the matrix
+          float templW = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          float samplW = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W;
+
+          float templX = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          float samplX = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X;
+
+          float templY = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          float samplY = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+
+          float templZ = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+          float samplZ = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          result.Data[indexMap[boneName]].Matrix[0][i][j] = Math.Abs(templW - samplW);
+          result.Data[indexMap[boneName]].Matrix[1][i][j] = Math.Abs(templX - samplX);
+          result.Data[indexMap[boneName]].Matrix[2][i][j] = Math.Abs(templY - samplY);
+          result.Data[indexMap[boneName]].Matrix[3][i][j] = Math.Abs(templZ - samplZ);
+        }
+      }
+    }
+
+    private void ComputeDTWCost(BoneName boneName, int iLimit, int jLimit) {
+      //float[,] wMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix, iLimit, jLimit);
+    }
+
+    //create a copy of the matrix
+    private float[,] GetCostMatrix(Quaternion[][] matrix, int iLimit, int jLimit) {
+      return null;
+    }
+
+    private float GetDTWCost(float[,] mat, int i, int j) {
+      if (i == 0 && j == 0)
+        return 0;
+
+      int minI, minJ;
+      if (mat[i - 1, j] < mat[i - 1, j - 1] && mat[i - 1, j] < mat[i, j - 1]) {
+        minI = i - 1;
+        minJ = j;
+      } else if (mat[i, j - 1] < mat[i - 1, j - 1] && mat[i, j - 1] < mat[i - 1, j]) {
+        minI = i;
+        minJ = j - 1;
+      } else {
+        minI = i - 1;
+        minJ = j - 1;
+      }
+
+      float cost = mat[i, j] + GetDTWCost(mat, minI, minJ);
+
+      return cost;
+    }
+
+
+
+
+
 
     // Each quaternion is considered to be the value of a signal at a specific moment.
     // Get the maximum value for both template and sample and normalize both with the same value.
@@ -74,11 +192,7 @@ namespace SkeletonTracing.DTW {
       }
     }
 
-    public float ComputeDTW(Body[] template, Body[] sample, bool parallel = false) {
-      return parallel ? 
-        ComputeParallelDTW(template, sample) :
-        ComputeSequentialDTW(template, sample);
-    }
+    
 
     private float ComputeParallelDTW(Body[] template, Body[] sample) {
       return 0;
@@ -102,106 +216,5 @@ namespace SkeletonTracing.DTW {
       {BoneName.FemurusRight  , 14},
       {BoneName.TibiaRight    , 15},
     };
-
-    private float ComputeSequentialDTW(Body[] template, Body[] sample) {
-      double ratio = (double)template.Length / (double)sample.Length;
-
-      //if (ratio < 0.5) result.type = 1;
-      //else if (ratio > 2) result.type = 2;
-      //else result.type = 0;
-
-      // pt fiecare bone calculeaza un DTW care va fi afisat la final
-      float[,] WMatrix = new float[template.Length + 1, sample.Length + 1];
-      float[,] XMatrix = new float[template.Length + 1, sample.Length + 1];
-      float[,] YMatrix = new float[template.Length + 1, sample.Length + 1];
-      float[,] ZMatrix = new float[template.Length + 1, sample.Length + 1];
-
-      InitMatrix(ref WMatrix, ref XMatrix, ref YMatrix, ref ZMatrix, template.Length, sample.Length);
-
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        ComputeDTWMatrix(template, sample, boneName, ref WMatrix, ref XMatrix, ref YMatrix, ref ZMatrix);
-        result.Cost[indexMap[boneName]] = new float[4];
-
-        result.Cost[indexMap[boneName]][0] = GetDTWCost(WMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][1] = GetDTWCost(XMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][2] = GetDTWCost(YMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][3] = GetDTWCost(ZMatrix, template.Length, sample.Length);
-      }
-
-      return 0;
-    }
-
-    private void InitMatrix(ref float[,] Wmatrix, ref float[,] Xmatrix, ref float[,] Ymatrix, ref float[,] Zmatrix, int iLimit, int jLimit) {
-      for (int i = 0; i < iLimit + 1; i++) {
-        Wmatrix[i, 0] = 1F / 0F;
-        Xmatrix[i, 0] = 1F / 0F;
-        Ymatrix[i, 0] = 1F / 0F;
-        Zmatrix[i, 0] = 1F / 0F;
-      }
-
-      for (int j = 0; j < jLimit + 1; j++) {
-        Wmatrix[0, j] = 1F / 0F;
-        Xmatrix[0, j] = 1F / 0F;
-        Ymatrix[0, j] = 1F / 0F;
-        Zmatrix[0, j] = 1F / 0F;
-      }
-    }
-
-    private void ComputeDTWMatrix(Body[] template, Body[] sample, BoneName boneName, ref float[,] Wmatrix, ref float[,] Xmatrix, ref float[,] Ymatrix, ref float[,] Zmatrix) {
-      for (int i = 0; i < template.Length; i++) {
-        for (int j = 0; j < sample.Length; j++) {
-          float templW = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
-          float samplW = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W;
-          Wmatrix[i + 1, j + 1] = Math.Abs(templW - samplW);
-
-          float templX = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
-          float samplX = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X;
-          Xmatrix[i + 1, j + 1] = Math.Abs(templX - samplX);
-
-          float templY = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
-          float samplY = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y;
-          Ymatrix[i + 1, j + 1] = Math.Abs(templY - samplY);
-
-          float templZ = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z;
-          float samplZ = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z;
-          Zmatrix[i + 1, j + 1] = Math.Abs(templZ - samplZ);
-        }
-      }
-    }
-
-    private float GetDTWCost(float[,] mat, int i, int j) {
-      if (i == 0 && j == 0)
-        return 0;
-
-      int minI, minJ;
-      if (mat[i - 1, j] < mat[i - 1, j - 1] && mat[i - 1, j] < mat[i, j - 1]) {
-        minI = i - 1;
-        minJ = j;
-      } else if (mat[i, j - 1] < mat[i - 1, j - 1] && mat[i, j - 1] < mat[i - 1, j]) {
-        minI = i;
-        minJ = j - 1;
-      } else {
-        minI = i - 1;
-        minJ = j - 1;
-      }
-
-      float cost = mat[i, j] + GetDTWCost(mat, minI, minJ);
-
-      return cost;
-    }
-
-
-
-    private void ComputeXDTW(Body[] template, Body[] sample) {
-
-    }
-
-    private void ComputeYDTW(Body[] template, Body[] sample) {
-
-    }
-
-    private void ComputeZDTW(Body[] template, Body[] sample) {
-
-    }
   }
 }

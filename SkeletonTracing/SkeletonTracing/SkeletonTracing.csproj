@@ -60,7 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DTW\Computation.cs" />
+    <Compile Include="DTW\DTWData.cs" />
     <Compile Include="DTW\DTWResult.cs" />
+    <Compile Include="DTW\DTWResult_deprecated.cs" />
     <Compile Include="Events\BodyManagerPlayEventArgs.cs" />
     <Compile Include="Helper\Mapper.cs" />
     <Compile Include="Helper\NotMappedException.cs" />
@@ -79,8 +81,11 @@
     <Compile Include="View\DTWMain.xaml.cs">
       <DependentUpon>DTWMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DTWPlot.xaml.cs">
-      <DependentUpon>DTWPlot.xaml</DependentUpon>
+    <Compile Include="View\DTWMatrixPlot.xaml.cs">
+      <DependentUpon>DTWMatrixPlot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DTWSignalsPlot.xaml.cs">
+      <DependentUpon>DTWSignalsPlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
@@ -105,7 +110,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DTWPlot.xaml">
+    <Page Include="View\DTWMatrixPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DTWSignalsPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

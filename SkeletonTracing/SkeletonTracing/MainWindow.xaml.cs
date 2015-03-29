@@ -31,9 +31,9 @@ namespace SkeletonTracing {
     private void GraphicsDTWMenu_Click(object sender, RoutedEventArgs e) {
       mainDTW.Visibility = System.Windows.Visibility.Hidden;
       graphicDTW.Visibility = System.Windows.Visibility.Visible;
-      graphicDTW.Clear();
+      //graphicDTW.Clear();
       graphicDTW.UpdateResults();
-      graphicDTW.Plot();
+      //graphicDTW.Plot();
     }
 
   }

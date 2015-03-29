@@ -125,5 +125,24 @@ namespace SkeletonTracing.Helper {
       {new Tuple<JointName, JointName>(JointName.HipRight, JointName.KneeRight)           , BoneName.FemurusRight   },
       {new Tuple<JointName, JointName>(JointName.KneeRight, JointName.AnkleRight)         , BoneName.TibiaRight     }
     };
+
+    public static Dictionary<BoneName, int> indexMap = new Dictionary<BoneName, int>() {
+      {BoneName.BodyCenter    , 0},
+      {BoneName.LowerSpine    , 1},
+      {BoneName.UpperSpine    , 2},
+      {BoneName.Neck          , 3},
+      {BoneName.ClavicleLeft  , 4},
+      {BoneName.ArmLeft       , 5},
+      {BoneName.ForearmLeft   , 6},
+      {BoneName.ClavicleRight , 7},
+      {BoneName.ArmRight      , 8},
+      {BoneName.ForearmRight  , 9},
+      {BoneName.HipLeft       , 10},
+      {BoneName.FemurusLeft   , 11},
+      {BoneName.TibiaLeft     , 12},
+      {BoneName.HipRight      , 13},
+      {BoneName.FemurusRight  , 14},
+      {BoneName.TibiaRight    , 15},
+    };
   }
 }
