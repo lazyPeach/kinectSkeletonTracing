@@ -27,17 +27,7 @@ namespace SkeletonTracing.DTW {
         result.Data[indexMap[boneName]].BoneName = boneName;
 
         ComputeDTWMatrix(template, sample, boneName);
-        ComputeDTWCost(boneName, template.Length, sample.Length);
-        //float[,] wMatrix = GetCostMatrix(); 
-
-        //result.Data[indexMap[boneName]].Cost[0] = GetDTWCost(WMatrix, template.Length, sample.Length);
-        //result.Cost[indexMap[boneName]] = new float[4];
-        /*
-        result.Cost[indexMap[boneName]][0] = GetDTWCost(WMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][1] = GetDTWCost(XMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][2] = GetDTWCost(YMatrix, template.Length, sample.Length);
-        result.Cost[indexMap[boneName]][3] = GetDTWCost(ZMatrix, template.Length, sample.Length);
-        */
+        ComputeDTWCost(template.Length, sample.Length, boneName);
       }
 
       return 0;
@@ -93,22 +83,63 @@ namespace SkeletonTracing.DTW {
           result.Data[indexMap[boneName]].Matrix[3][i][j] = Math.Abs(templZ - samplZ);
         }
       }
+
+
     }
 
-    private void ComputeDTWCost(BoneName boneName, int iLimit, int jLimit) {
-      //float[,] wMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix, iLimit, jLimit);
+    private void ComputeDTWCost(int height, int width, BoneName boneName) {
+      float[,] wMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix[0]);
+      float[,] xMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix[1]);
+      float[,] yMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix[2]);
+      float[,] zMatrix = GetCostMatrix(result.Data[indexMap[boneName]].Matrix[3]);
+
+      List<Tuple<int, int>> wShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> xShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> yShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> zShortestPath = new List<Tuple<int, int>>();
+
+      GetDTWCost(wMatrix, height, width, ref wShortestPath);
+      GetDTWCost(xMatrix, height, width, ref xShortestPath);
+      GetDTWCost(yMatrix, height, width, ref yShortestPath);
+      GetDTWCost(zMatrix, height, width, ref zShortestPath);
+
+      result.Data[Mapper.indexMap[boneName]].ShortestPath[0] = wShortestPath;
+      result.Data[Mapper.indexMap[boneName]].ShortestPath[1] = xShortestPath;
+      result.Data[Mapper.indexMap[boneName]].ShortestPath[2] = yShortestPath;
+      result.Data[Mapper.indexMap[boneName]].ShortestPath[3] = zShortestPath;
     }
 
     //create a copy of the matrix
-    private float[,] GetCostMatrix(Quaternion[][] matrix, int iLimit, int jLimit) {
-      return null;
+    private float[,] GetCostMatrix(float[][] matrix) {
+      int height = matrix.Length;
+      int width = matrix[0].Length;
+
+      float[,] ret = new float[height + 1, width + 1];
+
+      for (int i = 0; i <= height; i++) {
+        ret[i, 0] = 1f / 0f;
+      }
+
+      for (int j = 0; j <= width; j++) {
+        ret[0, j] = 1f / 0f;
+      }
+
+      for (int i = 1; i <= height; i++) {
+        for (int j = 1; j <= width; j++) {
+          ret[i, j] = matrix[i - 1][j - 1];
+        }
+      }
+
+      return ret;
     }
 
-    private float GetDTWCost(float[,] mat, int i, int j) {
+    private float GetDTWCost(float[,] mat, int i, int j, ref List<Tuple<int, int>> shortestPath) {
       if (i == 0 && j == 0)
         return 0;
 
+      // compare on diagonal the first time...
       int minI, minJ;
+      /*
       if (mat[i - 1, j] < mat[i - 1, j - 1] && mat[i - 1, j] < mat[i, j - 1]) {
         minI = i - 1;
         minJ = j;
@@ -119,8 +150,23 @@ namespace SkeletonTracing.DTW {
         minI = i - 1;
         minJ = j - 1;
       }
+       */
 
-      float cost = mat[i, j] + GetDTWCost(mat, minI, minJ);
+      if (mat[i - 1, j - 1] <= mat[i, j - 1] && mat[i - 1, j - 1] <= mat[i - 1, j]) {
+        minI = i - 1;
+        minJ = j - 1;
+      } else if (mat[i, j - 1] <= mat[i - 1, j - 1] && mat[i, j - 1] <= mat[i - 1, j]) {
+        minI = i;
+        minJ = j - 1;
+      } else {
+        minI = i - 1;
+        minJ = j;
+      }
+
+      Tuple<int, int> elem = new Tuple<int, int>(i - 1, j - 1); // add current element from the real matrix in data
+      shortestPath.Add(elem);
+
+      float cost = mat[i, j] + GetDTWCost(mat, minI, minJ, ref shortestPath);
 
       return cost;
     }

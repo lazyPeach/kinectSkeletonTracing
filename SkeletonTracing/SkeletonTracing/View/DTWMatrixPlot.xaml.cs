@@ -30,10 +30,10 @@ namespace SkeletonTracing.View {
       sampleCanvas.Children.Clear();
     }
 
-    public void Update(float[][] matrix, float[] templateSignal, float[] sampleSignal) {
+    public void Update(float[][] matrix, List<Tuple<int, int>> shortestPath, float[] templateSignal, float[] sampleSignal) {
       Clear();
       UpdateSignals(templateSignal, sampleSignal);
-      PlotMatrix(matrix);
+      PlotMatrix(matrix, shortestPath);
     }
 
     private void UpdateSignals(float[] templateSignal, float[] sampleSignal) {
@@ -61,7 +61,7 @@ namespace SkeletonTracing.View {
       canvas.Children.Add(point);
     }
 
-    private void PlotMatrix(float[][] matrix) {
+    private void PlotMatrix(float[][] matrix, List<Tuple<int, int>> shortestPath) {
       int height = matrix.Length;
       int width = matrix[0].Length;
 
@@ -91,30 +91,19 @@ namespace SkeletonTracing.View {
         }
       }
 
+      foreach (Tuple<int, int> elem in shortestPath) {
+        Rectangle pathSquare = new Rectangle {
+          Width = horizontalUnit,
+          Height = horizontalUnit,
+          Fill = new SolidColorBrush(Colors.Green),
+          Opacity = 1.0
+        };
 
-      
+        Canvas.SetLeft(pathSquare, elem.Item2 * horizontalUnit);
+        Canvas.SetBottom(pathSquare, elem.Item1 * horizontalUnit);
+        matrixCanvas.Children.Add(pathSquare);
+      }
 
-      //Rectangle rect2 = new Rectangle {
-      //  Width = horizontalUnit,
-      //  Height = horizontalUnit,
-      //  Fill = new SolidColorBrush(Colors.Blue),
-      //};
-
-      //Rectangle rect3 = new Rectangle {
-      //  Width = horizontalUnit,
-      //  Height = horizontalUnit,
-      //  Fill = new SolidColorBrush(Colors.Black),
-      //};
-
-
-
-      //Canvas.SetLeft(rect2, 10);
-      //Canvas.SetBottom(rect2, 0);
-      //matrixCanvas.Children.Add(rect2);
-
-      //Canvas.SetLeft(rect3, 20);
-      //Canvas.SetBottom(rect3, 10);
-      //matrixCanvas.Children.Add(rect3);
 
     }
   }
