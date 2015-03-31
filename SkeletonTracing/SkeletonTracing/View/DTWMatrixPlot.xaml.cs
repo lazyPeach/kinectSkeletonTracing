@@ -14,9 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SkeletonTracing.View {
-  /// <summary>
-  /// Interaction logic for DTWMatrixPlot.xaml
-  /// </summary>
   public partial class DTWMatrixPlot : UserControl {
     private float horizontalUnit;
 
@@ -62,6 +59,11 @@ namespace SkeletonTracing.View {
     }
 
     private void PlotMatrix(float[][] matrix, List<Tuple<int, int>> shortestPath) {
+
+
+      DrawingVisual drawingVisual = new DrawingVisual();
+      DrawingContext drawingContext = drawingVisual.RenderOpen();
+
       int height = matrix.Length;
       int width = matrix[0].Length;
 
@@ -74,37 +76,26 @@ namespace SkeletonTracing.View {
         }
       }
 
-      // normalize the matrix for show... divide everything by max => max element will be 1
-      // put result as opacity
+      double opacity = max - min / (double)256;
+
+      // Alpha in argb should be between 0 and 255 => map [min, max] to [0, 255]
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-          Rectangle dtwSquare = new Rectangle {
-            Width = horizontalUnit,
-            Height = horizontalUnit,
-            Fill = new SolidColorBrush(Colors.Red),
-            Opacity = matrix[i][j] / max
-          };
-
-          Canvas.SetLeft(dtwSquare , j * horizontalUnit);
-          Canvas.SetBottom(dtwSquare, i * horizontalUnit);
-          matrixCanvas.Children.Add(dtwSquare);
+          Rect rect = new Rect(i * horizontalUnit, j * horizontalUnit, horizontalUnit, horizontalUnit);
+          drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb((byte)(matrix[i][j] * 255 / max), 255, 0, 0)), null, rect);
         }
       }
 
       foreach (Tuple<int, int> elem in shortestPath) {
-        Rectangle pathSquare = new Rectangle {
-          Width = horizontalUnit,
-          Height = horizontalUnit,
-          Fill = new SolidColorBrush(Colors.Green),
-          Opacity = 1.0
-        };
-
-        Canvas.SetLeft(pathSquare, elem.Item2 * horizontalUnit);
-        Canvas.SetBottom(pathSquare, elem.Item1 * horizontalUnit);
-        matrixCanvas.Children.Add(pathSquare);
+        Rect rect = new Rect(elem.Item1 * horizontalUnit, elem.Item2 * horizontalUnit, horizontalUnit, horizontalUnit);
+        drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(255, 0, 255, 0)), null, rect);
       }
 
+      drawingContext.Close();
 
+      RenderTargetBitmap renderBmp = new RenderTargetBitmap(400, 400, 96d, 96d, PixelFormats.Pbgra32);
+      renderBmp.Render(drawingVisual);
+      plotImage.Source = renderBmp;
     }
   }
 }
