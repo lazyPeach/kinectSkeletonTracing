@@ -1,10 +1,15 @@
 ﻿using Microsoft.Kinect;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SkeletonTracing.Model {
+namespace SkeletonModel.Model {
   public enum Priority {
-    Low     = 0,
-    Medium  = 1,
-    High    = 2
+    Low = 0,
+    Medium = 1,
+    High = 2
   }
 
   public class Body {

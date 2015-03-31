@@ -1,5 +1,5 @@
-﻿using SkeletonTracing.DTW;
-using SkeletonTracing.Model;
+﻿using DynamicTimeWarping;
+using SkeletonModel.Managers;
 using System.Windows;
 
 namespace SkeletonTracing {

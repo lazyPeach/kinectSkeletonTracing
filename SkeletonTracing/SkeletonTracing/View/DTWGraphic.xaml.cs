@@ -1,10 +1,9 @@
-﻿using SkeletonTracing.DTW;
-using SkeletonTracing.Helper;
-using SkeletonTracing.Model;
+﻿using DynamicTimeWarping;
+using Helper;
+using SkeletonModel.Managers;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace SkeletonTracing.View {
   public partial class DTWGraphic : UserControl {
@@ -22,34 +21,29 @@ namespace SkeletonTracing.View {
       boneComponentCombo.ItemsSource = boneComponents;
     }
 
-    private void BoneCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-      
-    }
-
     private void componentName_SelectionChanged(object sender, SelectionChangedEventArgs e) {
       BoneName boneName = (BoneName)boneCombo.SelectedItem;
       int selectedIndex = boneComponentCombo.SelectedIndex;
 
       if (computation.Result != null) {
-
-        float[] templateSignal = computation.Result.Data[Mapper.indexMap[boneName]].TemplateSignal[selectedIndex];
-        float[] sampleSignal = computation.Result.Data[Mapper.indexMap[boneName]].SampleSignal[selectedIndex];
-        float[][] matrix = computation.Result.Data[Mapper.indexMap[boneName]].Matrix[selectedIndex];
-        List<Tuple<int, int>> shortestPath = computation.Result.Data[Mapper.indexMap[boneName]].ShortestPath[selectedIndex];
+        float[] templateSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
+        float[] sampleSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];
+        float[][] matrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].Matrix[selectedIndex];
+        List<Tuple<int, int>> shortestPath = computation.Result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[selectedIndex];
 
         signalPlot.Update(templateSignal, sampleSignal);
-        matrixPlot.Update(matrix, shortestPath, templateSignal, sampleSignal);
+        matrixPlot.DrawSignals(templateSignal, sampleSignal);
+        matrixPlot.DrawMatrix(matrix);
       }
     }
+    
+    private void greedyShrotestPathBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+      BoneName boneName = (BoneName)boneCombo.SelectedItem;
+      int selectedIndex = boneComponentCombo.SelectedIndex;
 
-    private void showSignalsBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      signalPlot.Visibility = System.Windows.Visibility.Visible;
-      matrixPlot.Visibility = System.Windows.Visibility.Collapsed;
-    }
-
-    private void showMatrixBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      matrixPlot.Visibility = System.Windows.Visibility.Visible;
-      signalPlot.Visibility = System.Windows.Visibility.Collapsed;
+      DTWCost cost = Computation.ComputeGreedyDTWCost(bodyManager.BodyData.Length, bodyManager.SampleData.Length, boneName, selectedIndex);
+      costLbl.Content = cost.Cost.ToString();
+      matrixPlot.DrawShortestPath(cost.ShortestPath);
     }
   }
 }

@@ -1,26 +1,26 @@
 ﻿using Microsoft.Kinect;
+using SkeletonModel.Events;
 using System;
 using System.Linq;
 using System.Threading;
 
-namespace SkeletonTracing.Model {
+namespace SkeletonModel.Managers {
   public delegate void KinectManagerEventHandler(object sender, KinectManagerEventArgs e);
 
   public class KinectManager {
     public event KinectManagerEventHandler KinectManagerEventHandl;
-
-    private KinectSensor kinectSensor;
-    private Skeleton[] skeletonData;
 
     public KinectManager() {
       InitializeKinect();
     }
 
     public void Start() {
+      // make a 5 sec countdown
       for (int i = 0; i < 5; i++) {
         Console.WriteLine(i);
         Thread.Sleep(1000);
       }
+
       kinectSensor.Start();
     }
 
@@ -59,5 +59,9 @@ namespace SkeletonTracing.Model {
         KinectManagerEventHandl(this, e);
       }
     }
+
+
+    private KinectSensor kinectSensor;
+    private Skeleton[] skeletonData;
   }
 }

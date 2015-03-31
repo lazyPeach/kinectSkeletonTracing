@@ -16,6 +16,7 @@
     <Button x:Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="PlayGestureBtn_Click"/>
     <Button x:Name="SequentialDTWBtn" Content="Sequential DTW" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="SequentialDTWBtn_Click"/>
     <Button x:Name="ParallelDTWBtn" Content="Parallel DTW" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="ParallelDTWBtn_Click"/>
+    <Button x:Name="GreedyShortestPath" Content="Greedy ShP" HorizontalAlignment="Left" Margin="10,235,0,0" VerticalAlignment="Top" Width="95" Click="GreedyShortestPath_Click"/>
 
     <SkeletonTracing:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" />
 

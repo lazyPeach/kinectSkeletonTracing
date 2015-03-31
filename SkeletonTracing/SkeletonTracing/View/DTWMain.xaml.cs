@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
-using SkeletonTracing.DTW;
-using SkeletonTracing.Model;
+﻿using DynamicTimeWarping;
+using Microsoft.Win32;
+using SkeletonModel.Managers;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -75,12 +75,14 @@ namespace SkeletonTracing.View {
     }
 
     private void SequentialDTWBtn_Click(object sender, RoutedEventArgs e) {
-      float cost = computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
+      computation.ComputeSequentialDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
     }
 
     private void ParallelDTWBtn_Click(object sender, RoutedEventArgs e) {
-      Computation computation = new Computation();
-      float cost = computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData, true);
+    }
+
+    private void GreedyShortestPath_Click(object sender, RoutedEventArgs e) {
+      
     }
   }
 }

@@ -1,6 +1,7 @@
-﻿using SkeletonTracing.Events;
-using SkeletonTracing.Helper;
-using SkeletonTracing.Model;
+﻿using Helper;
+using SkeletonModel.Events;
+using SkeletonModel.Managers;
+using SkeletonModel.Model;
 using System;
 using System.Linq;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ namespace SkeletonTracing {
       InitializeComponent();
     }
     
-    private void RealTimeEventHandler(object sender, BodyManagerRealTimeEventArgs e) {
+    private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
       Body body = e.Body;
 
       this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
@@ -66,7 +67,7 @@ namespace SkeletonTracing {
       Ellipse point = new Ellipse {
         Width = 10,
         Height = 10,
-        Fill = new SolidColorBrush(Colors.Red)
+        Fill = new SolidColorBrush(Colors.Yellow)
       };
 
       Canvas.SetLeft(point, x - point.Width / 2);

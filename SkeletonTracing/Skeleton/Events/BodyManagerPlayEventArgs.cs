@@ -1,8 +1,12 @@
-﻿using SkeletonTracing.Model;
+﻿using SkeletonModel.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SkeletonTracing.Events {
-  public class BodyManagerPlayEventArgs :EventArgs {
+namespace SkeletonModel.Events {
+  public class BodyManagerPlayEventArgs : EventArgs {
     private Body templateBody;
     private Body sampleBody;
 

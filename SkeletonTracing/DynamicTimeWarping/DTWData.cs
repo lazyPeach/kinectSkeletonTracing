@@ -1,25 +1,13 @@
-﻿using SkeletonTracing.Helper;
-using SkeletonTracing.Model;
+﻿using Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SkeletonTracing.DTW {
-
+namespace DynamicTimeWarping {
   // Signals represent the array of values for each component describing a bone. As a result a bone
   // generates 4 signals: w, x, y, z. A signal will be stored in a list and the 4 lists representing
   // the cumulative signal for a bone will be stored in another list of 4 elements.
-
+  // Difference matrix, cost and shortest path is also stored for each of the four elements separately.
   public class DTWData {
-    private BoneName boneName;
-    private float[][] templateSignal = new float[4][];
-    private float[][] sampleSignal = new float[4][];
-    private float[][][] matrix = new float[4][][];
-    private List<Tuple<int, int>>[] shortestPath = new List<Tuple<int, int>>[4];
-    private float[] cost = new float[4]; // for each of the quaternions we keep a cost
-
     public DTWData(int templateLength, int sampleLength) {
       for (int i = 0; i < 4; i++) {
         templateSignal[i] = new float[templateLength];
@@ -41,5 +29,14 @@ namespace SkeletonTracing.DTW {
     public float[][][] Matrix { get { return matrix; } set { matrix = value; } }
     public List<Tuple<int, int>>[] ShortestPath { get { return shortestPath; } set { shortestPath = value; } }
     public float[] Cost { get { return cost; } set { cost = value; } }
+
+
+    private BoneName boneName;
+    private float[][] templateSignal = new float[4][];
+    private float[][] sampleSignal = new float[4][];
+    private float[][][] matrix = new float[4][][];
+    private List<Tuple<int, int>>[] shortestPath = new List<Tuple<int, int>>[4];
+    private float[] cost = new float[4];
+
   }
 }

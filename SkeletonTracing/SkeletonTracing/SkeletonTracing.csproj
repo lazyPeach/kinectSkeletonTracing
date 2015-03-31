@@ -59,22 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DTW\Computation.cs" />
-    <Compile Include="DTW\DTWData.cs" />
-    <Compile Include="DTW\DTWResult.cs" />
-    <Compile Include="DTW\DTWResult_deprecated.cs" />
-    <Compile Include="Events\BodyManagerPlayEventArgs.cs" />
-    <Compile Include="Helper\Mapper.cs" />
-    <Compile Include="Helper\NotMappedException.cs" />
-    <Compile Include="Model\Body.cs" />
-    <Compile Include="Events\BodyManagerRealTimeEventArgs.cs" />
-    <Compile Include="Model\Bone.cs" />
-    <Compile Include="Model\BoneSkeleton.cs" />
-    <Compile Include="Model\Joint.cs" />
-    <Compile Include="Model\JointSkeleton.cs" />
-    <Compile Include="Business\KinectManager.cs" />
-    <Compile Include="Events\KinectManagerEventArgs.cs" />
-    <Compile Include="Business\BodyManager.cs" />
     <Compile Include="View\DTWGraphic.xaml.cs">
       <DependentUpon>DTWGraphic.xaml</DependentUpon>
     </Compile>
@@ -149,6 +133,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DynamicTimeWarping\DynamicTimeWarping.csproj">
+      <Project>{0089aa8b-7b3c-4a81-a1f6-b6248f0ce3fe}</Project>
+      <Name>DynamicTimeWarping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{20c38a53-7e1a-4922-954c-4e9ae93630e1}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skeleton\SkeletonModel.csproj">
+      <Project>{95062f19-dfa9-49c6-b1c1-6ade85c6babb}</Project>
+      <Name>SkeletonModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SkeletonModel.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkeletonTracing.Model {
-  public class BodyManagerRealTimeEventArgs : EventArgs {
+namespace SkeletonModel.Events {
+  public class BodyManagerEventArgs : EventArgs {
     private Body body;
     
-    public BodyManagerRealTimeEventArgs(Body body) {
+    public BodyManagerEventArgs(Body body) {
       this.body = body;
     }
 

@@ -1,23 +1,20 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Xml.Serialization;
-using System.Linq;
-using SkeletonTracing.Events;
+﻿using SkeletonModel.Events;
+using SkeletonModel.Model;
 using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 
-namespace SkeletonTracing.Model {
-  public delegate void BodyManagerRealTimeEventHandler(object sender, BodyManagerRealTimeEventArgs e);
+namespace SkeletonModel.Managers {
+  public delegate void BodyManagerEventHandler(object sender, BodyManagerEventArgs e);
   public delegate void BodyManagerPlayEventHandler(object sender, BodyManagerPlayEventArgs e);
 
   public class BodyManager {
-    //private KinectManager kinectManager;
-    private ObservableCollection<Body> bodyData;
-    private ObservableCollection<Body> sampleData;
-
     public Body[] BodyData { get { return bodyData.ToArray<Body>(); } }
     public Body[] SampleData { get { return sampleData.ToArray<Body>(); } }
 
-    public event BodyManagerRealTimeEventHandler RealTimeEventHandler;
+    public event BodyManagerEventHandler RealTimeEventHandler;
     public event BodyManagerPlayEventHandler PlayEventHandler;
 
     public BodyManager(KinectManager kinectManager) {
@@ -28,6 +25,7 @@ namespace SkeletonTracing.Model {
       sampleData = new ObservableCollection<Body>();
     }
 
+    // serialization and deserialization of data
     public void SaveCollection(Stream file) {
       XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Body>));
       TextWriter textWriter = new StreamWriter(file);
@@ -54,6 +52,7 @@ namespace SkeletonTracing.Model {
       sampleData.Clear();
     }
 
+    // play loaded gestures
     private int bodyIndex;
     private System.Timers.Timer timer;
 
@@ -79,12 +78,12 @@ namespace SkeletonTracing.Model {
 
     private void KinectManagerEventHandler(object sender, KinectManagerEventArgs e) {
       Body body = new Body(e.Skeleton);
-      BodyManagerRealTimeEventArgs ev = new BodyManagerRealTimeEventArgs(body);
+      BodyManagerEventArgs ev = new BodyManagerEventArgs(body);
       OnRealTimeEvent(ev);
       bodyData.Add(body);
     }
 
-    protected virtual void OnRealTimeEvent(BodyManagerRealTimeEventArgs e) {
+    protected virtual void OnRealTimeEvent(BodyManagerEventArgs e) {
       if (RealTimeEventHandler != null) {
         RealTimeEventHandler(this, e);
       }
@@ -95,5 +94,9 @@ namespace SkeletonTracing.Model {
         PlayEventHandler(this, e);
       }
     }
+
+    //private KinectManager kinectManager;
+    private ObservableCollection<Body> bodyData;
+    private ObservableCollection<Body> sampleData;
   }
 }
