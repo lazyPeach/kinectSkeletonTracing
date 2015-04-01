@@ -55,6 +55,39 @@ namespace DynamicTimeWarping {
       }
     }
 
+    public void ComputeGreedyDTWCost(int templateLength, int sampleLength) {
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        ComputeGreedyDTWCostForBone(templateLength, sampleLength, boneName);
+      }
+    }
+
+    public void ComputeGreedyDTWCostForBone(int templateLength, int sampleLength, BoneName boneName) {
+      float[,] wMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0]);
+      float[,] xMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1]);
+      float[,] yMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2]);
+      float[,] zMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3]);
+
+      List<Tuple<int, int>> wShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> xShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> yShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> zShortestPath = new List<Tuple<int, int>>();
+
+      float wCost = GetGreedyDTWCost(wMatrix, templateLength, sampleLength, ref wShortestPath);
+      float xCost = GetGreedyDTWCost(xMatrix, templateLength, sampleLength, ref xShortestPath);
+      float yCost = GetGreedyDTWCost(yMatrix, templateLength, sampleLength, ref yShortestPath);
+      float zCost = GetGreedyDTWCost(zMatrix, templateLength, sampleLength, ref zShortestPath);
+
+      DTWCost wDTWCost = new DTWCost(wShortestPath, wCost);
+      DTWCost xDTWCost = new DTWCost(xShortestPath, xCost);
+      DTWCost yDTWCost = new DTWCost(yShortestPath, yCost);
+      DTWCost zDTWCost = new DTWCost(zShortestPath, zCost);
+
+      result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[0] = wDTWCost;
+      result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[1] = xDTWCost;
+      result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[2] = yDTWCost;
+      result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[3] = zDTWCost;
+    }
+
     public DTWCost ComputeGreedyDTWCost(int templateLength, int sampleLength, BoneName boneName, int quaternionComponent) {
       float[,] matrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[quaternionComponent]);
 

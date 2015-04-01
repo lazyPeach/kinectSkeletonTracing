@@ -41,7 +41,7 @@ namespace SkeletonTracing.View {
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           Rect rect = new Rect(i * horizontalUnit, j * horizontalUnit, horizontalUnit, horizontalUnit);
-          drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb((byte)(matrix[i][j] * 255 / max), 255, 0, 0)), null, rect);
+          drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb((byte)(matrix[i][j] * 255 / max), 255, 255, 0)), null, rect);
         }
       }
 

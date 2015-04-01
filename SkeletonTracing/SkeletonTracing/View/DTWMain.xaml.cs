@@ -73,16 +73,5 @@ namespace SkeletonTracing.View {
     private void PlayGestureBtn_Click(object sender, RoutedEventArgs e) {
       bodyManager.PlayGesture();
     }
-
-    private void SequentialDTWBtn_Click(object sender, RoutedEventArgs e) {
-      computation.ComputeSequentialDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
-    }
-
-    private void ParallelDTWBtn_Click(object sender, RoutedEventArgs e) {
-    }
-
-    private void GreedyShortestPath_Click(object sender, RoutedEventArgs e) {
-      
-    }
   }
 }

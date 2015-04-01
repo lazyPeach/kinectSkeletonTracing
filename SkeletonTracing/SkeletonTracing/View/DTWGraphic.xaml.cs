@@ -29,21 +29,22 @@ namespace SkeletonTracing.View {
         float[] templateSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
         float[] sampleSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];
         float[][] matrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].Matrix[selectedIndex];
-        List<Tuple<int, int>> shortestPath = computation.Result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[selectedIndex];
+        DTWCost cost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[selectedIndex];
 
         signalPlot.Update(templateSignal, sampleSignal);
         matrixPlot.DrawSignals(templateSignal, sampleSignal);
         matrixPlot.DrawMatrix(matrix);
+        costLbl.Content = cost.Cost.ToString();
+        matrixPlot.DrawShortestPath(cost.ShortestPath);
       }
     }
     
     private void greedyShrotestPathBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      BoneName boneName = (BoneName)boneCombo.SelectedItem;
-      int selectedIndex = boneComponentCombo.SelectedIndex;
+      computation.ComputeGreedyDTWCost(bodyManager.BodyData.Length, bodyManager.SampleData.Length);
+    }
 
-      DTWCost cost = Computation.ComputeGreedyDTWCost(bodyManager.BodyData.Length, bodyManager.SampleData.Length, boneName, selectedIndex);
-      costLbl.Content = cost.Cost.ToString();
-      matrixPlot.DrawShortestPath(cost.ShortestPath);
+    private void sequentialDTWBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+      computation.ComputeSequentialDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
     }
   }
 }
