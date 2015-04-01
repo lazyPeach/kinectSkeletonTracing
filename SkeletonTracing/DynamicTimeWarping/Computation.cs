@@ -11,11 +11,91 @@ namespace DynamicTimeWarping {
       result = new DTWResult(template.Length, sample.Length);
 
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        // set the bone name for the data in result
         result.Data[Mapper.BoneIndexMap[boneName]].BoneName = boneName;
-
         ComputeDTWMatrixForBone(template, sample, boneName);
-        //ComputeDTWCost(template.Length, sample.Length, boneName);
+      }
+    }
+
+    public void ComputeWindowDTWMatrix(Body[] template, Body[] sample) {
+      result = new DTWResult(template.Length, sample.Length);
+
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        result.Data[Mapper.BoneIndexMap[boneName]].BoneName = boneName;
+        ComputeWindowDTWMatrixForBone(template, sample, boneName);
+      }
+    }
+
+    private void ComputeWindowDTWMatrixForBone(Body[] template, Body[] sample, BoneName boneName) {
+      // normalize matrix: in the end replace all infinity with the max value
+      float wMax = -1f / 0f
+          , xMax = -1f / 0f
+          , yMax = -1f / 0f
+          , zMax = -1f / 0f;
+      
+      for (int i = 0; i < template.Length; i++) {
+        for (int j = 0; j < sample.Length; j++) {
+
+          // construct the signals - move them into separate method
+          result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[0][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[1][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[2][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[3][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[0][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[1][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[2][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[3][j] = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          //// actually compute the matrix
+          float templW = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
+          float samplW = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W;
+
+          float templX = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
+          float samplX = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X;
+
+          float templY = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+          float samplY = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y;
+
+          float templZ = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+          float samplZ = sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z;
+
+          // r is the window size; if abs(i - j) > r put infinity on that cell
+          int r = 20;
+
+          if (Math.Abs(i - j) <= r) {
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] = Math.Abs(templW - samplW);
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1][i][j] = Math.Abs(templX - samplX);
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2][i][j] = Math.Abs(templY - samplY);
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3][i][j] = Math.Abs(templZ - samplZ);
+
+            wMax = result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] > wMax ? result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] : wMax;
+            xMax = result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] > xMax ? result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] : xMax;
+            yMax = result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] > yMax ? result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] : yMax;
+            zMax = result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] > zMax ? result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] : zMax; 
+
+          } else {
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] = 1f/ 0f;
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1][i][j] = 1f / 0f;
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2][i][j] = 1f / 0f;
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3][i][j] = 1f / 0f;
+          }
+        }
+      }
+
+      for (int i = 0; i < template.Length; i++) {
+        for (int j = 0; j < sample.Length; j++) {
+          if (Double.IsInfinity(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j]))
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0][i][j] = wMax;
+
+          if (Double.IsInfinity(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1][i][j]))
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1][i][j] = xMax;
+
+          if (Double.IsInfinity(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2][i][j]))
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2][i][j] = yMax;
+
+          if (Double.IsInfinity(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3][i][j]))
+            result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3][i][j] = zMax;
+        }
       }
     }
 
@@ -23,7 +103,7 @@ namespace DynamicTimeWarping {
       for (int i = 0; i < template.Length; i++) {
         for (int j = 0; j < sample.Length; j++) {
 
-          // construct the signals
+          // construct the signals - move them into separate method
           result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[0][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.W;
           result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[1][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.X;
           result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[2][i] = template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y;
@@ -90,34 +170,13 @@ namespace DynamicTimeWarping {
 
     public DTWCost ComputeGreedyDTWCost(int templateLength, int sampleLength, BoneName boneName, int quaternionComponent) {
       float[,] matrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[quaternionComponent]);
-
-      //float[,] wMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[0]);
-      //float[,] xMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[1]);
-      //float[,] yMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[2]);
-      //float[,] zMatrix = GetCostMatrix(result.Data[Mapper.BoneIndexMap[boneName]].Matrix[3]);
       DTWCost retCost = new DTWCost();
       List<Tuple<int, int>> shortestPath = new List<Tuple<int, int>>();
-      
-
-      //List<Tuple<int, int>> wShortestPath = new List<Tuple<int, int>>();
-      //List<Tuple<int, int>> xShortestPath = new List<Tuple<int, int>>();
-      //List<Tuple<int, int>> yShortestPath = new List<Tuple<int, int>>();
-      //List<Tuple<int, int>> zShortestPath = new List<Tuple<int, int>>();
 
       retCost.Cost = GetGreedyDTWCost(matrix, templateLength, sampleLength, ref shortestPath);
       retCost.ShortestPath = shortestPath;
 
       return retCost;
-
-      //GetGreedyDTWCost(wMatrix, templateLength, sampleLength, ref wShortestPath);
-      //GetGreedyDTWCost(xMatrix, templateLength, sampleLength, ref xShortestPath);
-      //GetGreedyDTWCost(yMatrix, templateLength, sampleLength, ref yShortestPath);
-      //GetGreedyDTWCost(zMatrix, templateLength, sampleLength, ref zShortestPath);
-
-      //result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[0] = wShortestPath;
-      //result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[1] = xShortestPath;
-      //result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[2] = yShortestPath;
-      //result.Data[Mapper.BoneIndexMap[boneName]].ShortestPath[3] = zShortestPath;
     }
 
     //create a copy of the matrix having infinity on the first row and column

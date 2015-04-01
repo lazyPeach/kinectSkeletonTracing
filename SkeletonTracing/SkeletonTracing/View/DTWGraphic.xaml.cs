@@ -46,5 +46,9 @@ namespace SkeletonTracing.View {
     private void sequentialDTWBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
       computation.ComputeSequentialDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
     }
+
+    private void windowDTWBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+      computation.ComputeWindowDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
+    }
   }
 }

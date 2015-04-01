@@ -29,46 +29,7 @@
     <Label Content="Cost:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>
     <Label Name="costLbl" Content="" HorizontalAlignment="Left" Margin="361,10,0,0" VerticalAlignment="Top"/>
     <Button Name="sequentialDTWBtn" Content="Sequential DTW" HorizontalAlignment="Left" Margin="794,10,0,0" VerticalAlignment="Top" Width="95" Click="sequentialDTWBtn_Click"/>
+    <Button Name="windowDTWBtn" Content="Window DTW" HorizontalAlignment="Left" Margin="694,10,0,0" VerticalAlignment="Top" Width="95" Click="windowDTWBtn_Click"/>
 
   </Grid>
-  <!--
-  <ScrollViewer HorizontalAlignment="Left" Height="540" VerticalAlignment="Top" Width="980">
-    <Grid Background="White">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition/>
-        <ColumnDefinition/>
-      </Grid.ColumnDefinitions>
-      
-      <Grid.RowDefinitions>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-        <RowDefinition Height="370"/>
-      </Grid.RowDefinitions>
-
-      <local:DTWPlot x:Name="bodyCenterPlot" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="neckPlot" HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="upperSpinePlot" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="lowerSpinePlot" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="clavicleLeftPlot" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="clavicleRightPlot" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="armLeftPlot" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="armRightPlot" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="forearmLeftPlot" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="forearmRightPlot" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="hipLeftPlot" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="hipRightPlot" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="femurusLeftPlot" HorizontalAlignment="Center" Grid.Row="6" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="femurusRightPlot" HorizontalAlignment="Center" Grid.Row="6" VerticalAlignment="Center" Grid.Column="1"/>
-      <local:DTWPlot x:Name="tibiaLeftPlot" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Center" Grid.Column="0"/>
-      <local:DTWPlot x:Name="tibiaRightPlot" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Center" Grid.Column="1"/>
-      
-    </Grid>
-  </ScrollViewer>
-  -->
-
 </UserControl>
