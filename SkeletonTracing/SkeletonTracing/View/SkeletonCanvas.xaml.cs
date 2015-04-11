@@ -24,7 +24,11 @@ namespace SkeletonTracing {
     public SkeletonCanvas() {
       InitializeComponent();
     }
-    
+
+    public void Clear() {
+      templateCanvas.Children.Clear();
+    }
+
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
       Body body = e.Body;
 
