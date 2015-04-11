@@ -1,66 +1,25 @@
 ﻿using DynamicTimeWarping;
 using Microsoft.Win32;
 using SkeletonModel.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DynamicTimeWarpingPlot.View {
   public partial class DTWMain : UserControl {
-    //private KinectManager kinect;
-    private BodyManager bodyManager;
-    private Computation computation;
+    public DTWMain() {
+      InitializeComponent();
+    }
 
     public Computation Computation { get { return computation; } set { computation = value; } }
 
-    /*
-    public KinectManager Kinect {
-      get { return kinect; }
-      set { kinect = value; }
-    }
-    */
-
     public BodyManager BodyManager {
-      get {
-        return bodyManager;
-      }
-
+      get { return bodyManager; }
       set {
         bodyManager = value;
         skeletonCanvas.BodyManager = bodyManager;
       }
     }
 
-    public DTWMain() {
-      InitializeComponent();
-    }
-
-    private void StartRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      //kinect.Start();
-    }
-
-    private void StopRecordingBtn_Click(object sender, RoutedEventArgs e) {
-      //kinect.Stop();
-    }
-
-    private void SaveGestureBtn_Click(object sender, RoutedEventArgs e) {
-      SaveFileDialog saveFileDialog = new SaveFileDialog();
-      saveFileDialog.Filter = "XML file|*.xml";
-      saveFileDialog.ShowDialog();
-
-      bodyManager.SaveCollection(saveFileDialog.OpenFile());
-    }
 
     private void LoadGestureBtn_Click(object sender, RoutedEventArgs e) {
       OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -85,5 +44,9 @@ namespace DynamicTimeWarpingPlot.View {
     private void PlayGestureBtn_Click(object sender, RoutedEventArgs e) {
       bodyManager.PlayGesture();
     }
+
+
+    private BodyManager bodyManager;
+    private Computation computation;
   }
 }

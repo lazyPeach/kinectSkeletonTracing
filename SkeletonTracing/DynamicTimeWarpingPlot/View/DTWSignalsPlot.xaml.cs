@@ -1,61 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DynamicTimeWarpingPlot.View {
-  /// <summary>
-  /// Interaction logic for DTWSignalsPlot.xaml
-  /// </summary>
   public partial class DTWSignalsPlot : UserControl {
     public DTWSignalsPlot() {
       InitializeComponent();
     }
 
-    private float horizontalUnit;
-
-
-    public void Clear() {
-      templateCanvas.Children.Clear();
-      sampleCanvas.Children.Clear();
-    }
-
     public void Update(float[] templateSignal, float[] sampleSignal) {
-      Clear();
+      ClearPlots();
 
       // Horizontal unit is the horizontal distance between 2 samples. The signal with more samples
       // will be stretched from left to right while the signal with less samples will be shown on a
       // certain ratio of the sample.
-      horizontalUnit = (float)templateCanvas.ActualWidth /
+      float horizontalUnit = (float)templateCanvas.ActualWidth /
                         Math.Max(templateSignal.Length, sampleSignal.Length);
 
-      double templateMin = 1F / 0F, templateMax = -1F / 0F, sampleMin = 1F / 0F, sampleMax = -1F / 0F;
+      Tuple<double, double> templateTup = PlotSignalAndGetExtremities(templateSignal, horizontalUnit, templateCanvas);
+      Tuple<double, double> sampleTup = PlotSignalAndGetExtremities(sampleSignal, horizontalUnit, sampleCanvas);
 
-      for (int i = 1; i < templateSignal.Length; i++) {
-        DrawPoint(i * horizontalUnit, 75 - templateSignal[i] * 30, templateCanvas);
-
-        templateMin = (templateSignal[i] < templateMin) ? templateSignal[i] : templateMin;
-        templateMax = (templateSignal[i] > templateMax) ? templateSignal[i] : templateMax;
-      }
-
-      for (int i = 1; i < sampleSignal.Length; i++) {
-        DrawPoint(i * horizontalUnit, 75 - sampleSignal[i] * 30, sampleCanvas);
-
-        sampleMin = (sampleSignal[i] < sampleMin) ? sampleSignal[i] : sampleMin;
-        sampleMax = (sampleSignal[i] > sampleMax) ? sampleSignal[i] : sampleMax;
-      }
+      double templateMin = templateTup.Item1
+           , templateMax = templateTup.Item2
+           , sampleMin = sampleTup.Item1
+           , sampleMax = sampleTup.Item2;
 
       UpdateLimits(templateMax, templateMin, sampleMax, sampleMin);
+    }
+
+
+    private void ClearPlots() {
+      templateCanvas.Children.Clear();
+      sampleCanvas.Children.Clear();
+    }
+
+    private Tuple<double, double> PlotSignalAndGetExtremities(float[] signal, float sampleDistance, Canvas canvas) {
+      double min =  1f / 0f
+           , max = -1f / 0f;
+
+      for (int i = 1; i < signal.Length; i++) {
+        DrawPoint(i * sampleDistance, 75 - signal[i] * 30, canvas);
+
+        min = (signal[i] < min) ? signal[i] : min;
+        max = (signal[i] > max) ? signal[i] : max;
+      }
+
+      return new Tuple<double, double>(min, max);
     }
 
     private void DrawPoint(double x, double y, Canvas canvas) {
@@ -77,6 +68,5 @@ namespace DynamicTimeWarpingPlot.View {
       sampleUpperLimitLbl.Content = sampleUpperLimit.ToString();
       sampleLowerLimitLbl.Content = sampleLowerLimit.ToString();
     }
-
   }
 }

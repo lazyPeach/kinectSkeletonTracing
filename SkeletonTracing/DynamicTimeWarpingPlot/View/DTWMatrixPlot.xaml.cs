@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DynamicTimeWarpingPlot.View {
   public partial class DTWMatrixPlot : UserControl {
-    private float horizontalUnit;
-
     public DTWMatrixPlot() {
       InitializeComponent();
     }
 
-    private void ClearSignalCanvas() {
-      templateCanvas.Children.Clear();
-      sampleCanvas.Children.Clear();
+    public void DrawSignals(float[] templateSignal, float[] sampleSignal) {
+      ClearSignalCanvas();
+
+      horizontalUnit = (float)templateCanvas.ActualWidth /
+                       Math.Max(templateSignal.Length, sampleSignal.Length);
+
+      DrawSignal(templateSignal, templateCanvas);
+      DrawSignal(sampleSignal, sampleCanvas);
     }
 
     public void DrawMatrix(float[][] matrix) {
@@ -58,21 +54,6 @@ namespace DynamicTimeWarpingPlot.View {
       plotImage.Source = renderBmp;
     }
 
-    public void DrawSignals(float[] templateSignal, float[] sampleSignal) {
-      ClearSignalCanvas();
-
-      horizontalUnit = (float)templateCanvas.ActualWidth /
-                              Math.Max(templateSignal.Length, sampleSignal.Length);
-
-      for (int i = 1; i < templateSignal.Length; i++) {
-        DrawPoint(i * horizontalUnit, 70 - templateSignal[i] * 30, templateCanvas);
-      }
-
-      for (int i = 1; i < sampleSignal.Length; i++) {
-        DrawPoint(i * horizontalUnit, 75 - sampleSignal[i] * 30, sampleCanvas);
-      }
-    }
-
     public void DrawShortestPath(List<Tuple<int, int>> shortestPath) {
       DrawingVisual drawingVisual = new DrawingVisual();
       DrawingContext drawingContext = drawingVisual.RenderOpen();
@@ -89,6 +70,18 @@ namespace DynamicTimeWarpingPlot.View {
       shortestPathImage.Source = renderBmp;
     }
 
+
+    private void ClearSignalCanvas() {
+      templateCanvas.Children.Clear();
+      sampleCanvas.Children.Clear();
+    }
+
+    private void DrawSignal(float[] signal, Canvas canvas) {
+      for (int i = 1; i < signal.Length; i++) {
+        DrawPoint(i * horizontalUnit, 70 - signal[i] * 30, canvas);
+      }
+    }
+
     private void DrawPoint(double x, double y, Canvas canvas) {
       Ellipse point = new Ellipse {
         Width = 2,
@@ -100,5 +93,8 @@ namespace DynamicTimeWarpingPlot.View {
       Canvas.SetTop(point, y - point.Height / 2);
       canvas.Children.Add(point);
     }
+
+
+    private float horizontalUnit;
   }
 }

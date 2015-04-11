@@ -1,5 +1,4 @@
-﻿using DynamicTimeWarping;
-using SkeletonModel.Managers;
+﻿using SkeletonModel.Managers;
 using System.Windows;
 using System.Windows.Forms;
 

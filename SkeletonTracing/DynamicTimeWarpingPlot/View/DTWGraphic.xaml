@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DynamicTimeWarpingPlot.View" x:Class="DynamicTimeWarpingPlot.View.DTWGraphic" 
              mc:Ignorable="d" 
              d:DesignHeight="540" d:DesignWidth="979">
+  
   <Grid Background="White">
     <ComboBox x:Name="boneCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="200"/>
     <ComboBox x:Name="boneComponentCombo" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="componentName_SelectionChanged"/>

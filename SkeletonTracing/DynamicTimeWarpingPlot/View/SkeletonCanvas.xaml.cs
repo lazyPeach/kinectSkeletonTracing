@@ -3,26 +3,17 @@ using SkeletonModel.Events;
 using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DynamicTimeWarpingPlot.View {
   public partial class SkeletonCanvas : UserControl {
-    private int centerX = 210;
-    private int centerY = 210;
+    public SkeletonCanvas() {
+      InitializeComponent();
+    }
 
-    private BodyManager bodyManager;
     public BodyManager BodyManager {
       set {
         bodyManager = value;
@@ -31,9 +22,6 @@ namespace DynamicTimeWarpingPlot.View {
       }
     }
 
-    public SkeletonCanvas() {
-      InitializeComponent();
-    }
 
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
       Body body = e.Body;
@@ -83,5 +71,10 @@ namespace DynamicTimeWarpingPlot.View {
       Canvas.SetTop(point, y - point.Height / 2);
       canvas.Children.Add(point);
     }
+
+
+    private int centerX = 210;
+    private int centerY = 210;
+    private BodyManager bodyManager;
   }
 }
