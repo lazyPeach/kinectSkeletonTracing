@@ -6,9 +6,10 @@
 
   <Grid>
 
-    <Button x:Name="startRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="startRecordingBtn_Click"/>
-    <Button x:Name="stopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="stopRecordingBtn_Click"/>
-    <Button x:Name="saveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="saveGestureBtn_Click"/>
+    <Button Name="startRecordingBtn" Content="Start recording" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="startRecordingBtn_Click"/>
+    <Button Name="stopRecordingBtn" Content="Stop recording" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="stopRecordingBtn_Click"/>
+    <Button Name="saveGestureBtn" Content="Save gesture" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="saveGestureBtn_Click"/>
+    <Button Name="clearBtn" Content="Clear data" HorizontalAlignment="Left" Margin="325,10,0,0" VerticalAlignment="Top" Width="100" Click="clearBtn_Click"/>
     <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,59,12,10"/>
 
   </Grid>

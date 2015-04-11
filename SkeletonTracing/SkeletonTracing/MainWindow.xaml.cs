@@ -33,5 +33,9 @@ namespace SkeletonTracing {
       bodyManager.SaveCollection(saveFileDialog.OpenFile());
     }
 
+    private void clearBtn_Click(object sender, RoutedEventArgs e) {
+      bodyManager.ClearData();
+    }
+
   }
 }
