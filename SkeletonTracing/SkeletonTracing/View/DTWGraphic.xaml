@@ -11,7 +11,7 @@
     <ComboBox Name="boneCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="200"/>
     <ComboBox Name="boneComponentCombo" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="componentName_SelectionChanged"/>
     
-    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Bottom" Width="980">
+    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Bottom" Width="980" Margin="0,0,-1,-16">
       <Grid Background="White">
         <Grid.ColumnDefinitions>
           <ColumnDefinition/>

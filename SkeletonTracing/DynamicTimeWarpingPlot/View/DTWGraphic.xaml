@@ -1,0 +1,34 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DynamicTimeWarpingPlot.View" x:Class="DynamicTimeWarpingPlot.View.DTWGraphic" 
+             mc:Ignorable="d" 
+             d:DesignHeight="540" d:DesignWidth="979">
+  <Grid Background="White">
+    <ComboBox x:Name="boneCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="200"/>
+    <ComboBox x:Name="boneComponentCombo" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="componentName_SelectionChanged"/>
+
+    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Bottom" Width="980" Margin="0,0,-1,-16">
+      <Grid Background="White">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <local:DTWSignalsPlot x:Name="signalPlot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="matrixPlot" HorizontalAlignment="Right" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top"/>
+      </Grid>
+    </ScrollViewer>
+    <Button x:Name="greedyShrotestPathBtn" Content="Greedy ShP" HorizontalAlignment="Left" Margin="894,10,0,0" VerticalAlignment="Top" Width="75" Click="greedyShrotestPathBtn_Click"/>
+    <Label Content="Cost:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>
+    <Label x:Name="costLbl" Content="" HorizontalAlignment="Left" Margin="361,10,0,0" VerticalAlignment="Top"/>
+    <Button x:Name="sequentialDTWBtn" Content="Sequential DTW" HorizontalAlignment="Left" Margin="794,10,0,0" VerticalAlignment="Top" Width="95" Click="sequentialDTWBtn_Click"/>
+    <Button x:Name="windowDTWBtn" Content="Window DTW" HorizontalAlignment="Left" Margin="694,10,0,0" VerticalAlignment="Top" Width="95" Click="windowDTWBtn_Click"/>
+
+  </Grid>
+</UserControl>

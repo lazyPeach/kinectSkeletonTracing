@@ -29,8 +29,8 @@ namespace DynamicTimeWarping {
     public float[][][] Matrix { get { return matrix; } set { matrix = value; } }
     public DTWCost[] DTWCost { get { return dtwCost; } set { dtwCost = value; } }
     
-//    public List<Tuple<int, int>>[] ShortestPath { get { return shortestPath; } set { shortestPath = value; } }
-//    public float[] Cost { get { return cost; } set { cost = value; } }
+    public List<Tuple<int, int>>[] ShortestPath { get { return shortestPath; } set { shortestPath = value; } }
+    public float[] Cost { get { return cost; } set { cost = value; } }
 
 
     private BoneName boneName;
@@ -38,8 +38,8 @@ namespace DynamicTimeWarping {
     private float[][] sampleSignal = new float[4][];
     private float[][][] matrix = new float[4][][];
     private DTWCost[] dtwCost = new DTWCost[4];
-//    private List<Tuple<int, int>>[] shortestPath = new List<Tuple<int, int>>[4];
-//    private float[] cost = new float[4];
+    private List<Tuple<int, int>>[] shortestPath = new List<Tuple<int, int>>[4];
+    private float[] cost = new float[4];
 
   }
 }

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletonTracing", "SkeletonTracing\SkeletonTracing.csproj", "{E406EAAF-A093-4B12-8CC6-9FF0E69DB286}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletonTracingRecorder", "SkeletonTracing\SkeletonTracingRecorder.csproj", "{E406EAAF-A093-4B12-8CC6-9FF0E69DB286}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTimeWarping", "DynamicTimeWarping\DynamicTimeWarping.csproj", "{0089AA8B-7B3C-4A81-A1F6-B6248F0CE3FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{20C38A53-7E1A-4922-954C-4E9AE93630E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletonModel", "Skeleton\SkeletonModel.csproj", "{95062F19-DFA9-49C6-B1C1-6ADE85C6BABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTimeWarpingPlot", "DynamicTimeWarpingPlot\DynamicTimeWarpingPlot.csproj", "{9080C1FF-9C76-4A0A-944F-A39D37089B39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{95062F19-DFA9-49C6-B1C1-6ADE85C6BABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95062F19-DFA9-49C6-B1C1-6ADE85C6BABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95062F19-DFA9-49C6-B1C1-6ADE85C6BABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
