@@ -59,18 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\DTWGraphic.xaml.cs">
-      <DependentUpon>DTWGraphic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DTWMain.xaml.cs">
-      <DependentUpon>DTWMain.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DTWMatrixPlot.xaml.cs">
-      <DependentUpon>DTWMatrixPlot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DTWSignalsPlot.xaml.cs">
-      <DependentUpon>DTWSignalsPlot.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
@@ -86,22 +74,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\DTWGraphic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\DTWMain.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\DTWMatrixPlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\DTWSignalsPlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\SkeletonCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

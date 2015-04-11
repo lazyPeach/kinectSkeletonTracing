@@ -17,9 +17,14 @@ namespace SkeletonModel.Managers {
     public event BodyManagerEventHandler RealTimeEventHandler;
     public event BodyManagerPlayEventHandler PlayEventHandler;
 
+    public BodyManager() {
+      bodyData = new ObservableCollection<Body>();
+      sampleData = new ObservableCollection<Body>();
+    }
+
     public BodyManager(KinectManager kinectManager) {
-      //this.kinectManager = kinectManager;
-      //kinectManager.KinectManagerEventHandl += KinectManagerEventHandler;
+      this.kinectManager = kinectManager;
+      kinectManager.KinectManagerEventHandl += KinectManagerEventHandler;
 
       bodyData = new ObservableCollection<Body>();
       sampleData = new ObservableCollection<Body>();
@@ -95,7 +100,7 @@ namespace SkeletonModel.Managers {
       }
     }
 
-    //private KinectManager kinectManager;
+    private KinectManager kinectManager;
     private ObservableCollection<Body> bodyData;
     private ObservableCollection<Body> sampleData;
   }

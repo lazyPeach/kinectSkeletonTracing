@@ -18,7 +18,6 @@ namespace SkeletonTracing {
       set {
         bodyManager = value;
         bodyManager.RealTimeEventHandler += RealTimeEventHandler;
-        bodyManager.PlayEventHandler += PlayEventHandler;
       }
     }
 
@@ -32,18 +31,6 @@ namespace SkeletonTracing {
       this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
         templateCanvas.Children.Clear();
         DrawJoints(body.Joints, templateCanvas);
-      }));
-    }
-
-    private void PlayEventHandler(object sender, BodyManagerPlayEventArgs e) {
-      Body template = e.TemplateBody;
-      Body sample = e.SampleBody;
-
-      this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
-        templateCanvas.Children.Clear();
-        sampleCanvas.Children.Clear();
-        DrawJoints(template.Joints, templateCanvas);
-        DrawJoints(sample.Joints, sampleCanvas);
       }));
     }
 

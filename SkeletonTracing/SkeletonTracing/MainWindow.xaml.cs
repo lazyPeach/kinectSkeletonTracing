@@ -1,36 +1,36 @@
 ﻿using DynamicTimeWarping;
 using SkeletonModel.Managers;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace SkeletonTracing {
   public partial class MainWindow : Window {
-    //private KinectManager kinect;
+    private KinectManager kinect;
     private BodyManager bodyManager;
-    private Computation computation;
 
     public MainWindow() {
       InitializeComponent();
       
-      //kinect = new KinectManager();
-      bodyManager = new BodyManager(/*kinect*/ null);
-      computation = new Computation();
+      kinect = new KinectManager();
+      bodyManager = new BodyManager(kinect);
 
-      //mainDTW.Kinect = kinect;
-      mainDTW.BodyManager = bodyManager;
-      mainDTW.Computation = computation;
-
-      graphicDTW.BodyManager = bodyManager;
-      graphicDTW.Computation = computation;
+      skeletonCanvas.BodyManager = bodyManager;
     }
 
-    private void MainDTWMenu_Click(object sender, RoutedEventArgs e) {
-      mainDTW.Visibility = System.Windows.Visibility.Visible;
-      graphicDTW.Visibility = System.Windows.Visibility.Hidden;
+    private void startRecordingBtn_Click(object sender, RoutedEventArgs e) {
+      kinect.Start();
     }
 
-    private void GraphicsDTWMenu_Click(object sender, RoutedEventArgs e) {
-      mainDTW.Visibility = System.Windows.Visibility.Hidden;
-      graphicDTW.Visibility = System.Windows.Visibility.Visible;
+    private void stopRecordingBtn_Click(object sender, RoutedEventArgs e) {
+      kinect.Stop();
+    }
+
+    private void saveGestureBtn_Click(object sender, RoutedEventArgs e) {
+      SaveFileDialog saveFileDialog = new SaveFileDialog();
+      saveFileDialog.Filter = "XML file|*.xml";
+      saveFileDialog.ShowDialog();
+
+      bodyManager.SaveCollection(saveFileDialog.OpenFile());
     }
 
   }

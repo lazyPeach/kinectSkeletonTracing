@@ -39,16 +39,21 @@ namespace SkeletonModel.Managers {
 
     // listen to SkeletonFrameReady events
     private void kinect_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) {
-      SkeletonFrame skeletonFrame = e.OpenSkeletonFrame();                                        // Open the Skeleton frame
+      if (!((KinectSensor)sender).SkeletonStream.IsEnabled) {
+        return;
+      }
 
-      if (skeletonFrame != null && skeletonData != null) {
-        skeletonFrame.CopySkeletonDataTo(skeletonData);                                           // get the skeletal information in this frame
+      using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame()) {                                        // Open the Skeleton frame
 
-        foreach (Skeleton skeleton in skeletonData) {                                             // iterate through the 6 skeletons that sensor is able to track
-          if (skeleton.TrackingState == SkeletonTrackingState.Tracked) {
-            KinectManagerEventArgs newEvent = new KinectManagerEventArgs(skeleton);
-            OnEvent(newEvent);
-            break;                                                                                // once you find a skeleton that is tracked don't care about others
+        if (skeletonFrame != null && skeletonData != null) {
+          skeletonFrame.CopySkeletonDataTo(skeletonData);                                           // get the skeletal information in this frame
+
+          foreach (Skeleton skeleton in skeletonData) {                                             // iterate through the 6 skeletons that sensor is able to track
+            if (skeleton.TrackingState == SkeletonTrackingState.Tracked) {
+              KinectManagerEventArgs newEvent = new KinectManagerEventArgs(skeleton);
+              OnEvent(newEvent);
+              break;                                                                                // once you find a skeleton that is tracked don't care about others
+            }
           }
         }
       }
