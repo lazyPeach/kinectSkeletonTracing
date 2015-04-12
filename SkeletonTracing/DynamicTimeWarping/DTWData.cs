@@ -15,31 +15,33 @@ namespace DynamicTimeWarping {
       }
 
       for (int i = 0; i < 4; i++) {
-        matrix[i] = new float[templateLength][];
+        dtwMatrix[i] = new float[templateLength][];
+        dtwWindowMatrix[i] = new float[templateLength][];
 
         for (int j = 0; j < templateLength; j++) {
-          matrix[i][j] = new float[sampleLength];
+          dtwMatrix[i][j] = new float[sampleLength];
+          dtwWindowMatrix[i][j] = new float[sampleLength];
         }
       }
     }
 
+    public BoneName BoneName { get { return boneName; } set { boneName = value; } }
     public float[][] TemplateSignal { get { return templateSignal; } set { templateSignal = value; } }
     public float[][] SampleSignal { get { return sampleSignal; } set { sampleSignal = value; } }
-    public BoneName BoneName { get { return boneName; } set { boneName = value; } }
-    public float[][][] Matrix { get { return matrix; } set { matrix = value; } }
-    public DTWCost[] DTWCost { get { return dtwCost; } set { dtwCost = value; } }
-    
-    public List<Tuple<int, int>>[] ShortestPath { get { return shortestPath; } set { shortestPath = value; } }
-    public float[] Cost { get { return cost; } set { cost = value; } }
+    public float[][][] DTWMatrix { get { return dtwMatrix; } set { dtwMatrix = value; } }
+    public DTWCost[] GreedyCost { get { return greedyCost; } set { greedyCost = value; } }
+    public float[][][] DTWWindowMatrix { get { return dtwWindowMatrix; } set { dtwWindowMatrix = value; } }
+    public DTWCost[] GreedyWindowCost { get { return greedyWindowCost; } set { greedyWindowCost = value; } }
+    public DTWCost[] BestWindowCost { get { return bestWindowCost; } set { bestWindowCost = value; } }
 
 
     private BoneName boneName;
     private float[][] templateSignal = new float[4][];
     private float[][] sampleSignal = new float[4][];
-    private float[][][] matrix = new float[4][][];
-    private DTWCost[] dtwCost = new DTWCost[4];
-    private List<Tuple<int, int>>[] shortestPath = new List<Tuple<int, int>>[4];
-    private float[] cost = new float[4];
-
+    private float[][][] dtwMatrix = new float[4][][];
+    private DTWCost[] greedyCost = new DTWCost[4];
+    private float[][][] dtwWindowMatrix = new float[4][][];
+    private DTWCost[] greedyWindowCost = new DTWCost[4];
+    private DTWCost[] bestWindowCost = new DTWCost[4];
   }
 }

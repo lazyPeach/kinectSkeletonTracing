@@ -11,7 +11,7 @@
     <ComboBox x:Name="boneCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="200"/>
     <ComboBox x:Name="boneComponentCombo" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="componentName_SelectionChanged"/>
 
-    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Bottom" Width="980" Margin="0,0,-1,-16">
+    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="980" Margin="0,40,0,0">
       <Grid Background="White">
         <Grid.ColumnDefinitions>
           <ColumnDefinition/>
@@ -20,16 +20,18 @@
         <Grid.RowDefinitions>
           <RowDefinition/>
           <RowDefinition/>
+          <RowDefinition/>
         </Grid.RowDefinitions>
         <local:DTWSignalsPlot x:Name="signalPlot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <local:DTWMatrixPlot x:Name="matrixPlot" HorizontalAlignment="Right" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="matrixPlot" HorizontalAlignment="Left" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="windowMatrixPlot" HorizontalAlignment="Left" Grid.Row="2" Margin="0,0,10,0" VerticalAlignment="Top"/>
       </Grid>
     </ScrollViewer>
-    <Button x:Name="greedyShrotestPathBtn" Content="Greedy ShP" HorizontalAlignment="Left" Margin="894,10,0,0" VerticalAlignment="Top" Width="75" Click="greedyShrotestPathBtn_Click"/>
-    <Label Content="Cost:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>
-    <Label x:Name="costLbl" Content="" HorizontalAlignment="Left" Margin="361,10,0,0" VerticalAlignment="Top"/>
-    <Button x:Name="sequentialDTWBtn" Content="Sequential DTW" HorizontalAlignment="Left" Margin="794,10,0,0" VerticalAlignment="Top" Width="95" Click="sequentialDTWBtn_Click"/>
-    <Button x:Name="windowDTWBtn" Content="Window DTW" HorizontalAlignment="Left" Margin="694,10,0,0" VerticalAlignment="Top" Width="95" Click="windowDTWBtn_Click"/>
+    <!--<Button x:Name="greedyShrotestPathBtn" Content="Greedy ShP" HorizontalAlignment="Left" Margin="894,10,0,0" VerticalAlignment="Top" Width="75" Click="greedyShrotestPathBtn_Click"/>-->
+    <!--<Label Content="Cost:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>-->
+    <!--<Label x:Name="costLbl" Content="" HorizontalAlignment="Left" Margin="361,10,0,0" VerticalAlignment="Top"/>-->
+    <!--<Button x:Name="sequentialDTWBtn" Content="Sequential DTW" HorizontalAlignment="Left" Margin="794,10,0,0" VerticalAlignment="Top" Width="95" Click="sequentialDTWBtn_Click"/>-->
+    <!--<Button x:Name="windowDTWBtn" Content="Window DTW" HorizontalAlignment="Left" Margin="694,10,0,0" VerticalAlignment="Top" Width="95" Click="windowDTWBtn_Click"/>-->
 
   </Grid>
 </UserControl>

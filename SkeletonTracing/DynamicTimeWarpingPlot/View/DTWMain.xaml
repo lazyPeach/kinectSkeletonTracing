@@ -7,10 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="540" d:DesignWidth="980">
   <Grid>
-    <Button x:Name="LoadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
-    <Button x:Name="LoadSampleBtn" Content="Load sample" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="95" Click="LoadSampleBtn_Click" Height="20"/>
-    <Button x:Name="ClearDataBtn" Content="Clear data" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="95" Click="ClearDataBtn_Click" Height="20"/>
-    <Button x:Name="PlayGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="PlayGestureBtn_Click"/>
+    <Button Name="loadGestureBtn" Content="Load gesture" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="95" Click="LoadGestureBtn_Click" Height="20"/>
+    <Button Name="loadSampleBtn" Content="Load sample" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="95" Click="LoadSampleBtn_Click" Height="20"/>
+    <Button Name="clearDataBtn" Content="Clear data" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="95" Click="ClearDataBtn_Click" Height="20"/>
+    <Button Name="playGestureBtn" Content="Play" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="PlayGestureBtn_Click"/>
+    <Button Name="computeResultBtn" Content="Compute result" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="95" Click="computeResultBtn_Click"/>
 
     <local:SkeletonCanvas x:Name="skeletonCanvas" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" />
   </Grid>

@@ -45,8 +45,13 @@ namespace DynamicTimeWarpingPlot.View {
       bodyManager.PlayGesture();
     }
 
+    private void computeResultBtn_Click(object sender, RoutedEventArgs e) {
+      computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
+    }
 
     private BodyManager bodyManager;
     private Computation computation;
+
+
   }
 }

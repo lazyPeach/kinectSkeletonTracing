@@ -25,29 +25,25 @@ namespace DynamicTimeWarpingPlot.View {
       int selectedIndex = boneComponentCombo.SelectedIndex;
 
       if (computation.Result != null) {
+
         float[] templateSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
         float[] sampleSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];
-        float[][] matrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].Matrix[selectedIndex];
-        DTWCost cost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWCost[selectedIndex];
-        
+        float[][] dtwMatrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix[selectedIndex];
+        float[][] dtwWindowMatrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix[selectedIndex];
+        DTWCost cost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].GreedyCost[selectedIndex];
+        DTWCost windowCost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost[selectedIndex];
+
         signalPlot.Update(templateSignal, sampleSignal);
         matrixPlot.DrawSignals(templateSignal, sampleSignal);
-        matrixPlot.DrawMatrix(matrix);
-        costLbl.Content = cost.Cost.ToString();
+        matrixPlot.DrawMatrix(dtwMatrix);
         matrixPlot.DrawShortestPath(cost.ShortestPath);
+        matrixPlot.UpdateCost(cost.Cost);
+
+        windowMatrixPlot.DrawSignals(templateSignal, sampleSignal);
+        windowMatrixPlot.DrawMatrix(dtwWindowMatrix);
+        windowMatrixPlot.DrawShortestPath(windowCost.ShortestPath);
+        windowMatrixPlot.UpdateCost(windowCost.Cost);
       }
-    }
-
-    private void greedyShrotestPathBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      computation.ComputeGreedyDTWCost(bodyManager.BodyData.Length, bodyManager.SampleData.Length);
-    }
-
-    private void sequentialDTWBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      computation.ComputeSequentialDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
-    }
-
-    private void windowDTWBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
-      computation.ComputeWindowDTWMatrix(bodyManager.BodyData, bodyManager.SampleData);
     }
   }
 }

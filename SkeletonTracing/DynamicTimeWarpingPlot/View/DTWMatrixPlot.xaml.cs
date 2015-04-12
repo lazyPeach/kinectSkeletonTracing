@@ -33,8 +33,10 @@ namespace DynamicTimeWarpingPlot.View {
 
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-          min = (matrix[i][j] < min) ? matrix[i][j] : min;
-          max = (matrix[i][j] > max) ? matrix[i][j] : max;
+          if (matrix[i][j] != 1f / 0f) {
+            min = (matrix[i][j] < min) ? matrix[i][j] : min;
+            max = (matrix[i][j] > max) ? matrix[i][j] : max;
+          }
         }
       }
 
@@ -44,7 +46,11 @@ namespace DynamicTimeWarpingPlot.View {
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           Rect rect = new Rect(i * horizontalUnit, j * horizontalUnit, horizontalUnit, horizontalUnit);
-          drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb((byte)(matrix[i][j] * 255 / max), 255, 255, 0)), null, rect);
+          if (matrix[i][j] != 1f / 0f) {
+            drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb((byte)(matrix[i][j] * 255 / max), 255, 255, 0)), null, rect);
+          } else {
+            drawingContext.DrawRectangle(new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)), null, rect);
+          }
         }
       }
 
@@ -68,6 +74,10 @@ namespace DynamicTimeWarpingPlot.View {
       RenderTargetBitmap renderBmp = new RenderTargetBitmap(400, 400, 96d, 96d, PixelFormats.Pbgra32);
       renderBmp.Render(drawingVisual);
       shortestPathImage.Source = renderBmp;
+    }
+
+    public void UpdateCost(double cost) {
+      costLbl.Content = cost.ToString();
     }
 
 
