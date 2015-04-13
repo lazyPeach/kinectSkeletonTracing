@@ -22,6 +22,9 @@ namespace DynamicTimeWarping {
 
       ComputeGreedyDTWCost(template.Length, sample.Length);
       ComputeGreedyDTWWindowCost(template.Length, sample.Length);
+      ComputeBestCost(template.Length, sample.Length);
+
+      FilterSignals();
     }
 
     private void ConstructSignals(Body[] template, Body[] sample, BoneName boneName) {
@@ -59,7 +62,7 @@ namespace DynamicTimeWarping {
         res[1][i] = new float[sample.Length];
         res[2][i] = new float[sample.Length];
         res[3][i] = new float[sample.Length];
-        
+
         for (int j = 0; j < sample.Length; j++) {
           res[0][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.W -
                                   sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W);
@@ -92,7 +95,7 @@ namespace DynamicTimeWarping {
 
       float slope = (float)template.Length / (float)sample.Length;
       // r is the window size; if abs(i - j) > r put infinity on that cell
-      int r = 10;
+      int r = (int)(0.1 * Math.Max(template.Length, sample.Length));
 
       for (int i = 0; i < template.Length; i++) {
         res[0][i] = new float[sample.Length];
@@ -136,6 +139,12 @@ namespace DynamicTimeWarping {
       }
     }
 
+    private void ComputeBestCost(int templateLength, int sampleLength) {
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        result.Data[Mapper.BoneIndexMap[boneName]].BestCost = ComputeBestCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, templateLength, sampleLength);
+      }
+    }
+
     public DTWCost[] ComputeGreedyDTWCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
       float[,] wMatrix = GetCostMatrix(dtwMatrix[0], templateLength, sampleLength);
       float[,] xMatrix = GetCostMatrix(dtwMatrix[1], templateLength, sampleLength);
@@ -162,11 +171,34 @@ namespace DynamicTimeWarping {
       return cost;
     }
 
+    public DTWCost[] ComputeBestCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
+      float[,] wMatrix = GetBestCostMatrix(dtwMatrix[0], templateLength, sampleLength);
+      float[,] xMatrix = GetBestCostMatrix(dtwMatrix[1], templateLength, sampleLength);
+      float[,] yMatrix = GetBestCostMatrix(dtwMatrix[2], templateLength, sampleLength);
+      float[,] zMatrix = GetBestCostMatrix(dtwMatrix[3], templateLength, sampleLength);
+
+      List<Tuple<int, int>> wShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> xShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> yShortestPath = new List<Tuple<int, int>>();
+      List<Tuple<int, int>> zShortestPath = new List<Tuple<int, int>>();
+
+      GetGreedyDTWCost(wMatrix, templateLength, sampleLength, ref wShortestPath);
+      GetGreedyDTWCost(xMatrix, templateLength, sampleLength, ref xShortestPath);
+      GetGreedyDTWCost(yMatrix, templateLength, sampleLength, ref yShortestPath);
+      GetGreedyDTWCost(zMatrix, templateLength, sampleLength, ref zShortestPath);
+
+      DTWCost[] cost = new DTWCost[4];
+      cost[0] = new DTWCost(wShortestPath, wMatrix[templateLength, sampleLength]);
+      cost[1] = new DTWCost(xShortestPath, xMatrix[templateLength, sampleLength]);
+      cost[2] = new DTWCost(yShortestPath, yMatrix[templateLength, sampleLength]);
+      cost[3] = new DTWCost(zShortestPath, zMatrix[templateLength, sampleLength]);
+
+      return cost;
+    }
+
+
     //create a copy of the matrix having infinity on the first row and column
     private float[,] GetCostMatrix(float[][] matrix, int height, int width) {
-      //int height = matrix.Length;
-      //int width = matrix[0].Length;
-
       float[,] ret = new float[height + 1, width + 1];
 
       for (int i = 0; i <= height; i++) {
@@ -184,6 +216,46 @@ namespace DynamicTimeWarping {
       }
 
       return ret;
+    }
+
+    // Best cost matrix contains on each cell the best cost from [0,0] to [i,j]
+    // TODO refactor it
+    private float[,] GetBestCostMatrix(float[][] matrix, int height, int width) {
+      float[,] ret = new float[height + 1, width + 1];
+
+      for (int i = 0; i <= height; i++) {
+        ret[i, 0] = 1f / 0f;
+      }
+
+      for (int j = 0; j <= width; j++) {
+        ret[0, j] = 1f / 0f;
+      }
+
+      ret[1, 1] = matrix[0][0];
+
+      for (int i = 2; i <= height; i++) {
+        ret[i,1] = matrix[i-1][0] + matrix[i-2][0];
+      }
+
+      for (int j = 2; j < width; j++) {
+        ret[1,j] = matrix[0][j-1] + matrix[0][j-2];
+      }
+
+      for (int j = 2; j <= width; j++) {
+        for (int i = 2; i <= height; i++) {
+          float min = GetMin(ret[i-1,j], ret[i,j-1], ret[i-1,j-1]);
+          ret[i, j] = matrix[i-1][j-1] + min;
+        }
+      }
+
+      return ret;
+    }
+
+    private float GetMin(float x, float y, float z) {
+      if (x <= y && x <= z) return x;
+      if (y <= x && y <= z) return y;
+      if (z <= x && z <= y) return z;
+      return 0;
     }
 
     private float GetGreedyDTWCost(float[,] mat, int i, int j, ref List<Tuple<int, int>> shortestPath) {
@@ -210,6 +282,34 @@ namespace DynamicTimeWarping {
 
       return cost;
     }
+
+
+    private void FilterSignals() {
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        for (int i = 0; i < 4; i++) {
+          result.Data[Mapper.BoneIndexMap[boneName]].FilteredTemplateSignal[i] =
+            FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[i]);
+
+          result.Data[Mapper.BoneIndexMap[boneName]].FilteredSampleSignal[i] =
+            FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[i]);
+        }
+
+      }
+    }
+
+    private float[] FilterSignal(float[] signal) {
+      float[] filteredSignal = new float[signal.Length];
+      float cutoff = 0.5f;
+
+      filteredSignal[0] = signal[0];
+      for (int i = 1; i < signal.Length; i++) {
+
+        filteredSignal[i] = cutoff * filteredSignal[i - 1] + cutoff * (signal[i] - signal[i - 1]);
+      }
+
+      return filteredSignal;
+    }
+
 
 
     private DTWResult result;

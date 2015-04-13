@@ -29,10 +29,24 @@ namespace DynamicTimeWarpingPlot.View {
       UpdateLimits(templateMax, templateMin, sampleMax, sampleMin);
     }
 
+    public void PlotFilteredSignals(float[] templateSignal, float[] sampleSignal) {
+      float horizontalUnit = (float)templateCanvas.ActualWidth /
+                        Math.Max(templateSignal.Length, sampleSignal.Length);
+
+      PlotSignal(templateSignal, horizontalUnit, templateCanvas);
+      PlotSignal(sampleSignal, horizontalUnit, sampleCanvas);
+    }
+
 
     private void ClearPlots() {
       templateCanvas.Children.Clear();
       sampleCanvas.Children.Clear();
+    }
+
+    private void PlotSignal(float[] signal, float sampleDistance, Canvas canvas) {
+      for (int i = 1; i < signal.Length; i++) {
+        DrawPoint1(i * sampleDistance, 75 - signal[i] * 30, canvas);
+      }
     }
 
     private Tuple<double, double> PlotSignalAndGetExtremities(float[] signal, float sampleDistance, Canvas canvas) {
@@ -54,6 +68,18 @@ namespace DynamicTimeWarpingPlot.View {
         Width = 2,
         Height = 2,
         Fill = new SolidColorBrush(Colors.Red)
+      };
+
+      Canvas.SetLeft(point, x - point.Width / 2);
+      Canvas.SetTop(point, y - point.Height / 2);
+      canvas.Children.Add(point);
+    }
+
+    private void DrawPoint1(double x, double y, Canvas canvas) {
+      Ellipse point = new Ellipse {
+        Width = 2,
+        Height = 2,
+        Fill = new SolidColorBrush(Colors.Green)
       };
 
       Canvas.SetLeft(point, x - point.Width / 2);
