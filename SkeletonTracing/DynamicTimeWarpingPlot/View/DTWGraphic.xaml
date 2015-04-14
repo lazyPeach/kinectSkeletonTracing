@@ -5,16 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DynamicTimeWarpingPlot.View" x:Class="DynamicTimeWarpingPlot.View.DTWGraphic" 
              mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="979">
-  
+             d:DesignHeight="540" d:DesignWidth="1080">
+
   <Grid Background="White">
     <ComboBox x:Name="boneCombo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="200"/>
     <ComboBox x:Name="boneComponentCombo" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="componentName_SelectionChanged"/>
 
-    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="980" Margin="0,40,0,0">
+    <ScrollViewer HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="1080" Margin="0,40,0,0">
       <Grid Background="White">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition/>
+          <ColumnDefinition Width="50*"/>
+          <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -23,10 +24,13 @@
           <RowDefinition/>
           <RowDefinition/>
         </Grid.RowDefinitions>
-        <local:DTWSignalsPlot x:Name="signalPlot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <local:DTWMatrixPlot x:Name="matrixPlot" HorizontalAlignment="Left" Grid.Row="1" Margin="0,0,10,0" VerticalAlignment="Top"/>
-        <local:DTWMatrixPlot x:Name="windowMatrixPlot" HorizontalAlignment="Left" Grid.Row="2" Margin="0,0,10,0" VerticalAlignment="Top"/>
-        <local:DTWMatrixPlot x:Name="bestMatrixPlot" HorizontalAlignment="Left" Grid.Row="3" Margin="0,0,10,0" VerticalAlignment="Top"/>
+        <local:DTWSignalsPlot x:Name="signalPlot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <local:DTWMatrixPlot x:Name="matrixPlot" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="windowMatrixPlot" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="bestMatrixPlot" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top"/>
+        <local:DTWMatrixPlot x:Name="filteredMatrixPlot" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
+        <local:DTWMatrixPlot x:Name="filteredWindowMatrixPlot" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Grid.Column="1"/>
+        <local:DTWMatrixPlot x:Name="filteredBestMatrixPlot" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Top" Grid.Column="1"/>
       </Grid>
     </ScrollViewer>
   </Grid>

@@ -80,7 +80,6 @@ namespace DynamicTimeWarpingPlot.View {
       costLbl.Content = cost.ToString();
     }
 
-
     private void ClearSignalCanvas() {
       templateCanvas.Children.Clear();
       sampleCanvas.Children.Clear();

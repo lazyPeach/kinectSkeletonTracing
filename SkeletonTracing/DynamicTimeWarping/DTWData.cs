@@ -12,8 +12,6 @@ namespace DynamicTimeWarping {
       for (int i = 0; i < 4; i++) {
         templateSignal[i] = new float[templateLength];
         sampleSignal[i] = new float[sampleLength];
-        filteredTemplateSignal[i] = new float[templateLength];
-        filteredSampleSignal[i] = new float[sampleLength];
       }
 
       for (int i = 0; i < 4; i++) {
@@ -30,8 +28,6 @@ namespace DynamicTimeWarping {
     public BoneName BoneName { get { return boneName; } set { boneName = value; } }
     public float[][] TemplateSignal { get { return templateSignal; } set { templateSignal = value; } }
     public float[][] SampleSignal { get { return sampleSignal; } set { sampleSignal = value; } }
-    public float[][] FilteredTemplateSignal { get { return filteredTemplateSignal; } set { filteredTemplateSignal = value; } }
-    public float[][] FilteredSampleSignal { get { return filteredSampleSignal; } set { filteredSampleSignal = value; } }
     public float[][][] DTWMatrix { get { return dtwMatrix; } set { dtwMatrix = value; } }
     public DTWCost[] GreedyCost { get { return greedyCost; } set { greedyCost = value; } }
     public float[][][] DTWWindowMatrix { get { return dtwWindowMatrix; } set { dtwWindowMatrix = value; } }
@@ -42,8 +38,6 @@ namespace DynamicTimeWarping {
     private BoneName boneName;
     private float[][] templateSignal = new float[4][];
     private float[][] sampleSignal = new float[4][];
-    private float[][] filteredTemplateSignal = new float[4][];
-    private float[][] filteredSampleSignal = new float[4][];
     private float[][][] dtwMatrix = new float[4][][];
     private DTWCost[] greedyCost = new DTWCost[4];
     private float[][][] dtwWindowMatrix = new float[4][][];

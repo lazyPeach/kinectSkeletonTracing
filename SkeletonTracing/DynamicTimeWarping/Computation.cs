@@ -6,25 +6,22 @@ using System.Collections.Generic;
 namespace DynamicTimeWarping {
   public class Computation {
     public DTWResult Result { get { return result; } set { result = value; } }
+    public DTWResult FilteredResult { get { return filteredResult; } set { filteredResult = value; } }
 
     // some of the further actions can be done in the same loop but for the sake of this prject they
     // will be done in separate loops just to measure how well does DTW for recognizing body gestures.
     public void ComputeDTW(Body[] template, Body[] sample) {
       result = new DTWResult(template.Length, sample.Length);
+      filteredResult = new DTWResult(template.Length, sample.Length);
 
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
         result.Data[Mapper.BoneIndexMap[boneName]].BoneName = boneName;
         ConstructSignals(template, sample, boneName);
+        FilterSignalsForBone(boneName);
       }
 
-      ComputeDTWMatrix(template, sample);
-      ComputeWindowDTWMatrix(template, sample);
-
-      ComputeGreedyDTWCost(template.Length, sample.Length);
-      ComputeGreedyDTWWindowCost(template.Length, sample.Length);
-      ComputeBestCost(template.Length, sample.Length);
-
-      FilterSignals();
+      ComputeDTWForRawSignals(template, sample);
+      ComputeDTWForFilteredSignals(template, sample);
     }
 
     private void ConstructSignals(Body[] template, Body[] sample, BoneName boneName) {
@@ -43,83 +40,86 @@ namespace DynamicTimeWarping {
       }
     }
 
-    private void ComputeDTWMatrix(Body[] template, Body[] sample) {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix = ComputeDTWMatrixForBone(template, sample, boneName);
+    // Apply low pass filter to remove spikes and anomalies in recorded data
+    private void FilterSignalsForBone(BoneName boneName) {
+      for (int i = 0; i < 4; i++) {
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[i] =
+          FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[i]);
+
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[i] =
+          FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[i]);
       }
     }
 
-    private float[][][] ComputeDTWMatrixForBone(Body[] template, Body[] sample, BoneName boneName) {
-      float[][][] res = new float[4][][];
+    private float[] FilterSignal(float[] signal) {
+      float[] filteredSignal = new float[signal.Length];
+      float cutoff = 0.1f;
 
-      res[0] = new float[template.Length][];
-      res[1] = new float[template.Length][];
-      res[2] = new float[template.Length][];
-      res[3] = new float[template.Length][];
-
-      for (int i = 0; i < template.Length; i++) {
-        res[0][i] = new float[sample.Length];
-        res[1][i] = new float[sample.Length];
-        res[2][i] = new float[sample.Length];
-        res[3][i] = new float[sample.Length];
-
-        for (int j = 0; j < sample.Length; j++) {
-          res[0][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.W -
-                                  sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W);
-          res[1][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.X -
-                                  sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X);
-          res[2][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y -
-                                  sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y);
-          res[3][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z -
-                                  sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z);
-        }
+      filteredSignal[0] = signal[0];
+      for (int i = 1; i < signal.Length; i++) {
+        filteredSignal[i] = cutoff * signal[i] + (1 - cutoff) * filteredSignal[i - 1];
       }
 
+      return filteredSignal;
+    }
+
+    private void ComputeDTWForRawSignals(Body[] template, Body[] sample) {
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix = ComputeDTWMatrix(result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal, result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal);//ComputeDTWMatrixForBone(template, sample, boneName);
+        result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix = ComputeWindowDTWMatrix(result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal, result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal);//ComputeWindowDTWMatrixForBone(template, sample, boneName);
+        result.Data[Mapper.BoneIndexMap[boneName]].GreedyCost = ComputeGreedyDTWCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix, template.Length, sample.Length);
+        result.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost = ComputeGreedyDTWCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, template.Length, sample.Length);
+        result.Data[Mapper.BoneIndexMap[boneName]].BestCost = ComputeBestCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, template.Length, sample.Length);
+      }
+    }
+
+    private void ComputeDTWForFilteredSignals(Body[] template, Body[] sample) {
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix = ComputeDTWMatrix(filteredResult.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal, filteredResult.Data[Mapper.BoneIndexMap[boneName]].SampleSignal);//ComputeDTWMatrixForBone(template, sample, boneName);
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix = ComputeWindowDTWMatrix(filteredResult.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal, filteredResult.Data[Mapper.BoneIndexMap[boneName]].SampleSignal);//ComputeWindowDTWMatrixForBone(template, sample, boneName);
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].GreedyCost = ComputeGreedyDTWCostForBone(filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix, template.Length, sample.Length);
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost = ComputeGreedyDTWCostForBone(filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, template.Length, sample.Length);
+        filteredResult.Data[Mapper.BoneIndexMap[boneName]].BestCost = ComputeBestCostForBone(filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, template.Length, sample.Length);
+      }
+    }
+
+    private float[][][] ComputeDTWMatrix(float[][] template, float[][] sample) {
+      float[][][] res = new float[4][][];
+
+      for (int i = 0; i < 4; i++) {
+        res[i] = new float[template[i].Length][];
+
+        for (int j = 0; j < template[i].Length; j++) {
+          res[i][j] = new float[sample[i].Length];
+
+          for (int k = 0; k < sample[i].Length; k++) {
+            res[i][j][k] = Math.Abs(template[i][j] - sample[i][k]);
+          }
+        }
+      }
       return res;
     }
 
-    public void ComputeWindowDTWMatrix(Body[] template, Body[] sample) {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix = ComputeWindowDTWMatrixForBone(template, sample, boneName);
-      }
-    }
-
     // look on wikipedia for a faster way to compute only the slice needed http://en.wikipedia.org/wiki/Dynamic_time_warping
-    private float[][][] ComputeWindowDTWMatrixForBone(Body[] template, Body[] sample, BoneName boneName) {
+    private float[][][] ComputeWindowDTWMatrix(float[][] template, float[][] sample) {
       float[][][] res = new float[4][][];
-
-      res[0] = new float[template.Length][];
-      res[1] = new float[template.Length][];
-      res[2] = new float[template.Length][];
-      res[3] = new float[template.Length][];
-
-      float slope = (float)template.Length / (float)sample.Length;
+      float slope = (float)template[0].Length / (float)sample[0].Length;
       // r is the window size; if abs(i - j) > r put infinity on that cell
-      int r = (int)(0.1 * Math.Max(template.Length, sample.Length));
+      int r = (int)(0.1 * Math.Max(template[0].Length, sample[0].Length));
 
-      for (int i = 0; i < template.Length; i++) {
-        res[0][i] = new float[sample.Length];
-        res[1][i] = new float[sample.Length];
-        res[2][i] = new float[sample.Length];
-        res[3][i] = new float[sample.Length];
+      for (int i = 0; i < 4; i++) {
+        res[i] = new float[template[i].Length][];
 
-        int lineJ = (int)((float)i / slope); // for each i, get the j on the line and compute the dtw only for j +- r
+        for (int j = 0; j < template[i].Length; j++) {
+          res[i][j] = new float[sample[i].Length];
+          int lineJ = (int)((float)j / slope); // for each i, get the j on the line and compute the dtw only for j +- r
 
-        for (int j = 0; j < sample.Length; j++) {
-          if (Math.Abs(lineJ - j) <= r) {
-            res[0][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.W -
-                                  sample[j].Bones.GetBone(boneName).Rotation.Quaternion.W);
-            res[1][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.X -
-                                    sample[j].Bones.GetBone(boneName).Rotation.Quaternion.X);
-            res[2][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.Y -
-                                    sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Y);
-            res[3][i][j] = Math.Abs(template[i].Bones.GetBone(boneName).Rotation.Quaternion.Z -
-                                    sample[j].Bones.GetBone(boneName).Rotation.Quaternion.Z);
-          } else {
-            res[0][i][j] = 1f / 0f;
-            res[1][i][j] = 1f / 0f;
-            res[2][i][j] = 1f / 0f;
-            res[3][i][j] = 1f / 0f;
+          for (int k = 0; k < sample[i].Length; k++) {
+            if (Math.Abs(lineJ - k) <= r) {
+              res[i][j][k] = Math.Abs(template[i][j] - sample[i][k]);
+            } else {
+              res[i][j][k] = 1f / 0f;
+            }
           }
         }
       }
@@ -127,25 +127,7 @@ namespace DynamicTimeWarping {
       return res;
     }
 
-    public void ComputeGreedyDTWCost(int templateLength, int sampleLength) {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        result.Data[Mapper.BoneIndexMap[boneName]].GreedyCost = ComputeGreedyDTWCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix, templateLength, sampleLength);
-      }
-    }
-
-    public void ComputeGreedyDTWWindowCost(int templateLength, int sampleLength) {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        result.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost = ComputeGreedyDTWCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, templateLength, sampleLength);
-      }
-    }
-
-    private void ComputeBestCost(int templateLength, int sampleLength) {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        result.Data[Mapper.BoneIndexMap[boneName]].BestCost = ComputeBestCostForBone(result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix, templateLength, sampleLength);
-      }
-    }
-
-    public DTWCost[] ComputeGreedyDTWCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
+    private DTWCost[] ComputeGreedyDTWCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
       float[,] wMatrix = GetCostMatrix(dtwMatrix[0], templateLength, sampleLength);
       float[,] xMatrix = GetCostMatrix(dtwMatrix[1], templateLength, sampleLength);
       float[,] yMatrix = GetCostMatrix(dtwMatrix[2], templateLength, sampleLength);
@@ -171,7 +153,7 @@ namespace DynamicTimeWarping {
       return cost;
     }
 
-    public DTWCost[] ComputeBestCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
+    private DTWCost[] ComputeBestCostForBone(float[][][] dtwMatrix, int templateLength, int sampleLength) {
       float[,] wMatrix = GetBestCostMatrix(dtwMatrix[0], templateLength, sampleLength);
       float[,] xMatrix = GetBestCostMatrix(dtwMatrix[1], templateLength, sampleLength);
       float[,] yMatrix = GetBestCostMatrix(dtwMatrix[2], templateLength, sampleLength);
@@ -195,8 +177,7 @@ namespace DynamicTimeWarping {
 
       return cost;
     }
-
-
+    
     //create a copy of the matrix having infinity on the first row and column
     private float[,] GetCostMatrix(float[][] matrix, int height, int width) {
       float[,] ret = new float[height + 1, width + 1];
@@ -283,35 +264,7 @@ namespace DynamicTimeWarping {
       return cost;
     }
 
-
-    private void FilterSignals() {
-      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-        for (int i = 0; i < 4; i++) {
-          result.Data[Mapper.BoneIndexMap[boneName]].FilteredTemplateSignal[i] =
-            FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[i]);
-
-          result.Data[Mapper.BoneIndexMap[boneName]].FilteredSampleSignal[i] =
-            FilterSignal(result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[i]);
-        }
-
-      }
-    }
-
-    private float[] FilterSignal(float[] signal) {
-      float[] filteredSignal = new float[signal.Length];
-      float cutoff = 0.5f;
-
-      filteredSignal[0] = signal[0];
-      for (int i = 1; i < signal.Length; i++) {
-
-        filteredSignal[i] = cutoff * filteredSignal[i - 1] + cutoff * (signal[i] - signal[i - 1]);
-      }
-
-      return filteredSignal;
-    }
-
-
-
     private DTWResult result;
+    private DTWResult filteredResult;
   }
 }

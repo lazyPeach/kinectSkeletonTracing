@@ -9,7 +9,7 @@ namespace DynamicTimeWarpingPlot.View {
       InitializeComponent();
     }
 
-    public void Update(float[] templateSignal, float[] sampleSignal) {
+    public void PlotSignals(float[] templateSignal, float[] sampleSignal) {
       ClearPlots();
 
       // Horizontal unit is the horizontal distance between 2 samples. The signal with more samples
@@ -18,23 +18,18 @@ namespace DynamicTimeWarpingPlot.View {
       float horizontalUnit = (float)templateCanvas.ActualWidth /
                         Math.Max(templateSignal.Length, sampleSignal.Length);
 
-      Tuple<double, double> templateTup = PlotSignalAndGetExtremities(templateSignal, horizontalUnit, templateCanvas);
-      Tuple<double, double> sampleTup = PlotSignalAndGetExtremities(sampleSignal, horizontalUnit, sampleCanvas);
+      PlotSignal(templateSignal, horizontalUnit, templateCanvas, new SolidColorBrush(Colors.Red));
+      PlotSignal(sampleSignal, horizontalUnit, sampleCanvas, new SolidColorBrush(Colors.Red));
 
-      double templateMin = templateTup.Item1
-           , templateMax = templateTup.Item2
-           , sampleMin = sampleTup.Item1
-           , sampleMax = sampleTup.Item2;
-
-      UpdateLimits(templateMax, templateMin, sampleMax, sampleMin);
+      UpdateLimits(templateSignal, sampleSignal);
     }
 
     public void PlotFilteredSignals(float[] templateSignal, float[] sampleSignal) {
       float horizontalUnit = (float)templateCanvas.ActualWidth /
                         Math.Max(templateSignal.Length, sampleSignal.Length);
 
-      PlotSignal(templateSignal, horizontalUnit, templateCanvas);
-      PlotSignal(sampleSignal, horizontalUnit, sampleCanvas);
+      PlotSignal(templateSignal, horizontalUnit, templateCanvas, new SolidColorBrush(Colors.Yellow));
+      PlotSignal(sampleSignal, horizontalUnit, sampleCanvas, new SolidColorBrush(Colors.Yellow));
     }
 
 
@@ -43,19 +38,17 @@ namespace DynamicTimeWarpingPlot.View {
       sampleCanvas.Children.Clear();
     }
 
-    private void PlotSignal(float[] signal, float sampleDistance, Canvas canvas) {
+    private void PlotSignal(float[] signal, float sampleDistance, Canvas canvas, SolidColorBrush color) {
       for (int i = 1; i < signal.Length; i++) {
-        DrawPoint1(i * sampleDistance, 75 - signal[i] * 30, canvas);
+        DrawPoint(i * sampleDistance, 75 - signal[i] * 30, canvas, color);
       }
     }
 
-    private Tuple<double, double> PlotSignalAndGetExtremities(float[] signal, float sampleDistance, Canvas canvas) {
+    private Tuple<double, double> GetExtremities(float[] signal) {
       double min =  1f / 0f
            , max = -1f / 0f;
 
       for (int i = 1; i < signal.Length; i++) {
-        DrawPoint(i * sampleDistance, 75 - signal[i] * 30, canvas);
-
         min = (signal[i] < min) ? signal[i] : min;
         max = (signal[i] > max) ? signal[i] : max;
       }
@@ -63,11 +56,11 @@ namespace DynamicTimeWarpingPlot.View {
       return new Tuple<double, double>(min, max);
     }
 
-    private void DrawPoint(double x, double y, Canvas canvas) {
+    private void DrawPoint(double x, double y, Canvas canvas, SolidColorBrush color) {
       Ellipse point = new Ellipse {
         Width = 2,
         Height = 2,
-        Fill = new SolidColorBrush(Colors.Red)
+        Fill = color
       };
 
       Canvas.SetLeft(point, x - point.Width / 2);
@@ -75,24 +68,14 @@ namespace DynamicTimeWarpingPlot.View {
       canvas.Children.Add(point);
     }
 
-    private void DrawPoint1(double x, double y, Canvas canvas) {
-      Ellipse point = new Ellipse {
-        Width = 2,
-        Height = 2,
-        Fill = new SolidColorBrush(Colors.Green)
-      };
+    private void UpdateLimits(float[] template, float[] sample) {
+      Tuple<double, double> templateTup = GetExtremities(template);
+      Tuple<double, double> sampleTup = GetExtremities(sample);
 
-      Canvas.SetLeft(point, x - point.Width / 2);
-      Canvas.SetTop(point, y - point.Height / 2);
-      canvas.Children.Add(point);
-    }
-
-    private void UpdateLimits(double templateUpperLimit, double templateLowerLimit
-                            , double sampleUpperLimit, double sampleLowerLimit) {
-      templateUpperLimitLbl.Content = templateUpperLimit.ToString();
-      templateLowerLimitLbl.Content = templateLowerLimit.ToString();
-      sampleUpperLimitLbl.Content = sampleUpperLimit.ToString();
-      sampleLowerLimitLbl.Content = sampleLowerLimit.ToString();
+      templateUpperLimitLbl.Content = templateTup.Item2.ToString();
+      templateLowerLimitLbl.Content = templateTup.Item1.ToString();
+      sampleUpperLimitLbl.Content = sampleTup.Item2.ToString();
+      sampleLowerLimitLbl.Content = sampleTup.Item1.ToString();
     }
   }
 }
