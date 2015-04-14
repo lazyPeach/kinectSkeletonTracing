@@ -24,6 +24,30 @@ namespace DynamicTimeWarping {
       ComputeDTWForFilteredSignals(template, sample);
     }
 
+    public float GetSumBodyCost() {
+      float sum = 0;
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        for (int i = 0; i < 4; i++) {
+          sum += result.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
+        }
+      }
+
+      return sum;
+    }
+
+    public float GetAvgBodyCost() {
+      float sum = 0;
+      float nr = 0;
+      foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
+        for (int i = 0; i < 4; i++) {
+          nr++;
+          sum += result.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
+        }
+      }
+
+      return sum/nr;
+    }
+
     private void ConstructSignals(Body[] template, Body[] sample, BoneName boneName) {
       for (int i = 0; i < template.Length; i++) {
         for (int j = 0; j < sample.Length; j++) {

@@ -49,9 +49,16 @@ namespace DynamicTimeWarpingPlot.View {
       computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
     }
 
+    private void sumBodyCost_Click(object sender, RoutedEventArgs e) {
+      MessageBox.Show("Sum body cost: " + computation.GetSumBodyCost().ToString());
+    }
+
+    private void avgBodyCost_Click(object sender, RoutedEventArgs e) {
+      MessageBox.Show("Avg body cost: " + computation.GetAvgBodyCost().ToString());
+    }
+
+
     private BodyManager bodyManager;
     private Computation computation;
-
-
   }
 }
