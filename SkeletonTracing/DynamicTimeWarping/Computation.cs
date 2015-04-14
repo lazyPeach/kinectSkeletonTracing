@@ -28,7 +28,7 @@ namespace DynamicTimeWarping {
       float sum = 0;
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
         for (int i = 0; i < 4; i++) {
-          sum += result.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
+          sum += filteredResult.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
         }
       }
 
@@ -41,7 +41,7 @@ namespace DynamicTimeWarping {
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
         for (int i = 0; i < 4; i++) {
           nr++;
-          sum += result.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
+          sum += filteredResult.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
         }
       }
 

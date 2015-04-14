@@ -9,8 +9,8 @@
       <MenuItem x:Name="GraphicsDTWMenu" Header="DTW_Graphic" Click="GraphicsDTWMenu_Click"/>
     </Menu>
 
-    <View:DTWMain x:Name="mainDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Hidden"/>
-    <View:DTWGraphic x:Name="graphicDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="1080" Visibility="Visible"/>
+    <View:DTWMain x:Name="mainDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="980" Visibility="Visible"/>
+    <View:DTWGraphic x:Name="graphicDTW" HorizontalAlignment="Left" Height="540" Margin="0,20,0,0" VerticalAlignment="Top" Width="1080" Visibility="Hidden"/>
 
   </Grid>
 </Window>

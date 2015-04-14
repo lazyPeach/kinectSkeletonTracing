@@ -60,5 +60,10 @@ namespace DynamicTimeWarpingPlot.View {
 
     private BodyManager bodyManager;
     private Computation computation;
+
+    private void excellReportBtn_Click(object sender, RoutedEventArgs e) {
+      Report report = new Report();
+      report.CreateReport();
+    }
   }
 }
