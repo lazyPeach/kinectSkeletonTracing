@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletonModel", "Skeleton\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTimeWarpingPlot", "DynamicTimeWarpingPlot\DynamicTimeWarpingPlot.csproj", "{9080C1FF-9C76-4A0A-944F-A39D37089B39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BodyTracker", "BodyTracker\BodyTracker.csproj", "{0505EE2E-9FAC-4B47-AE82-083B4BC5A31C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureDetector", "GestureDetector\GestureDetector.csproj", "{86054D49-4FB9-45DA-8904-ABC96FFC78E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9080C1FF-9C76-4A0A-944F-A39D37089B39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0505EE2E-9FAC-4B47-AE82-083B4BC5A31C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0505EE2E-9FAC-4B47-AE82-083B4BC5A31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0505EE2E-9FAC-4B47-AE82-083B4BC5A31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0505EE2E-9FAC-4B47-AE82-083B4BC5A31C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86054D49-4FB9-45DA-8904-ABC96FFC78E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86054D49-4FB9-45DA-8904-ABC96FFC78E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86054D49-4FB9-45DA-8904-ABC96FFC78E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86054D49-4FB9-45DA-8904-ABC96FFC78E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

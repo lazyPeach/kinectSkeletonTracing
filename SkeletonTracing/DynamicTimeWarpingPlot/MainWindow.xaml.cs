@@ -15,19 +15,29 @@ namespace DynamicTimeWarpingPlot {
 
       graphicDTW.BodyManager = bodyManager;
       graphicDTW.Computation = computation;
+
+      multipleSignalsPanel.BodyManager = bodyManager;
+      multipleSignalsPanel.Computation = computation;
     }
 
 
     private void MainDTWMenu_Click(object sender, RoutedEventArgs e) {
       mainDTW.Visibility = System.Windows.Visibility.Visible;
       graphicDTW.Visibility = System.Windows.Visibility.Hidden;
+      multipleSignalsPanel.Visibility = System.Windows.Visibility.Hidden;
     }
 
     private void GraphicsDTWMenu_Click(object sender, RoutedEventArgs e) {
       mainDTW.Visibility = System.Windows.Visibility.Hidden;
       graphicDTW.Visibility = System.Windows.Visibility.Visible;
+      multipleSignalsPanel.Visibility = System.Windows.Visibility.Hidden;
     }
 
+    private void OptimalDTWMenu_Click(object sender, RoutedEventArgs e) {
+      mainDTW.Visibility = System.Windows.Visibility.Hidden;
+      graphicDTW.Visibility = System.Windows.Visibility.Hidden;
+      multipleSignalsPanel.Visibility = System.Windows.Visibility.Visible;
+    }
 
     private BodyManager bodyManager;
     private Computation computation;

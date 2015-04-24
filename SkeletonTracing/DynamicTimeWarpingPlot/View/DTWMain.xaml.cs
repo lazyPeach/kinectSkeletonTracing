@@ -65,5 +65,9 @@ namespace DynamicTimeWarpingPlot.View {
       Report report = new Report();
       report.CreateReport();
     }
+
+    private void optimalResultBtn_Click(object sender, RoutedEventArgs e) {
+      computation.ComputeOptimalDTW(bodyManager.BodyData, bodyManager.SampleData);
+    }
   }
 }
