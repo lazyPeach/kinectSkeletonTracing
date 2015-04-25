@@ -25,8 +25,7 @@ namespace BodyTracker {
       kinect = new KinectManager();
       bodyManager = new BodyManager(kinect);
       initialComputer = new InitialComputer();
-
-      initialComputer.DefineInitialPosition();
+      record = new List<Body>();
 
       bodyManager.RealTimeEventHandler += RealTimeEventHandler;
 
@@ -34,14 +33,21 @@ namespace BodyTracker {
     }
 
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
+      if (initialComputer.InitialPosition == null) {
+        initialComputer.DefineInitialPosition(e.Body);
+      }
+
       Body body = e.Body;
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
       } else {
         stateRectangle.Fill = new SolidColorBrush(Colors.Red);
+        //record.Add(body);
       }
     }
 
+
+    private List<Body> record;
     private KinectManager kinect;
     private BodyManager bodyManager;
     private InitialComputer initialComputer;
