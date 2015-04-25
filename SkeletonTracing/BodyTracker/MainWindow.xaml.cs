@@ -1,4 +1,7 @@
 ﻿using GestureDetector;
+using SkeletonModel.Events;
+using SkeletonModel.Managers;
+using SkeletonModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +21,37 @@ namespace BodyTracker {
   public partial class MainWindow : Window {
     public MainWindow() {
       InitializeComponent();
-      InitialComputer initialComputer = new InitialComputer();
+
+      kinect = new KinectManager();
+      bodyManager = new BodyManager(kinect);
+      initialComputer = new InitialComputer();
+
       initialComputer.DefineInitialPosition();
+
+      bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+
+      skeletonCanvas.BodyManager = bodyManager;
     }
 
+    private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
+      Body body = e.Body;
+      if (initialComputer.IsInitialPosition(body)) {
+        stateRectangle.Fill = new SolidColorBrush(Colors.Green);
+      } else {
+        stateRectangle.Fill = new SolidColorBrush(Colors.Red);
+      }
+    }
 
+    private KinectManager kinect;
+    private BodyManager bodyManager;
+    private InitialComputer initialComputer;
+
+    private void startBtn_Click(object sender, RoutedEventArgs e) {
+      kinect.Start();
+    }
+
+    private void stopBtn_Click(object sender, RoutedEventArgs e) {
+      kinect.Stop();
+    }
   }
 }
