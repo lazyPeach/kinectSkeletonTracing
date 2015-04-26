@@ -47,6 +47,7 @@
     <Compile Include="Events\BodyManagerPlayEventArgs.cs" />
     <Compile Include="Events\KinectmanagerEventArgs.cs" />
     <Compile Include="Managers\BodyManager.cs" />
+    <Compile Include="Managers\BodyManagerExtended.cs" />
     <Compile Include="Managers\KinectManager.cs" />
     <Compile Include="Model\Body.cs" />
     <Compile Include="Model\Bone.cs" />

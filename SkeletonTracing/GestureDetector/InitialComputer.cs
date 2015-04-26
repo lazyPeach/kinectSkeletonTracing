@@ -65,11 +65,11 @@ namespace GestureDetector {
           body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z < initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z;
 
         if (!godCondition) {
-          Console.WriteLine("not ok on bone " + boneName.ToString()
-            + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W + " "
-            + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X + " "
-            + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y + " "
-            + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z);
+          //Console.WriteLine("not ok on bone " + boneName.ToString()
+          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W + " "
+          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X + " "
+          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y + " "
+          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z);
           return false;
         }
       }

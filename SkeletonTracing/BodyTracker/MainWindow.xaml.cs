@@ -25,7 +25,8 @@ namespace BodyTracker {
       kinect = new KinectManager();
       bodyManager = new BodyManager(kinect);
       initialComputer = new InitialComputer();
-      record = new List<Body>();
+      bodyManagerExt = new BodyManagerExtended();
+      record = new Queue<Body>();
 
       bodyManager.RealTimeEventHandler += RealTimeEventHandler;
 
@@ -40,17 +41,29 @@ namespace BodyTracker {
       Body body = e.Body;
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
+        if (record.Count > 30) { // consider each geesture with less than 30 samples incorrect
+          Console.WriteLine("whoa... added queue");
+          bodyManagerExt.Records.Enqueue(record);
+          if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
+            count++;
+            countLabel.Content = count.ToString();
+          }
+          record = new Queue<Body>();
+        }
       } else {
         stateRectangle.Fill = new SolidColorBrush(Colors.Red);
-        //record.Add(body);
+        record.Enqueue(body);
       }
     }
 
 
-    private List<Body> record;
+    private Queue<Body> record;
     private KinectManager kinect;
     private BodyManager bodyManager;
     private InitialComputer initialComputer;
+    private BodyManagerExtended bodyManagerExt;
+    private GestureComputer gestureComputer = new GestureComputer();
+    private int count = 0;
 
     private void startBtn_Click(object sender, RoutedEventArgs e) {
       kinect.Start();
