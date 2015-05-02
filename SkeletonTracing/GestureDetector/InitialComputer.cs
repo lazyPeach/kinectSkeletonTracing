@@ -26,7 +26,7 @@ namespace GestureDetector {
                    boneName == BoneName.ForearmLeft || boneName == BoneName.ForearmRight ||
                    boneName == BoneName.FemurusLeft || boneName == BoneName.FemurusRight ||
                    boneName == BoneName.TibiaLeft || boneName == BoneName.TibiaRight) {
-          offset = 0.2f;
+          offset = 0.1f;
         } else {
           offset = 0.1f;
         }

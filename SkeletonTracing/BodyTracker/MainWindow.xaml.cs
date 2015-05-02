@@ -42,8 +42,7 @@ namespace BodyTracker {
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
         if (record.Count > 30) { // consider each geesture with less than 30 samples incorrect
-          Console.WriteLine("whoa... added queue");
-          bodyManagerExt.Records.Enqueue(record);
+          //bodyManagerExt.Records.Enqueue(record);
           if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
             count++;
             countLabel.Content = count.ToString();
@@ -71,6 +70,26 @@ namespace BodyTracker {
 
     private void stopBtn_Click(object sender, RoutedEventArgs e) {
       kinect.Stop();
+    }
+
+    private void raiseBothHandsRadio_Checked(object sender, RoutedEventArgs e) {
+      gestureComputer.CleanGestureDB();
+      gestureComputer.LoadGestureDB(Gesture.RaiseBothHands);
+    }
+
+    private void raiseRightHandRadio_Checked(object sender, RoutedEventArgs e) {
+      gestureComputer.CleanGestureDB();
+      gestureComputer.LoadGestureDB(Gesture.RaiseRightHand);
+    }
+
+    private void squatRadio_Checked(object sender, RoutedEventArgs e) {
+      gestureComputer.CleanGestureDB();
+      gestureComputer.LoadGestureDB(Gesture.Squat);
+    }
+
+    private void raiseLeftHandRadio_Checked(object sender, RoutedEventArgs e) {
+      gestureComputer.CleanGestureDB();
+      gestureComputer.LoadGestureDB(Gesture.RaiseLeftHand);
     }
   }
 }
