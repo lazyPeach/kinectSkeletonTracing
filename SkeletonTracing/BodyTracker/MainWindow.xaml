@@ -9,16 +9,11 @@
     <Button Name="startBtn" Content="Start" HorizontalAlignment="Left" Margin="435,10,0,0" VerticalAlignment="Top" Width="75" Click="startBtn_Click"/>
     <Button Name="stopBtn" Content="Stop" HorizontalAlignment="Left" Margin="607,10,0,0" VerticalAlignment="Top" Width="75" Click="stopBtn_Click"/>
     <Rectangle Name="stateRectangle" Fill="Gray" HorizontalAlignment="Left" Height="20" Margin="515,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="87"/>
-    <Label Name="countLabel" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="515,35,0,0" Height="95" Width="167" FontSize="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="5,0" UseLayoutRounding="True"/>
+    <Label Name="countLabel" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="504,318,0,0" Height="95" Width="167" FontSize="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="5,0" UseLayoutRounding="True"/>
     
-    <Label Content="Score:" HorizontalAlignment="Left" Margin="435,135,0,0" VerticalAlignment="Top"/>
-    <Label Name="scoreLbl" Content="0" HorizontalAlignment="Left" Margin="482,135,0,0" VerticalAlignment="Top" Width="200"/>
-    <StackPanel HorizontalAlignment="Left" Height="62" Margin="458,190,0,0" VerticalAlignment="Top" Width="213" Background="Red">
-      <RadioButton Name="raiseBothHandsRadio" GroupName="Gesture" Content="raise both hands" Checked="raiseBothHandsRadio_Checked"/>
-      <RadioButton Name="raiseRightHandRadio" GroupName="Gesture" Content="raise right hand" Checked="raiseRightHandRadio_Checked"/>
-      <RadioButton Name="raiseLeftHandRadio" GroupName="Gesture" Content="raise left hand" Checked="raiseLeftHandRadio_Checked"/>
-      <RadioButton Name="squatRadio" GroupName="Gesture" Content="squat" Checked="squatRadio_Checked"/>
-    </StackPanel>
+    <Label Content="Score:" HorizontalAlignment="Left" Margin="435,423,0,0" VerticalAlignment="Top"/>
+    <Label Name="scoreLbl" Content="0" HorizontalAlignment="Left" Margin="504,423,-12,0" VerticalAlignment="Top" Width="200"/>
+    <Label Name="timerLbl" Content="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="515,35,0,0" VerticalAlignment="Top" Height="84" Width="87" BorderThickness="1" TextOptions.TextFormattingMode="Display" FontSize="70" Padding="0"/>
 
   </Grid>
 </Window>

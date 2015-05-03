@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -65,6 +66,7 @@ namespace BodyTracker {
     private int count = 0;
 
     private void startBtn_Click(object sender, RoutedEventArgs e) {
+      StartCountdownTimer(5);
       kinect.Start();
     }
 
@@ -72,24 +74,27 @@ namespace BodyTracker {
       kinect.Stop();
     }
 
-    private void raiseBothHandsRadio_Checked(object sender, RoutedEventArgs e) {
-      gestureComputer.CleanGestureDB();
-      gestureComputer.LoadGestureDB(Gesture.RaiseBothHands);
+    private void StartCountdownTimer(int sec) {
+      countdownSec = sec;
+      timer = new Timer { Interval = 1000 };
+      timer.Elapsed += DelayTimerElapsed;
+      timer.Start();
     }
 
-    private void raiseRightHandRadio_Checked(object sender, RoutedEventArgs e) {
-      gestureComputer.CleanGestureDB();
-      gestureComputer.LoadGestureDB(Gesture.RaiseRightHand);
+    private void DelayTimerElapsed(object sender, System.Timers.ElapsedEventArgs e) {
+      this.Dispatcher.Invoke((Action)(() => { // update label
+        timerLbl.Content = countdownSec.ToString();
+      }));
+      
+      if (countdownSec == 0) {
+        timer.Stop();
+        return;
+      }
+
+      countdownSec--;
     }
 
-    private void squatRadio_Checked(object sender, RoutedEventArgs e) {
-      gestureComputer.CleanGestureDB();
-      gestureComputer.LoadGestureDB(Gesture.Squat);
-    }
-
-    private void raiseLeftHandRadio_Checked(object sender, RoutedEventArgs e) {
-      gestureComputer.CleanGestureDB();
-      gestureComputer.LoadGestureDB(Gesture.RaiseLeftHand);
-    }
+    private Timer timer;
+    private int countdownSec;
   }
 }

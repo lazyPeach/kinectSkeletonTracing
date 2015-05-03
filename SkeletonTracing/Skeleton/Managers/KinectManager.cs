@@ -16,10 +16,10 @@ namespace SkeletonModel.Managers {
 
     public void Start() {
       // make a 5 sec countdown
-      for (int i = 0; i < 5; i++) {
-        Console.WriteLine(i);
-        Thread.Sleep(1000);
-      }
+      //for (int i = 0; i < 5; i++) {
+      //  Console.WriteLine(i);
+      //  Thread.Sleep(1000);
+      //}
 
       kinectSensor.Start();
     }
