@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="BodyDeviation.cs" />
     <Compile Include="GestureComputer.cs" />
+    <Compile Include="GestureDatabase.cs" />
+    <Compile Include="GestureRecorder.cs" />
     <Compile Include="InitialComputer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

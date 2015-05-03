@@ -4,6 +4,7 @@ using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace BodyTracker {
   public partial class MainWindow : Window {
@@ -49,17 +51,17 @@ namespace BodyTracker {
       Body body = e.Body;
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
-        //if (record.Count > 30) { // consider each geesture with less than 30 samples incorrect
+        //if (record.Count > 50) { // consider each geesture with less than 30 samples incorrect
         //  //bodyManagerExt.Records.Enqueue(record);
         //  if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
-        //    count++;
-        //    countLabel.Content = count.ToString();
+          //count++;
+          //countLabel.Content = count.ToString();
         //  }
         //  record = new Queue<Body>();
         //}
       } else {
         stateRectangle.Fill = new SolidColorBrush(Colors.Red);
-        //record.Enqueue(body);
+        record.Enqueue(body);
       }
     }
 
@@ -109,5 +111,25 @@ namespace BodyTracker {
     private System.Timers.Timer timer;
     private int countdownSec;
     private bool recordInitialPosition;
+    private GestureDatabase gestureDatabase;
+
+    private void addNewGesture_Click(object sender, RoutedEventArgs e) {
+      Thread.Sleep(5000);
+      StartCountdownTimer(5);
+      recordInitialPosition = true;
+      kinect.Start();
+      
+      gestureDatabase = new GestureDatabase();
+      gestureDatabase.LoadDB();
+      gestureDatabase.AddGesture(newGestureNameTxt.Text);
+      gestureDatabase.SaveDB();
+
+      //MessageBox.Show("You will have to perform the gesture 5 times in order to train the system");
+
+      GestureRecorder gestureRecorder = new GestureRecorder(bodyManager, initialComputer, gestureDatabase.GestureDB[newGestureNameTxt.Text]);
+      gestureRecorder.StartRecording();
+
+
+    }
   }
 }
