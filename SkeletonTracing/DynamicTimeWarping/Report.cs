@@ -20,7 +20,7 @@ namespace DynamicTimeWarping {
 
     public void CreateReport() {
       files = new List<string>();
-      
+
       foreach (string s in Directory.EnumerateFiles(@".\..\..\..\..\testData\")) {
         files.Add(s);
       }
@@ -36,8 +36,8 @@ namespace DynamicTimeWarping {
     private void CreateReport(int templateIndex) {
       string templateFileName = files[templateIndex];
       Worksheet ws = xlWorkBook.Worksheets.Add();
-      ws.Name = templateIndex.ToString();//last in files[templateIndex];
-     
+      ws.Name = templateIndex.ToString();
+
       for (int sampleIndex = 0; sampleIndex < files.Count; sampleIndex++) {
         string sampleFileName = files[sampleIndex];
         Console.WriteLine("template " + templateIndex.ToString() + " - computing for" + sampleFileName);
@@ -51,7 +51,7 @@ namespace DynamicTimeWarping {
         bodyManager.LoadCollection(templateFileStream);
         bodyManager.LoadSample(sampleFileStream);
 
-        computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
+        computation.ComputeDTWForGraphic(bodyManager.BodyData, bodyManager.SampleData);
 
         float sum = 0;
         float max = 0;
@@ -94,7 +94,6 @@ namespace DynamicTimeWarping {
       xlWorkBook = xlApp.Workbooks.Add(misValue);
       xlWorkSheet = xlWorkBook.ActiveSheet;
 
-      //xlWorkSheet.Name = "report";
       xlWorkBook.SaveAs("L:\\dummy\\KinectSkeletonTracing\\report\\report.xls"
                        , XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue
                        , XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue
@@ -123,6 +122,7 @@ namespace DynamicTimeWarping {
         System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
         obj = null;
       } catch (Exception ex) {
+        Console.WriteLine(ex.Message);
         obj = null;
       } finally {
         GC.Collect();

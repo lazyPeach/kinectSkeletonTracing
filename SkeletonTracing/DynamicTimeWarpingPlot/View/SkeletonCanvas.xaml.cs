@@ -28,7 +28,7 @@ namespace DynamicTimeWarpingPlot.View {
 
       this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
         templateCanvas.Children.Clear();
-        DrawJoints(body.Joints, templateCanvas);
+        DrawJoints(body.JointSkeleton, templateCanvas);
       }));
     }
 
@@ -39,8 +39,8 @@ namespace DynamicTimeWarpingPlot.View {
       this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
         templateCanvas.Children.Clear();
         sampleCanvas.Children.Clear();
-        DrawJoints(template.Joints, templateCanvas);
-        DrawJoints(sample.Joints, sampleCanvas);
+        DrawJoints(template.JointSkeleton, templateCanvas);
+        DrawJoints(sample.JointSkeleton, sampleCanvas);
       }));
     }
 

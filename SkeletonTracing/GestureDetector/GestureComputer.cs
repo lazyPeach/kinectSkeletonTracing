@@ -19,11 +19,11 @@ namespace GestureDetector {
       Computation computation = new Computation();
       foreach (ObservableCollection<Body> bodyData in databaseData) {
         Console.WriteLine("pula mea asta-i combinatia");
-        computation.ComputeDTW(bodyData.ToArray<Body>(), record);
+        computation.ComputeOptimalDTW(bodyData.ToArray<Body>(), record);
         float sum = 0;
         foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
           for (int i = 0; i < 4; i++) {
-            sum += computation.FilteredResult.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
+            sum += computation.OptimalResult.Data[Mapper.BoneIndexMap[boneName]].BestCost[i].Cost;
           }
         }
 

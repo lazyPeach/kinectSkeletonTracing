@@ -42,7 +42,7 @@ namespace DynamicTimeWarpingPlot.View {
 
       double opacity = max - min / (double)256;
 
-      // Alpha in argb should be between 0 and 255 => map [min, max] to [0, 255]
+      // Alpha in argb should be between 0 and 255 => map [minSignal, maxSignal] to [0, 255]
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           Rect rect = new Rect(i * horizontalUnit, j * horizontalUnit, horizontalUnit, horizontalUnit);

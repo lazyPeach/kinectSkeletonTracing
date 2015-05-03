@@ -31,55 +31,47 @@ namespace GestureDetector {
           offset = 0.1f;
         }
 
-        initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W - offset;
-        initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X - offset;
-        initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y - offset;
-        initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z - offset;
+        initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W - offset;
+        initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X - offset;
+        initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y - offset;
+        initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z - offset;
 
-        initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W + offset;
-        initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X + offset;
-        initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y + offset;
-        initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z =
-          initialPosition.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z + offset;
+        initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W + offset;
+        initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X + offset;
+        initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y + offset;
+        initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z =
+          initialPosition.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z + offset;
       }
     }
 
     public bool IsInitialPosition(Body body) {
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
-
         bool godCondition =
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W > initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W < initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X > initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X < initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y > initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y < initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z > initialPositionDeviation.MinBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z &&
-          body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z < initialPositionDeviation.MaxBound.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z;
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W > initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W < initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.W &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X > initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X < initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.X &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y > initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y < initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Y &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z > initialPositionDeviation.MinBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z &&
+          body.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z < initialPositionDeviation.MaxBound.BoneSkeleton.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Z;
 
-        if (!godCondition) {
-          //Console.WriteLine("not ok on bone " + boneName.ToString()
-          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.W + " "
-          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.X + " "
-          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Y + " "
-          //  + body.Bones.Bones[Mapper.BoneIndexMap[boneName]].Rotation.Quaternion.Z);
-          return false;
-        }
+        if (!godCondition) return false;
       }
 
       return true;
     }
 
-
     public BodyDeviation InitialPositionDeviation { get { return initialPositionDeviation; } set { initialPositionDeviation = value; } }
     public Body InitialPosition { get { return initialPosition; } set { initialPosition = value; } }
+
 
     private BodyDeviation initialPositionDeviation;
     private Body initialPosition;

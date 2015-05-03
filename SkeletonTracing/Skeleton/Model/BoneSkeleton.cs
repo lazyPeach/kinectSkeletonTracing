@@ -18,31 +18,28 @@ namespace SkeletonModel.Model {
             !Mapper.JointTypeJointNameMap.ContainsKey(boneOrientation.EndJoint)) continue;
 
         Tuple<JointName, JointName> jointTuple = new Tuple<JointName, JointName>(
-          Mapper.JointTypeJointNameMap[boneOrientation.StartJoint], 
+          Mapper.JointTypeJointNameMap[boneOrientation.StartJoint],
           Mapper.JointTypeJointNameMap[boneOrientation.EndJoint]);
 
         if (!Mapper.JointBoneMap.ContainsKey(jointTuple)) continue;
 
         BoneName boneName = Mapper.JointBoneMap[jointTuple];
-
         Rotation rotation = new Rotation(boneOrientation.HierarchicalRotation.Quaternion.W
                                        , boneOrientation.HierarchicalRotation.Quaternion.X
                                        , boneOrientation.HierarchicalRotation.Quaternion.Y
                                        , boneOrientation.HierarchicalRotation.Quaternion.Z);
 
-        Bone bone = new Bone(rotation, boneName);
-        bones[Mapper.BoneIndexMap[boneName]] = bone;
+        bones[Mapper.BoneIndexMap[boneName]] = new Bone(rotation, boneName); ;
       }
     }
 
-    public Bone[] Bones { get { return bones; } set { bones = value; } }
+    public Bone GetBone(BoneName boneName) {
+      if (!Mapper.BoneIndexMap.ContainsKey(boneName)) return new Bone();
 
-    public Bone GetBone(BoneName type) {
-      if (!Mapper.BoneIndexMap.ContainsKey(type))
-        return new Bone();
-
-      return bones[Mapper.BoneIndexMap[type]];
+      return bones[Mapper.BoneIndexMap[boneName]];
     }
+
+    public Bone[] Bones { get { return bones; } set { bones = value; } }
 
 
     private Bone[] bones = new Bone[BONES_NR];

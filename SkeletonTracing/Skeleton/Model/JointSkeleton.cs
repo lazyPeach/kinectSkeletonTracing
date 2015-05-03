@@ -16,25 +16,25 @@ namespace SkeletonModel.Model {
       foreach (JointType jointType in Enum.GetValues(typeof(JointType))) {
         if (!Mapper.JointTypeJointNameMap.ContainsKey(jointType)) continue;
 
-        SkeletonPoint pt = skeleton.Joints[jointType].Position;
+        SkeletonPoint pt    = skeleton.Joints[jointType].Position;
         JointName jointName = Mapper.JointTypeJointNameMap[jointType];
-        Joint joint = new Joint(pt.X, pt.Y, pt.Z, jointName);
+        Joint joint         = new Joint(pt.X, pt.Y, pt.Z, jointName);
 
         joints[Mapper.JointIndexMap[jointName]] = joint;
       }
     }
 
+    public Joint GetJoint(JointName jointName) {
+      return joints[Mapper.JointIndexMap[jointName]];
+    }
+
+    public Joint GetJoint(JointType jointType) {
+      if (!Mapper.JointTypeJointNameMap.ContainsKey(jointType)) return null;
+
+      return GetJoint(Mapper.JointTypeJointNameMap[jointType]);
+    }
+
     public Joint[] Joints { get { return joints; } set { joints = value; } }
-
-    public Joint GetJoint(JointName type) {
-      return joints[Mapper.JointIndexMap[type]];
-    }
-
-    public Joint GetJoint(JointType type) {
-      if (!Mapper.JointTypeJointNameMap.ContainsKey(type)) return null;
-
-      return GetJoint(Mapper.JointTypeJointNameMap[type]);
-    }
 
 
     private Joint[] joints = new Joint[JOINTS_NR];

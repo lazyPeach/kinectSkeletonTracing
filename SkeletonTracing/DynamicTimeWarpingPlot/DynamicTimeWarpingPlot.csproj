@@ -71,9 +71,6 @@
     <Compile Include="View\DTWSignalsPlot.xaml.cs">
       <DependentUpon>DTWSignalsPlot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MultipleSamples.xaml.cs">
-      <DependentUpon>MultipleSamples.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SkeletonCanvas.xaml.cs">
       <DependentUpon>SkeletonCanvas.xaml</DependentUpon>
     </Compile>
@@ -102,10 +99,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DTWSignalsPlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\MultipleSamples.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

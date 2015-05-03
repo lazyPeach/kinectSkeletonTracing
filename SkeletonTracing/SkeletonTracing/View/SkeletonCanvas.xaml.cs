@@ -10,17 +10,6 @@ using System.Windows.Shapes;
 
 namespace SkeletonTracing {
   public partial class SkeletonCanvas : UserControl {
-    private int centerX = 210;
-    private int centerY = 210;
-
-    private BodyManager bodyManager;
-    public BodyManager BodyManager {
-      set {
-        bodyManager = value;
-        bodyManager.RealTimeEventHandler += RealTimeEventHandler;
-      }
-    }
-
     public SkeletonCanvas() {
       InitializeComponent();
     }
@@ -29,12 +18,20 @@ namespace SkeletonTracing {
       templateCanvas.Children.Clear();
     }
 
+    public BodyManager BodyManager {
+      set {
+        bodyManager = value;
+        bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+      }
+    }
+
+
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
       Body body = e.Body;
 
       this.Dispatcher.Invoke((Action)(() => { // needed in order to draw from any thread
         templateCanvas.Children.Clear();
-        DrawJoints(body.Joints, templateCanvas);
+        DrawJoints(body.JointSkeleton, templateCanvas);
       }));
     }
 
@@ -50,7 +47,7 @@ namespace SkeletonTracing {
         double x = joint.XCoord - centerJoint.XCoord;
         double y = joint.YCoord - centerJoint.YCoord;
 
-        DrawPoint(centerX + x * 200, centerY - y * 200, canvas); // have a mirror display
+        DrawPoint(centerX + x * 200, centerY - y * 200, canvas); // mirror display
       }
     }
 
@@ -65,5 +62,9 @@ namespace SkeletonTracing {
       Canvas.SetTop(point, y - point.Height / 2);
       canvas.Children.Add(point);
     }
+    
+    private int centerX = 210;
+    private int centerY = 210;
+    private BodyManager bodyManager;
   }
 }

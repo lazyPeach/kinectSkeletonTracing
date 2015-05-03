@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Events\BodyManagerEventArgs.cs" />
     <Compile Include="Events\BodyManagerPlayEventArgs.cs" />
-    <Compile Include="Events\KinectmanagerEventArgs.cs" />
+    <Compile Include="Events\KinectManagerEventArgs.cs" />
     <Compile Include="Managers\BodyManager.cs" />
     <Compile Include="Managers\BodyManagerExtended.cs" />
     <Compile Include="Managers\KinectManager.cs" />

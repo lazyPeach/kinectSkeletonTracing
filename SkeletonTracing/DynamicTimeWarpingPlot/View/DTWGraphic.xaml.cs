@@ -24,15 +24,15 @@ namespace DynamicTimeWarpingPlot.View {
       BoneName boneName = (BoneName)boneCombo.SelectedItem;
       int selectedIndex = boneComponentCombo.SelectedIndex;
 
-      if (computation.Result != null) {
+      if (computation.RawResult != null) {
 
-        float[] templateSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
-        float[] sampleSignal = computation.Result.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];
-        float[][] dtwMatrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix[selectedIndex];
-        float[][] dtwWindowMatrix = computation.Result.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix[selectedIndex];
-        DTWCost greedyCost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].GreedyCost[selectedIndex];
-        DTWCost windowCost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost[selectedIndex];
-        DTWCost bestCost = computation.Result.Data[Mapper.BoneIndexMap[boneName]].BestCost[selectedIndex];
+        float[] templateSignal = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
+        float[] sampleSignal = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];
+        float[][] dtwMatrix = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].DTWMatrix[selectedIndex];
+        float[][] dtwWindowMatrix = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix[selectedIndex];
+        DTWCost greedyCost = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].GreedyCost[selectedIndex];
+        DTWCost windowCost = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].GreedyWindowCost[selectedIndex];
+        DTWCost bestCost = computation.RawResult.Data[Mapper.BoneIndexMap[boneName]].BestCost[selectedIndex];
 
         float[] filteredTemplateSignal = computation.FilteredResult.Data[Mapper.BoneIndexMap[boneName]].TemplateSignal[selectedIndex];
         float[] filteredSampleSignal = computation.FilteredResult.Data[Mapper.BoneIndexMap[boneName]].SampleSignal[selectedIndex];

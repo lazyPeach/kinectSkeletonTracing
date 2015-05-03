@@ -46,7 +46,7 @@ namespace DynamicTimeWarpingPlot.View {
     }
 
     private void computeResultBtn_Click(object sender, RoutedEventArgs e) {
-      computation.ComputeDTW(bodyManager.BodyData, bodyManager.SampleData);
+      computation.ComputeDTWForGraphic(bodyManager.BodyData, bodyManager.SampleData);
     }
 
     private void sumBodyCost_Click(object sender, RoutedEventArgs e) {
