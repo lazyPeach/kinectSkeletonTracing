@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -35,24 +36,30 @@ namespace BodyTracker {
     }
 
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
-      if (initialComputer.InitialPosition == null) {
-        initialComputer.DefineInitialPosition(e.Body);
+      if (recordInitialPosition) {
+        initialComputer.InitialPosition.Add(e.Body);
+        return;
       }
+
+
+      //if (initialComputer.InitialPosition == null) {
+      //  initialComputer.DefineInitialPosition(e.Body);
+      //}
 
       Body body = e.Body;
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
-        if (record.Count > 30) { // consider each geesture with less than 30 samples incorrect
-          //bodyManagerExt.Records.Enqueue(record);
-          if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
-            count++;
-            countLabel.Content = count.ToString();
-          }
-          record = new Queue<Body>();
-        }
+        //if (record.Count > 30) { // consider each geesture with less than 30 samples incorrect
+        //  //bodyManagerExt.Records.Enqueue(record);
+        //  if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
+        //    count++;
+        //    countLabel.Content = count.ToString();
+        //  }
+        //  record = new Queue<Body>();
+        //}
       } else {
         stateRectangle.Fill = new SolidColorBrush(Colors.Red);
-        record.Enqueue(body);
+        //record.Enqueue(body);
       }
     }
 
@@ -65,8 +72,11 @@ namespace BodyTracker {
     private GestureComputer gestureComputer = new GestureComputer();
     private int count = 0;
 
+    // during countdown record the initial position
     private void startBtn_Click(object sender, RoutedEventArgs e) {
+      Thread.Sleep(5000);
       StartCountdownTimer(5);
+      recordInitialPosition = true;
       kinect.Start();
     }
 
@@ -76,7 +86,7 @@ namespace BodyTracker {
 
     private void StartCountdownTimer(int sec) {
       countdownSec = sec;
-      timer = new Timer { Interval = 1000 };
+      timer = new System.Timers.Timer { Interval = 1000 };
       timer.Elapsed += DelayTimerElapsed;
       timer.Start();
     }
@@ -87,6 +97,8 @@ namespace BodyTracker {
       }));
       
       if (countdownSec == 0) {
+        recordInitialPosition = false;
+        initialComputer.DefineInitialPosition();
         timer.Stop();
         return;
       }
@@ -94,7 +106,8 @@ namespace BodyTracker {
       countdownSec--;
     }
 
-    private Timer timer;
+    private System.Timers.Timer timer;
     private int countdownSec;
+    private bool recordInitialPosition;
   }
 }
