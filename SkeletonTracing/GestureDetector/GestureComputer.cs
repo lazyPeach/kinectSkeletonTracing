@@ -29,7 +29,7 @@ namespace GestureDetector {
 
         Console.Write(sum.ToString());
 
-        if (sum < 150)
+        if (sum < 100)
           return true;
       }
 
@@ -58,10 +58,10 @@ namespace GestureDetector {
       databaseData.Clear();
     }
 
-    private void LoadGesture(string gesture) {
+    public void LoadGesture(string gesture) {
       List<string> files = new List<string>();
 
-      foreach (string s in Directory.EnumerateFiles(@".\..\..\..\..\testData\")) {
+      foreach (string s in Directory.EnumerateFiles(@"..\..\..\..\..\database\")) {
         files.Add(s);
       }
 

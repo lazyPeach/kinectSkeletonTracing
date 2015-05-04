@@ -31,10 +31,14 @@ namespace BodyTracker {
       initialComputer = new InitialComputer();
       bodyManagerExt = new BodyManagerExtended();
       record = new Queue<Body>();
+      gestureDatabase = new GestureDatabase();
+      gestureDatabase.LoadDB();
+
 
       bodyManager.RealTimeEventHandler += RealTimeEventHandler;
 
       skeletonCanvas.BodyManager = bodyManager;
+      gesturesCombo.ItemsSource = gestureDatabase.GetAllGestures();
     }
 
     private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
@@ -51,14 +55,13 @@ namespace BodyTracker {
       Body body = e.Body;
       if (initialComputer.IsInitialPosition(body)) {
         stateRectangle.Fill = new SolidColorBrush(Colors.Green);
-        //if (record.Count > 50) { // consider each geesture with less than 30 samples incorrect
-        //  //bodyManagerExt.Records.Enqueue(record);
-        //  if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
-          //count++;
-          //countLabel.Content = count.ToString();
-        //  }
-        //  record = new Queue<Body>();
-        //}
+        if (record.Count > 50) { // consider each geesture with less than 30 samples incorrect
+          if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
+          count++;
+          countLabel.Content = count.ToString();
+          }
+          record = new Queue<Body>();
+        }
       } else {
         stateRectangle.Fill = new SolidColorBrush(Colors.Red);
         record.Enqueue(body);
@@ -119,8 +122,6 @@ namespace BodyTracker {
       recordInitialPosition = true;
       kinect.Start();
       
-      gestureDatabase = new GestureDatabase();
-      gestureDatabase.LoadDB();
       gestureDatabase.AddGesture(newGestureNameTxt.Text);
       gestureDatabase.SaveDB();
 
@@ -130,6 +131,11 @@ namespace BodyTracker {
       gestureRecorder.StartRecording();
 
 
+    }
+
+    private void gesturesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      string gestureName = (string)gesturesCombo.SelectedItem;
+      gestureComputer.LoadGesture(gestureDatabase.GestureDB[gestureName]);
     }
   }
 }

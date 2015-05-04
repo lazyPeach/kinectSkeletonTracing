@@ -55,6 +55,15 @@ namespace GestureDetector {
       }
     }
 
+    public List<string> GetAllGestures() {
+      List<string> gestures = new List<string>();
+      foreach (KeyValuePair<string, string> entry in gestureDB) {
+        gestures.Add(entry.Key);
+      }
+
+      return gestures;
+    }
+
     public Dictionary<string, string> GestureDB { get { return gestureDB; } set { gestureDB = value; } }
 
     private Dictionary<string, string> gestureDB;

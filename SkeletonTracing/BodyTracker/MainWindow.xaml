@@ -17,6 +17,7 @@
     <Label Content="New gesture:" HorizontalAlignment="Left" Margin="435,121,0,0" VerticalAlignment="Top" Width="80"/>
     <Button Name="addNewGesture" Content="Add" HorizontalAlignment="Left" Margin="647,124,0,0" VerticalAlignment="Top" Width="35" Click="addNewGesture_Click"/>
     <TextBox Name="newGestureNameTxt" HorizontalAlignment="Left" Height="20" Margin="520,124,0,0" TextWrapping="Wrap" Text="gesture name" VerticalAlignment="Top" Width="122"/>
+    <ComboBox Name="gesturesCombo" HorizontalAlignment="Left" Margin="562,149,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="gesturesCombo_SelectionChanged"/>
 
   </Grid>
 </Window>

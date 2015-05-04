@@ -75,6 +75,9 @@ namespace DynamicTimeWarping {
 
     public void ComputeOptimalDTW(Body[] template, Body[] sample) {
       optimalResult = new DTWResult(template.Length, sample.Length);
+      //todo get rid of this
+      rawResult = new DTWResult(template.Length, sample.Length);
+      filteredResult = new DTWResult(template.Length, sample.Length);
 
       foreach (BoneName boneName in Enum.GetValues(typeof(BoneName))) {
         optimalResult.Data[Mapper.BoneIndexMap[boneName]].BoneName = boneName;
@@ -90,7 +93,7 @@ namespace DynamicTimeWarping {
         // this could be removed... the best cost is the cell[n][m]... in real case we don't care
         // about optimal path only its final cost
         optimalResult.Data[Mapper.BoneIndexMap[boneName]].BestCost = 
-          ComputeBestCostForBone(filteredResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix,
+          ComputeBestCostForBone(optimalResult.Data[Mapper.BoneIndexMap[boneName]].DTWWindowMatrix,
           template.Length, sample.Length);
       }
     }
