@@ -1,5 +1,7 @@
 ﻿using DynamicTimeWarping;
+using GestureDetector.Events;
 using Helper;
+using SkeletonModel.Events;
 using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
@@ -14,8 +16,17 @@ using System.Xml.Serialization;
 namespace GestureDetector {
   public enum Gesture { RaiseBothHands, RaiseRightHand, RaiseLeftHand, Squat}
 
+  public delegate void RecognizedGestureEventHandler(object sender, RecognizedGestureEventArgs e);
+
   public class GestureComputer {
-    public bool IsBothHandsRaise(Body[] record) {
+    public event RecognizedGestureEventHandler RecognizedGestureEventHandler;
+
+    public GestureComputer(BodyManager bodyManager, InitialPositionComputer initialPositionComputer) {
+      this.bodyManager = bodyManager;
+      this.initialPositionComputer = initialPositionComputer;
+    }
+
+    public bool IsCorrectGesture(Body[] record) {
       Computation computation = new Computation();
       foreach (ObservableCollection<Body> bodyData in databaseData) {
         Console.WriteLine("pula mea asta-i combinatia");
@@ -33,29 +44,46 @@ namespace GestureDetector {
           return true;
       }
 
-
       return false;
-    }
-
-    public void LoadGestureDB(Gesture gesture) {
-      switch (gesture) {
-        case Gesture.RaiseBothHands:
-          LoadGesture("bothHandsRaise_db");
-          break;
-        case Gesture.RaiseLeftHand:
-          LoadGesture("leftHandRaise_db");
-          break;
-        case Gesture.RaiseRightHand:
-          LoadGesture("rightHandRaise_db");
-          break;
-        case Gesture.Squat:
-          LoadGesture("squat_db");
-          break;
-      }
     }
 
     public void CleanGestureDB() {
       databaseData.Clear();
+    }
+
+    public void StartRecognition() {
+      record = new Queue<Body>();
+      bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+      initialPositionComputer.InitialPositionEventHandler += InitialPositionEventHandler;
+      initialPositionComputer.RecordInitialPosition();
+    }
+
+    private void InitialPositionEventHandler(object sented, InitialPositionEventArgs e) {
+      if (e.State == State.Finish) {
+        record = new Queue<Body>();// empty the record in order to get rid of the body samples taken during initial positon acquisition
+      }
+    }
+
+    private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
+      Body body = e.Body;
+
+      if (initialPositionComputer.IsInitialPosition(body)) { // move this in an event raised by initial computer
+        if (record.Count > 50) { // consider each gesture with less than 50 samples incorrect
+          if (IsCorrectGesture(record.ToArray())) {
+            OnEvent(new RecognizedGestureEventArgs());
+          }
+
+          record = new Queue<Body>();
+        }
+      } else {
+        record.Enqueue(body);
+      }
+    }
+
+    protected virtual void OnEvent(RecognizedGestureEventArgs e) {
+      if (RecognizedGestureEventHandler != null) {
+        RecognizedGestureEventHandler(this, e);
+      }
     }
 
     public void LoadGesture(string gesture) {
@@ -82,8 +110,9 @@ namespace GestureDetector {
       textReader.Close();
     }
 
+    private Queue<Body> record;
     private List<ObservableCollection<Body>> databaseData = new List<ObservableCollection<Body>>();
-
-
+    private BodyManager bodyManager;
+    private InitialPositionComputer initialPositionComputer;
   }
 }

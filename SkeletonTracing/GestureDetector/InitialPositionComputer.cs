@@ -1,4 +1,6 @@
-﻿using Helper;
+﻿using GestureDetector.Events;
+using Helper;
+using SkeletonModel.Events;
 using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
@@ -7,13 +9,87 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace GestureDetector {
-  public class InitialComputer {
+  public delegate void InitialPositionEventHandler(object sender, InitialPositionEventArgs e);
 
-    public InitialComputer() {
+  public class InitialPositionComputer {
+
+    public event InitialPositionEventHandler InitialPositionEventHandler;
+
+    private BodyManager bodyManager;
+
+    public InitialPositionComputer(BodyManager bodyManager) {
       initialPositionDeviation = new BodyDeviation();
       initialPosition = new List<Body>();
+      this.bodyManager = bodyManager;
+      bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+    }
+
+    // when recording just adds the current body to the list of body samples
+    // after recording returns the state of the body (initial position or not)
+    private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
+      if (shouldRecord) {
+        initialPosition.Add(e.Body);
+        return;
+      }
+
+      OnEvent(new InitialPositionEventArgs(State.Check, 0, IsInitialPosition(e.Body)));
+    }
+
+    public void TestInitialPosition() {
+      RecordInitialPosition();
+    }
+
+    public void RecordInitialPosition() {
+      CountDown();
+    }
+
+    private int countdownSec;
+    private Timer timer;
+    private bool shouldRecord = false;
+
+    private void CountDown() {
+      countdownSec = 0;
+      timer = new System.Timers.Timer { Interval = 1000 };
+      timer.Elapsed += PauseSystem;
+      timer.Start();
+    }
+
+    // make time for the user to get in front of the sensor (5 sec should be enough)
+    private void PauseSystem(object sender, System.Timers.ElapsedEventArgs e) {
+      OnEvent(new InitialPositionEventArgs(State.Pause, ++countdownSec, false));
+
+      if (countdownSec == 5) {
+        timer.Stop();
+
+        timer = new System.Timers.Timer { Interval = 1000 };
+        timer.Elapsed += RecordInitialPosition;
+        shouldRecord = true;
+        timer.Start();
+        return;
+      }
+    }
+
+    // record the position of the user for 5 sec
+    // in the end, define the initial position
+    private void RecordInitialPosition(object sender, System.Timers.ElapsedEventArgs e) {
+      OnEvent(new InitialPositionEventArgs(State.Recording, --countdownSec, false));
+
+      if (countdownSec == 0) {
+        shouldRecord = false;
+        DefineInitialPosition();
+        timer.Stop();
+        OnEvent(new InitialPositionEventArgs(State.Finish, 0, false));
+        return;
+      }
+    }
+
+    protected virtual void OnEvent(InitialPositionEventArgs e) {
+      if (InitialPositionEventHandler != null) {
+        InitialPositionEventHandler(this, e);
+      }
     }
 
     public void DefineInitialPosition() {

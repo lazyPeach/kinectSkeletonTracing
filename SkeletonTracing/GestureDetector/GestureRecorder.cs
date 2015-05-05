@@ -1,4 +1,5 @@
-﻿using SkeletonModel.Events;
+﻿using GestureDetector.Events;
+using SkeletonModel.Events;
 using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
@@ -11,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace GestureDetector {
   public class GestureRecorder {
-    public GestureRecorder(BodyManager bodyManager, InitialComputer initialComputer, string gestureFileName) {
+    public GestureRecorder(BodyManager bodyManager, InitialPositionComputer initialComputer, string gestureFileName) {
       record = new Queue<Body>();
       this.bodyManager = bodyManager;
       this.initialComputer = initialComputer;
@@ -20,6 +21,14 @@ namespace GestureDetector {
 
     public void StartRecording() {
       bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+      initialComputer.InitialPositionEventHandler += InitialPositionEventHandler;
+      initialComputer.RecordInitialPosition();
+    }
+
+    private void InitialPositionEventHandler(object sented, InitialPositionEventArgs e) {
+      if (e.State == State.Finish) {
+        record = new Queue<Body>();// empty the record in order to get rid of the body samples taken during initial positon acquisition
+      }
     }
 
     public void StopRecording() {
@@ -60,7 +69,7 @@ namespace GestureDetector {
 
     private int samplesCount = 0;
     private BodyManager bodyManager;
-    private InitialComputer initialComputer;
+    private InitialPositionComputer initialComputer;
     private string gestureFileName;
     private Queue<Body> record;
     private Queue<Body>[] records = new Queue<Body>[5];

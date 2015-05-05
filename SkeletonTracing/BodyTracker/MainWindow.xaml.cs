@@ -1,25 +1,12 @@
 ﻿using GestureDetector;
-using SkeletonModel.Events;
+using GestureDetector.Events;
 using SkeletonModel.Managers;
 using SkeletonModel.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Serialization;
 
 namespace BodyTracker {
   public partial class MainWindow : Window {
@@ -28,114 +15,113 @@ namespace BodyTracker {
 
       kinect = new KinectManager();
       bodyManager = new BodyManager(kinect);
-      initialComputer = new InitialComputer();
-      bodyManagerExt = new BodyManagerExtended();
-      record = new Queue<Body>();
+
+      initialComputer = new InitialPositionComputer(bodyManager);
+      initialComputer.InitialPositionEventHandler += InitialPositionEventHandler;
+
       gestureDatabase = new GestureDatabase();
       gestureDatabase.LoadDB();
 
+      gestureComputer = new GestureComputer(bodyManager, initialComputer);
+      gestureComputer.RecognizedGestureEventHandler += RecognizedGestureEventHandler;
 
-      bodyManager.RealTimeEventHandler += RealTimeEventHandler;
+      bodyManagerExt = new BodyManagerExtended();
+      record = new Queue<Body>();
 
       skeletonCanvas.BodyManager = bodyManager;
       gesturesCombo.ItemsSource = gestureDatabase.GetAllGestures();
     }
 
-    private void RealTimeEventHandler(object sender, BodyManagerEventArgs e) {
-      if (recordInitialPosition) {
-        initialComputer.InitialPosition.Add(e.Body);
-        return;
-      }
+    private int count = 0;
 
+    private void RecognizedGestureEventHandler(object sender, RecognizedGestureEventArgs e) {
+      count++;
+      countLabel.Content = count.ToString();
+    }
 
-      //if (initialComputer.InitialPosition == null) {
-      //  initialComputer.DefineInitialPosition(e.Body);
-      //}
-
-      Body body = e.Body;
-      if (initialComputer.IsInitialPosition(body)) {
-        stateRectangle.Fill = new SolidColorBrush(Colors.Green);
-        if (record.Count > 50) { // consider each geesture with less than 30 samples incorrect
-          if (gestureComputer.IsBothHandsRaise(record.ToArray<Body>())) {
-          count++;
-          countLabel.Content = count.ToString();
+    // check for events from InitialPositionComputer
+    private void InitialPositionEventHandler(object sender, InitialPositionEventArgs e) {
+      switch (e.State) {
+        case State.Pause:
+          UpdateTimerBackground(Colors.Red);
+          UpdateTimerLabel(e.Timer);
+          break;
+        case State.Finish:
+          UpdateTimerBackground(Colors.White);
+          UpdateTimerLabel(0);
+          break;
+        case State.Recording:
+          UpdateTimerBackground(Colors.Green);
+          UpdateTimerLabel(e.Timer);
+          break;
+        case State.Check:
+          if (e.IsInitialPosition) {
+            stateRectangle.Fill = new SolidColorBrush(Colors.Green);
+          } else {
+            stateRectangle.Fill = new SolidColorBrush(Colors.Red);
           }
-          record = new Queue<Body>();
-        }
-      } else {
-        stateRectangle.Fill = new SolidColorBrush(Colors.Red);
-        record.Enqueue(body);
+          
+          break;
       }
     }
 
-
-    private Queue<Body> record;
-    private KinectManager kinect;
-    private BodyManager bodyManager;
-    private InitialComputer initialComputer;
-    private BodyManagerExtended bodyManagerExt;
-    private GestureComputer gestureComputer = new GestureComputer();
-    private int count = 0;
-
-    // during countdown record the initial position
-    private void startBtn_Click(object sender, RoutedEventArgs e) {
-      Thread.Sleep(5000);
-      StartCountdownTimer(5);
-      recordInitialPosition = true;
+    private void startTestInitialPositionBtn_Click(object sender, RoutedEventArgs e) {
+      //initialComputer.InitialPositionEventHandler += InitialPositionEventHandler;
+      initialComputer.TestInitialPosition();
       kinect.Start();
     }
 
-    private void stopBtn_Click(object sender, RoutedEventArgs e) {
+    private void stopTestInitialPositionBtn_Click(object sender, RoutedEventArgs e) {
+      //initialComputer.InitialPositionEventHandler -= InitialPositionEventHandler;
       kinect.Stop();
+      stateRectangle.Fill = new SolidColorBrush(Colors.Gray);
     }
 
-    private void StartCountdownTimer(int sec) {
-      countdownSec = sec;
-      timer = new System.Timers.Timer { Interval = 1000 };
-      timer.Elapsed += DelayTimerElapsed;
-      timer.Start();
-    }
-
-    private void DelayTimerElapsed(object sender, System.Timers.ElapsedEventArgs e) {
+    private void UpdateTimerLabel(int time) {
       this.Dispatcher.Invoke((Action)(() => { // update label
-        timerLbl.Content = countdownSec.ToString();
+        timerLbl.Content = time.ToString();
       }));
-      
-      if (countdownSec == 0) {
-        recordInitialPosition = false;
-        initialComputer.DefineInitialPosition();
-        timer.Stop();
-        return;
-      }
-
-      countdownSec--;
     }
 
-    private System.Timers.Timer timer;
-    private int countdownSec;
-    private bool recordInitialPosition;
-    private GestureDatabase gestureDatabase;
+    private void UpdateTimerBackground(Color color) {
+      this.Dispatcher.Invoke((Action)(() => { // update label
+        timerLbl.Background = new SolidColorBrush(color);
+      }));
+    }
 
     private void addNewGesture_Click(object sender, RoutedEventArgs e) {
-      Thread.Sleep(5000);
-      StartCountdownTimer(5);
-      recordInitialPosition = true;
       kinect.Start();
       
       gestureDatabase.AddGesture(newGestureNameTxt.Text);
       gestureDatabase.SaveDB();
 
-      //MessageBox.Show("You will have to perform the gesture 5 times in order to train the system");
+      MessageBox.Show("You will have to perform the gesture 5 times in order to train the system");
 
       GestureRecorder gestureRecorder = new GestureRecorder(bodyManager, initialComputer, gestureDatabase.GestureDB[newGestureNameTxt.Text]);
       gestureRecorder.StartRecording();
-
-
     }
 
     private void gesturesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
       string gestureName = (string)gesturesCombo.SelectedItem;
       gestureComputer.LoadGesture(gestureDatabase.GestureDB[gestureName]);
     }
+
+    private void startGestureRecognitionBtn_Click(object sender, RoutedEventArgs e) {
+      kinect.Start();
+      gestureComputer.StartRecognition();
+    }
+
+    private void stopGestureRecognitionBtn_Click(object sender, RoutedEventArgs e) {
+
+    }
+
+    private GestureDatabase gestureDatabase;
+    private Queue<Body> record;
+    private KinectManager kinect;
+    private BodyManager bodyManager;
+    private InitialPositionComputer initialComputer;
+    private BodyManagerExtended bodyManagerExt;
+    private GestureComputer gestureComputer;
+
   }
 }
